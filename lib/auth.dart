@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: Center(child: const Text('Login or Sign Up')),
       ),
       body: Center(
         child: ElevatedButton.icon(
@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const MyHomePage(title: 'HELLO')),
+                    builder: (context) => const MyHomePage(title: 'Developer\'s Almanac')),
               );
             }).catchError(
               (e) => AlertDialog(
@@ -63,27 +63,44 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-//logout button
-class LogoutButton extends StatelessWidget {
-  const LogoutButton({super.key});
+//logout popup
+class LogoutPopup extends StatefulWidget {
+  const LogoutPopup({super.key, required this.user_email});
+  final String user_email;
+  @override
+  State<LogoutPopup> createState() => _LogoutPopupState();
+}
+class _LogoutPopupState extends State<LogoutPopup> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
-        await FirebaseAuth.instance.signOut().then((value) {
-          print("User has signed out");
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginPage()),
-          );
-        }).catchError(
-          (e) => AlertDialog(
-            title: const Text('Error'),
-            content: Text(e.toString()),
-          ),
-        );
-      },
-      child: const Text('Sign out'),
+    return AlertDialog(
+      title: const Text('Logout'),
+      content: Text('Are you sure you want to logout?'),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut().then((value) {
+              print("user has signed out");
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            }).catchError(
+              (e) => AlertDialog(
+                title: const Text('Error'),
+                content: Text(e.toString()),
+              ),
+            );
+          },
+          child: const Text('Logout'),
+        ),
+      ],
     );
   }
 }
