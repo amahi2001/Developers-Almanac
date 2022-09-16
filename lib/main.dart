@@ -6,7 +6,7 @@ import 'firebase_options.dart';
 //auth
 import 'auth.dart';
 
-const bool dev_mode = true;
+const bool dev_mode = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,11 +23,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Developer's Almanac",
-      theme: ThemeData(
-        primaryColor: Colors.deepPurple[200],
-        primarySwatch: Colors.deepPurple,
-      ),
-      home: dev_mode ? const MyHomePage(title: "Developer's Almanac") : const LoginPage(),
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(
+          scaffoldBackgroundColor: Color.fromARGB(255, 14, 41, 60)),
+      home: dev_mode
+          ? const MyHomePage(title: "Developer's Almanac")
+          : const LoginPage(),
     );
   }
 }
@@ -63,11 +64,11 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Center(child: Text(widget.title)),
-      ),
+      // appBar: AppBar(
+      //   // Here we take the value from the MyHomePage object that was created by
+      //   // the App.build method, and use it to set our appbar title.
+      //   title: Center(child: Text(widget.title)),
+      // ),
       drawer: Drawer(
           child: ListView(
         children: [
@@ -96,22 +97,22 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+          // children: <Widget>[
+          //   const Text(
+          //     'You have pushed the button this many times:',
+          //   ),
+          //   Text(
+          //     '$_counter',
+          //     style: Theme.of(context).textTheme.headline4,
+          //   ),
+          // ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

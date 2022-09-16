@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+
 // this file handle everything about authentication
 // E.g. sign in, sign up, sign out (including styling)
-
 
 Future<UserCredential> signInWithGoogle() async {
   /*this function is the google sign in method*/
@@ -35,30 +35,49 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Center(child: const Text('Login or Sign Up')),
-      ),
+      // appBar: AppBar(
+      //   title: Center(child: const Text('Login or Sign Up')),
+      // ),
       body: Center(
-        child: ElevatedButton.icon(
-          onPressed: () async {
-            await signInWithGoogle().then((value) {
-              print("${value.user!.email} has logged in");
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const MyHomePage(title: 'Developer\'s Almanac')),
+          child: Column(
+        children: [
+          SizedBox(
+            height: 30,
+          ),
+          Image.asset("images/logo.png"),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            "DEVELOPER'S ALMANAC",
+            style: TextStyle(
+                color: Colors.white, fontFamily: 'Times', fontSize: 50),
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          ElevatedButton.icon(
+            onPressed: () async {
+              await signInWithGoogle().then((value) {
+                print("${value.user!.email} has logged in");
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const MyHomePage(title: 'Developer\'s Almanac')),
+                );
+              }).catchError(
+                (e) => AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(e.toString()),
+                ),
               );
-            }).catchError(
-              (e) => AlertDialog(
-                title: const Text('Error'),
-                content: Text(e.toString()),
-              ),
-            );
-          },
-          icon: Icon(Icons.login),
-          label: Text('Login with Google'),
-        ),
-      ),
+            },
+            icon: Icon(Icons.login),
+            label: Text('Login with Google'),
+          )
+        ],
+      )),
     );
   }
 }
@@ -70,6 +89,7 @@ class LogoutPopup extends StatefulWidget {
   @override
   State<LogoutPopup> createState() => _LogoutPopupState();
 }
+
 class _LogoutPopupState extends State<LogoutPopup> {
   @override
   Widget build(BuildContext context) {
