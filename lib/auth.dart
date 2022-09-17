@@ -29,8 +29,7 @@ Future<UserCredential> signInWithGoogle() async {
 
 //logout popup
 class LogoutPopup extends StatefulWidget {
-  const LogoutPopup({super.key, required this.user_email});
-  final String user_email;
+  const LogoutPopup({super.key});
   @override
   State<LogoutPopup> createState() => _LogoutPopupState();
 }
