@@ -6,7 +6,7 @@ import 'firebase_options.dart';
 //auth
 import 'auth.dart';
 
-const bool dev_mode = false;
+const bool dev_mode = true;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +59,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Card(
+              child: Text("hello"),
+            )
+          ],
         ),
       ),
     );
