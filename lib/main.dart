@@ -6,8 +6,9 @@ import 'firebase_options.dart';
 //auth
 import 'auth.dart';
 import 'pages/home_page.dart';
+import 'pages/login_page.dart';
 
-const bool dev_mode = true;
+const bool dev_mode = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
