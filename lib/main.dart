@@ -8,7 +8,7 @@ import 'auth.dart';
 import 'pages/home_page.dart';
 import 'pages/login_page.dart';
 
-const bool dev_mode = false;
+const bool dev_mode = true;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +19,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
