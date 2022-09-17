@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
+import 'pages/home_page.dart';
+
 // this file handle everything about authentication
 // E.g. sign in, sign up, sign out (including styling)
 
