@@ -19,7 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Code for search bar
   Widget _searchTextField() {
-    return TextField(
+    return const TextField(
       autofocus: true, //Display the keyboard when TextField is displayed
       cursorColor: Colors.white,
       style: TextStyle(
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     //if the user is not logged in and dev_mode is false, redirect to login page
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if( user == null && dev_mode == false){
+      if (user == null && dev_mode == false) {
         print("user is not signed in");
         Navigator.pushReplacement(
           context,
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // Code AppBar
       appBar: AppBar(
         leading: Image.asset("images/logo.png"),
-        title: !typing ? Text("Developer's Almanac") : _searchTextField(),
+        title: !typing ? const Text("Developer's Almanac") : _searchTextField(),
         actions: !typing
             ? <Widget>[
                 // Search Icon
@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
             : [
                 // Clear Icon
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.clear,
                   ),
                   onPressed: () {
@@ -94,14 +94,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 )
               ],
-        backgroundColor: Color.fromARGB(255, 14, 41, 60),
+        backgroundColor: const Color.fromARGB(255, 14, 41, 60),
       ),
       drawer: Drawer(
           child: ListView(
         children: [
           ListTile(
-            leading: Icon(Icons.logout_rounded),
-            title: Text('Logout'),
+            leading: const Icon(Icons.logout_rounded),
+            title: const Text('Logout'),
             onTap: () {
               //logout popup from auth.dart
               showDialog(
@@ -112,32 +112,29 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       )),
-      body: Center(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: Row(
         children: [
-          Text(
-            "Projects",
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Times',
-              fontSize: 30,
-            ),
-          ),
-          SizedBox(
-            width: 900,
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              size: 30,
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          ),
+      const Text(
+        "Projects",
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: 'Times',
+          fontSize: 30,
+        ),
+      ),
+      const SizedBox(
+        width: 900,
+      ),
+      IconButton(
+        icon: const Icon(
+          Icons.add,
+          size: 30,
+          color: Colors.white,
+        ),
+        onPressed: () {},
+      ),
         ],
-      )),
+      ),
     );
   }
 }
