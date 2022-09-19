@@ -5,21 +5,16 @@ import '../auth.dart';
 import '../main.dart';
 import 'login_page.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class _searchTextField extends StatefulWidget {
+  const _searchTextField({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<_searchTextField> createState() => __searchTextFieldState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  bool typing = true;
-
-  // Code for search bar
-  Widget _searchTextField() {
+class __searchTextFieldState extends State<_searchTextField> {
+  @override
+  Widget build(BuildContext context) {
     return const SizedBox(
         width: 300,
         child: TextField(
@@ -49,8 +44,21 @@ class _MyHomePageState extends State<MyHomePage> {
               fontSize: 20,
             ),
           ),
-        ));
+        ));;
   }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+class _MyHomePageState extends State<MyHomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool typing = true;
 
   @override
   void initState() {
