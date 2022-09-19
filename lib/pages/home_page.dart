@@ -15,36 +15,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool typing = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool typing = true;
 
   // Code for search bar
   Widget _searchTextField() {
-    return const TextField(
-      autofocus: true, //Display the keyboard when TextField is displayed
-      cursorColor: Colors.white,
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-      ),
-      textInputAction:
-          TextInputAction.search, //Specify the action button on the keyboard
-      decoration: InputDecoration(
-        //Style of TextField
-        enabledBorder: UnderlineInputBorder(
-            //Default TextField border
-            borderSide: BorderSide(color: Colors.white)),
-        focusedBorder: UnderlineInputBorder(
-            //Borders when a TextField is in focus
-            borderSide: BorderSide(color: Colors.white)),
-        hintText:
-            'Search keywords', //Text that is displayed when nothing is entered.
-        hintStyle: TextStyle(
-          //Style of hintText
-          color: Colors.white60,
-          fontSize: 20,
-        ),
-      ),
-    );
+    return const SizedBox(
+        width: 300,
+        child: TextField(
+          autofocus: true, //Display the keyboard when TextField is displayed
+          cursorColor: Colors.white,
+          textAlign: TextAlign.left,
+
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+          ),
+          textInputAction: TextInputAction
+              .search, //Specify the action button on the keyboard
+          decoration: InputDecoration(
+            //Style of TextField
+            enabledBorder: UnderlineInputBorder(
+                //Default TextField border
+                borderSide: BorderSide(color: Colors.white)),
+            focusedBorder: UnderlineInputBorder(
+                //Borders when a TextField is in focus
+                borderSide: BorderSide(color: Colors.white)),
+            hintText:
+                'Search keywords', //Text that is displayed when nothing is entered.
+            hintStyle: TextStyle(
+              //Style of hintText
+              color: Colors.white60,
+              fontSize: 20,
+            ),
+          ),
+        ));
   }
 
   @override
@@ -66,9 +71,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // Code AppBar
+      key: _scaffoldKey,
       appBar: AppBar(
         leading: Image.asset("images/logo.png"),
-        title: !typing ? const Text("Developer's Almanac") : _searchTextField(),
+        title: const Text("Developer's Almanac"),
         actions: !typing
             ? <Widget>[
                 // Search Icon
@@ -79,25 +85,41 @@ class _MyHomePageState extends State<MyHomePage> {
                       typing = true;
                     });
                   },
-                )
+                ),
+              Builder(builder: (context) {
+                return IconButton(
+                  icon: const Icon(Icons.person),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer(); // Open drawer if Profile Icon is clicked
+                  }
+                );
+              }),
               ]
             : [
+                _searchTextField(),
                 // Clear Icon
                 IconButton(
-                  icon: const Icon(
-                    Icons.clear,
-                  ),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     setState(() {
                       typing = false;
                     });
                   },
-                )
+                ),
+                Builder(builder: (context) {
+                  return IconButton(
+                    icon: const Icon(Icons.person),
+                    onPressed: () {
+                      Scaffold.of(context).openEndDrawer(); // Open drawer if Profile Icon is clicked
+                    }
+                  );
+                }),
               ],
         backgroundColor: const Color.fromARGB(255, 14, 41, 60),
       ),
-      drawer: Drawer(
+      endDrawer: Drawer(
           child: ListView(
+        padding: EdgeInsets.zero,
         children: [
           ListTile(
             leading: const Icon(Icons.logout_rounded),
@@ -114,25 +136,25 @@ class _MyHomePageState extends State<MyHomePage> {
       )),
       body: Row(
         children: [
-      const Text(
-        "Projects",
-        style: TextStyle(
-          color: Colors.white,
-          fontFamily: 'Times',
-          fontSize: 30,
-        ),
-      ),
-      const SizedBox(
-        width: 900,
-      ),
-      IconButton(
-        icon: const Icon(
-          Icons.add,
-          size: 30,
-          color: Colors.white,
-        ),
-        onPressed: () {},
-      ),
+          const Text(
+            "Projects",
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Times',
+              fontSize: 30,
+            ),
+          ),
+          const SizedBox(
+            width: 900,
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.add,
+              size: 30,
+              color: Colors.white,
+            ),
+            onPressed: () {},
+          ),
         ],
       ),
     );
