@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../auth.dart';
@@ -44,7 +45,7 @@ class __searchTextFieldState extends State<_searchTextField> {
               fontSize: 20,
             ),
           ),
-        ));;
+        ));
   }
 }
 
@@ -56,6 +57,7 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool typing = true;
@@ -94,17 +96,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   },
                 ),
-              Builder(builder: (context) {
-                return IconButton(
-                  icon: const Icon(Icons.person),
-                  onPressed: () {
-                    Scaffold.of(context).openEndDrawer(); // Open drawer if Profile Icon is clicked
-                  }
-                );
-              }),
+                Builder(builder: (context) {
+                  return IconButton(
+                      icon: const Icon(Icons.person),
+                      onPressed: () {
+                        Scaffold.of(context)
+                            .openEndDrawer(); // Open drawer if Profile Icon is clicked
+                      });
+                }),
               ]
             : [
-                _searchTextField(),
+                const _searchTextField(),
                 // Clear Icon
                 IconButton(
                   icon: const Icon(Icons.clear),
@@ -116,11 +118,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Builder(builder: (context) {
                   return IconButton(
-                    icon: const Icon(Icons.person),
-                    onPressed: () {
-                      Scaffold.of(context).openEndDrawer(); // Open drawer if Profile Icon is clicked
-                    }
-                  );
+                      icon: const Icon(Icons.person),
+                      onPressed: () {
+                        Scaffold.of(context)
+                            .openEndDrawer(); // Open drawer if Profile Icon is clicked
+                      });
                 }),
               ],
         backgroundColor: const Color.fromARGB(255, 14, 41, 60),
@@ -142,26 +144,37 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       )),
-      body: Row(
+      body: ListView(
         children: [
-          const Text(
-            "Projects",
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Times',
-              fontSize: 30,
-            ),
-          ),
-          const SizedBox(
-            width: 900,
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.add,
-              size: 30,
-              color: Colors.white,
-            ),
-            onPressed: () {},
+          Row(
+            children: [
+              const Expanded(
+                child: Text(
+                  "Projects",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Times',
+                    fontSize: 30,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const Expanded(
+                child: SizedBox(
+                  width: 900,
+                ),
+              ),
+              Expanded(
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.add,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ],
           ),
         ],
       ),
