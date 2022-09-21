@@ -8,7 +8,6 @@ import 'login_page.dart';
 
 class _searchTextField extends StatefulWidget {
   const _searchTextField({super.key});
-
   @override
   State<_searchTextField> createState() => __searchTextFieldState();
 }
@@ -62,18 +61,29 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool typing = true;
 
+  //Querying FireStore
+  CollectionReference projects =
+      FirebaseFirestore.instance.collection('Projects');
+  late Stream<QuerySnapshot> project_stream;
+
   @override
   void initState() {
     //if the user is not logged in and dev_mode is false, redirect to login page
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null && dev_mode == false) {
+      if (user == null) {
         print("user is not signed in");
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginPage()),
         );
       }
+      else{
+        print('signed in as ${user.displayName}');
+      }
     });
+    String user_id = FirebaseAuth.instance.currentUser!.uid;
+    // Querying FireStore
+    project_stream = projects.snapshots();
     super.initState();
   }
 
@@ -175,6 +185,31 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ],
+          ),
+          StreamBuilder<QuerySnapshot>(
+            stream: project_stream,
+            builder: (BuildContext context,
+                AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Text("Loading");
+              }
+
+              return ListView(
+                shrinkWrap: true,
+                children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                  Map<String, dynamic> data =
+                      document.data()! as Map<String, dynamic>;
+                  return ListTile(
+                    title: Text(data['project_title']),
+                    // subtitle: Text(data['description']),
+                  );
+                }).toList(),
+              );
+            },
           ),
         ],
       ),
