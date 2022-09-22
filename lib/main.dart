@@ -10,6 +10,14 @@ import 'pages/login_page.dart';
 
 const bool dev_mode = true;
 
+DateTime today = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+    DateTime.now().hour,
+    DateTime.now().minute,
+    DateTime.now().second);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

@@ -6,6 +6,7 @@ import '../auth.dart';
 import '../main.dart';
 import 'login_page.dart';
 
+/// this widget let's us search through projects
 class _searchTextField extends StatefulWidget {
   const _searchTextField({super.key});
   @override
@@ -48,6 +49,7 @@ class __searchTextFieldState extends State<_searchTextField> {
   }
 }
 
+/// This is the root widget of the home page .
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -61,11 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool typing = true;
 
-  //Querying FireStore
-  CollectionReference projects =
-      FirebaseFirestore.instance.collection('Projects');
-  late Stream<QuerySnapshot> project_stream;
-
   @override
   void initState() {
     //if the user is not logged in and dev_mode is false, redirect to login page
@@ -76,14 +73,10 @@ class _MyHomePageState extends State<MyHomePage> {
           context,
           MaterialPageRoute(builder: (context) => const LoginPage()),
         );
-      }
-      else{
+      } else {
         print('signed in as ${user.displayName}');
       }
     });
-    String user_id = FirebaseAuth.instance.currentUser!.uid;
-    // Querying FireStore
-    project_stream = projects.snapshots();
     super.initState();
   }
 
@@ -174,6 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 900,
                 ),
               ),
+              // Add Project button
               Expanded(
                 child: IconButton(
                   icon: const Icon(
@@ -181,38 +175,189 @@ class _MyHomePageState extends State<MyHomePage> {
                     size: 30,
                     color: Colors.white,
                   ),
-                  onPressed: () {},
+                  //show popup to add project
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          const AddProjectPopup(),
+                    );
+                  },
                 ),
               ),
             ],
           ),
-          StreamBuilder<QuerySnapshot>(
-            stream: project_stream,
-            builder: (BuildContext context,
-                AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return const Text('Something went wrong');
-              }
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text("Loading");
-              }
-
-              return ListView(
-                shrinkWrap: true,
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  Map<String, dynamic> data =
-                      document.data()! as Map<String, dynamic>;
-                  return ListTile(
-                    title: Text(data['project_title']),
-                    // subtitle: Text(data['description']),
-                  );
-                }).toList(),
-              );
-            },
-          ),
+          projectsView(),
         ],
       ),
+    );
+  }
+}
+
+/// This widget lets the user view all of their projects
+class projectsView extends StatefulWidget {
+  const projectsView({super.key});
+
+  @override
+  State<projectsView> createState() => _projectsViewState();
+}
+
+class _projectsViewState extends State<projectsView> {
+  //Querying FireStore
+  CollectionReference projects =
+      FirebaseFirestore.instance.collection('Projects');
+  late Stream<QuerySnapshot> project_stream;
+
+  @override
+  void initState() {
+    super.initState();
+    String user_id = FirebaseAuth.instance.currentUser!.uid;
+    // Querying FireStore
+    project_stream = projects
+        .orderBy("last_updated", descending: true)
+        .where("userID", isEqualTo: user_id)
+        .snapshots();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: project_stream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          String error = snapshot.error.toString();
+          print(error);
+          return Text(error,
+              style: const TextStyle(color: Colors.white));
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text("Loading");
+        }
+
+        return ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: snapshot.data!.size,
+            itemBuilder: (context, index) {
+              var project_id = snapshot.data!.docs[index].id;
+              var project_title =
+                  snapshot.data!.docs[index].get("project_title");
+              return Card(
+                color: Colors.deepPurple.shade100,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    side: BorderSide(
+                        color: Colors.deepPurple.shade200, width: 1)),
+                margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.only(
+                                left: 15, top: 6, right: 15, bottom: 3),
+                            child: Text(
+                                snapshot.data?.docs[index]['project_title'],
+                                style: TextStyle(
+                                    color: Colors.deepPurple.shade900,
+                                    fontSize: 20,
+                                    wordSpacing: 3))),
+                        Padding(
+                            padding:
+                                EdgeInsets.only(left: 15, right: 15, bottom: 6),
+                            child: Text(project_id,
+                                style:
+                                    TextStyle(fontSize: 12, wordSpacing: 5))),
+                      ],
+                    ),
+                  ),
+                ]),
+              );
+            });
+      },
+    );
+  }
+}
+
+///add projects popup
+class AddProjectPopup extends StatefulWidget {
+  const AddProjectPopup({super.key});
+
+  @override
+  State<AddProjectPopup> createState() => _AddProjectPopupState();
+}
+
+class _AddProjectPopupState extends State<AddProjectPopup> {
+  final _formKey = GlobalKey<FormState>();
+  final _projectTitleController = TextEditingController();
+  final _projectDescriptionController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Add Project'),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: _projectTitleController,
+              decoration: const InputDecoration(
+                hintText: 'Project Title',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a project title';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _projectDescriptionController,
+              decoration: const InputDecoration(
+                hintText: 'Project Description',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a project description';
+                }
+                return null;
+              },
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            String creation_date = DateTime.now().toString();
+
+            if (_formKey.currentState!.validate()) {
+              //add project to firestore
+              FirebaseFirestore.instance.collection('Projects').add({
+                'project_title': _projectTitleController.text,
+                'project_description': _projectDescriptionController.text,
+                'userID': FirebaseAuth.instance.currentUser!.uid,
+                'creation_date': today,
+                'last_updated': today,
+              });
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Add'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Cancel'),
+        ),
+      ],
     );
   }
 }
