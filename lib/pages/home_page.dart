@@ -227,12 +227,11 @@ class _projectsViewState extends State<projectsView> {
         if (snapshot.hasError) {
           String error = snapshot.error.toString();
           print(error);
-          return Text(error,
-              style: const TextStyle(color: Colors.white));
+          return Text(error, style: const TextStyle(color: Colors.white));
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading");
+          return const Text("Loading", style: TextStyle(color: Colors.white));
         }
 
         return ListView.builder(
@@ -240,9 +239,8 @@ class _projectsViewState extends State<projectsView> {
             shrinkWrap: true,
             itemCount: snapshot.data!.size,
             itemBuilder: (context, index) {
-              var project_id = snapshot.data!.docs[index].id;
-              var project_title =
-                  snapshot.data!.docs[index].get("project_title");
+              QueryDocumentSnapshot<Object?> project =
+                  snapshot.data!.docs[index];
               return Card(
                 color: Colors.deepPurple.shade100,
                 shape: RoundedRectangleBorder(
@@ -258,10 +256,9 @@ class _projectsViewState extends State<projectsView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 15, top: 6, right: 15, bottom: 3),
-                            child: Text(
-                                snapshot.data?.docs[index]['project_title'],
+                            child: Text(project['project_title'],
                                 style: TextStyle(
                                     color: Colors.deepPurple.shade900,
                                     fontSize: 20,
@@ -269,11 +266,26 @@ class _projectsViewState extends State<projectsView> {
                         Padding(
                             padding:
                                 EdgeInsets.only(left: 15, right: 15, bottom: 6),
-                            child: Text(project_id,
+                            child: Text(project.id,
                                 style:
                                     TextStyle(fontSize: 12, wordSpacing: 5))),
                       ],
                     ),
+                  ),
+                  // delete project button
+                  IconButton(
+                    icon: const Icon(
+                      Icons.delete_sweep_rounded,
+                      size: 30,
+                      color: Colors.red,
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            DeleteProjectPopup(projectID:project.id),
+                      );
+                    },
                   ),
                 ]),
               );
@@ -350,6 +362,43 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
             }
           },
           child: const Text('Add'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Cancel'),
+        ),
+      ],
+    );
+  }
+}
+
+/// This widget lets the user delete a project given a project ID
+class DeleteProjectPopup extends StatefulWidget {
+  String projectID;
+  DeleteProjectPopup({super.key, required this.projectID});
+
+  @override
+  State<DeleteProjectPopup> createState() => _DeleteProjectPopupState();
+}
+
+class _DeleteProjectPopupState extends State<DeleteProjectPopup> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Delete Project'),
+      content: const Text('Are you sure you want to delete this project?'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            FirebaseFirestore.instance
+                .collection('Projects')
+                .doc(widget.projectID)
+                .delete();
+            Navigator.pop(context);
+          },
+          child: const Text('Delete'),
         ),
         TextButton(
           onPressed: () {
