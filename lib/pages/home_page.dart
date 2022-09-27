@@ -6,23 +6,47 @@ import '../auth.dart';
 import '../main.dart';
 import 'login_page.dart';
 
+String searchT = "";
+var numCalled = 0;
+
 /// this widget let's us search through projects
 class _searchTextField extends StatefulWidget {
-  const _searchTextField({super.key});
+  final Function() notifyParent;
+  const _searchTextField({super.key, required this.notifyParent});
+
   @override
   State<_searchTextField> createState() => __searchTextFieldState();
 }
 
 class __searchTextFieldState extends State<_searchTextField> {
+  final TextEditingController _projectSearchBar = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _projectSearchBar.addListener(() {
+      setState(() {
+        searchT = _projectSearchBar.text;
+        widget.notifyParent();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    searchT = _projectSearchBar.text;
+    return SizedBox(
         width: 300,
         child: TextField(
+          onChanged: (String value) async {
+            //print(value);
+            projectsView();
+            numCalled += 1;
+          },
+          controller: _projectSearchBar,
           autofocus: true, //Display the keyboard when TextField is displayed
           cursorColor: Colors.white,
           textAlign: TextAlign.left,
-
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -52,7 +76,6 @@ class __searchTextFieldState extends State<_searchTextField> {
 /// This is the root widget of the home page .
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -62,6 +85,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool typing = true;
+
+  refresh() {
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -109,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
               ]
             : [
-                const _searchTextField(),
+                _searchTextField(notifyParent: refresh),
                 // Clear Icon
                 IconButton(
                   icon: const Icon(Icons.clear),
@@ -196,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 /// This widget lets the user view all of their projects
 class projectsView extends StatefulWidget {
-  const projectsView({super.key});
+  projectsView({super.key});
 
   @override
   State<projectsView> createState() => _projectsViewState();
@@ -241,6 +268,11 @@ class _projectsViewState extends State<projectsView> {
             itemBuilder: (context, index) {
               QueryDocumentSnapshot<Object?> project =
                   snapshot.data!.docs[index];
+
+              if (!(project['project_title'].toLowerCase()).contains(searchT.toLowerCase())){
+                return Card();
+              }
+
               return Card(
                 color: Colors.deepPurple.shade100,
                 shape: RoundedRectangleBorder(
@@ -283,7 +315,7 @@ class _projectsViewState extends State<projectsView> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) =>
-                            DeleteProjectPopup(projectID:project.id),
+                            DeleteProjectPopup(projectID: project.id),
                       );
                     },
                   ),
