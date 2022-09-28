@@ -6,6 +6,21 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'pages/home_page.dart';
 import 'pages/login_page.dart';
 
+void check_if_signed_in(BuildContext context){
+   //if the user is not logged in and dev_mode is false, redirect to login page
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print("user is not signed in");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
+      } else {
+        print('signed in as ${user.displayName}');
+      }
+    });
+}
+
 // this file handle everything about authentication except the login page
 // E.g. sign in, sign up, sign out (including styling)
 

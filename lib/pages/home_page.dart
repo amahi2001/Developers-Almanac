@@ -93,17 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     //if the user is not logged in and dev_mode is false, redirect to login page
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        print("user is not signed in");
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-        );
-      } else {
-        print('signed in as ${user.displayName}');
-      }
-    });
+    check_if_signed_in(context);
     super.initState();
   }
 
@@ -238,7 +228,10 @@ class _projectsViewState extends State<projectsView> {
   @override
   void initState() {
     super.initState();
-    String user_id = FirebaseAuth.instance.currentUser!.uid;
+    String user_id = "None";
+    check_if_signed_in(context);
+    user_id = FirebaseAuth.instance.currentUser!.uid;
+    print ("User ID: " + user_id);
     // Querying FireStore
     project_stream = projects
         .orderBy("last_updated", descending: true)
@@ -269,7 +262,8 @@ class _projectsViewState extends State<projectsView> {
               QueryDocumentSnapshot<Object?> project =
                   snapshot.data!.docs[index];
 
-              if (!(project['project_title'].toLowerCase()).contains(searchT.toLowerCase())){
+              if (!(project['project_title'].toLowerCase())
+                  .contains(searchT.toLowerCase())) {
                 return Card();
               }
 
