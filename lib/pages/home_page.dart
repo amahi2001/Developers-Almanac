@@ -159,17 +159,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     fontFamily: 'Times',
                     fontSize: 30,
                   ),
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                 ),
               ),
-              const Expanded(
-                child: SizedBox(
-                  width: 900,
-                ),
+              Divider(
+                height: 70,
+                thickness: 5,
               ),
-              // Add Project button
               Expanded(
                 child: IconButton(
+                  alignment: Alignment.centerRight,
                   icon: const Icon(
                     Icons.add,
                     size: 30,
@@ -186,6 +185,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ],
+          ),
+          Divider(
+            height: 30,
+            thickness: 3,
+            color: Colors.white,
+          ),
+          Divider(
+            height: 30,
+            thickness: 0,
+            color: Color.fromARGB(255, 14, 41, 60),
           ),
           projectsView(),
         ],
@@ -242,11 +251,11 @@ class _projectsViewState extends State<projectsView> {
               QueryDocumentSnapshot<Object?> project =
                   snapshot.data!.docs[index];
               return Card(
-                color: Colors.deepPurple.shade100,
+                color: Color.fromARGB(255, 22, 66, 97),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                     side: BorderSide(
-                        color: Colors.deepPurple.shade200, width: 1)),
+                        color: Color.fromARGB(255, 146, 153, 192), width: 1)),
                 margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -260,15 +269,17 @@ class _projectsViewState extends State<projectsView> {
                                 left: 15, top: 6, right: 15, bottom: 3),
                             child: Text(project['project_title'],
                                 style: TextStyle(
-                                    color: Colors.deepPurple.shade900,
+                                    color: Color.fromARGB(255, 241, 240, 244),
                                     fontSize: 20,
                                     wordSpacing: 3))),
                         Padding(
                             padding:
                                 EdgeInsets.only(left: 15, right: 15, bottom: 6),
                             child: Text(project.id,
-                                style:
-                                    TextStyle(fontSize: 12, wordSpacing: 5))),
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 230, 229, 232),
+                                    fontSize: 12,
+                                    wordSpacing: 5))),
                       ],
                     ),
                   ),
@@ -283,7 +294,7 @@ class _projectsViewState extends State<projectsView> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) =>
-                            DeleteProjectPopup(projectID:project.id),
+                            DeleteProjectPopup(projectID: project.id),
                       );
                     },
                   ),
@@ -307,6 +318,7 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
   final _formKey = GlobalKey<FormState>();
   final _projectTitleController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
+  final _projectMemberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -341,6 +353,18 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                 return null;
               },
             ),
+            TextFormField(
+              controller: _projectMemberController,
+              decoration: const InputDecoration(
+                hintText: 'Project Member(s)',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter the project member(s)';
+                }
+                return null;
+              },
+            )
           ],
         ),
       ),
@@ -354,6 +378,7 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
               FirebaseFirestore.instance.collection('Projects').add({
                 'project_title': _projectTitleController.text,
                 'project_description': _projectDescriptionController.text,
+                'project_member': _projectMemberController.text,
                 'userID': FirebaseAuth.instance.currentUser!.uid,
                 'creation_date': today,
                 'last_updated': today,
