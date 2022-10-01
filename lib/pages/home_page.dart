@@ -48,13 +48,13 @@ class __searchTextFieldState extends State<_searchTextField> {
           autofocus: true, //Display the keyboard when TextField is displayed
           cursorColor: Colors.white,
           textAlign: TextAlign.left,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
           ),
           textInputAction: TextInputAction
               .search, //Specify the action button on the keyboard
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             //Style of TextField
             enabledBorder: UnderlineInputBorder(
                 //Default TextField border
@@ -249,7 +249,7 @@ class _projectsViewState extends State<projectsView> {
         }
 
         return ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: snapshot.data!.size,
             itemBuilder: (context, index) {
@@ -258,16 +258,16 @@ class _projectsViewState extends State<projectsView> {
 
               if (!(project['project_title'].toLowerCase())
                   .contains(searchT.toLowerCase())) {
-                return Card();
+                return const Card();
               }
 
               return Card(
-                color: Colors.deepPurple.shade100,
+                color: const Color.fromARGB(255, 22, 66, 97),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
-                    side: BorderSide(
-                        color: Colors.deepPurple.shade200, width: 1)),
-                margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    side: const BorderSide(
+                        color: Color.fromARGB(255, 146, 153, 192), width: 1)),
+                margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Flexible(
@@ -279,16 +279,18 @@ class _projectsViewState extends State<projectsView> {
                             padding: const EdgeInsets.only(
                                 left: 15, top: 6, right: 15, bottom: 3),
                             child: Text(project['project_title'],
-                                style: TextStyle(
-                                    color: Colors.deepPurple.shade900,
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 241, 240, 244),
                                     fontSize: 20,
                                     wordSpacing: 3))),
                         Padding(
                             padding:
-                                EdgeInsets.only(left: 15, right: 15, bottom: 6),
+                                const EdgeInsets.only(left: 15, right: 15, bottom: 6),
                             child: Text(project.id,
-                                style:
-                                    TextStyle(fontSize: 12, wordSpacing: 5))),
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 230, 229, 232),
+                                    fontSize: 12,
+                                    wordSpacing: 5))),
                       ],
                     ),
                   ),
