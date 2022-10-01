@@ -182,23 +182,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 70,
                 thickness: 5,
               ),
-              // Add Project button
-              Expanded(
-                child: Container(
-                  alignment: Alignment.topRight,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            const AddProjectPopup(),
-                      );
-                    },
-                    backgroundColor: Color.fromARGB(123, 223, 211, 211),
-                    child: const Icon(Icons.add),
-                  ),
-                ),
-              ),
             ],
           ),
           Divider(
@@ -213,6 +196,17 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           projectsView(),
         ],
+      ),
+      // Add Project button
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Color.fromARGB(123, 223, 211, 211),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => const AddProjectPopup(),
+          );
+        },
       ),
     );
   }
