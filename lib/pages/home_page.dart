@@ -175,33 +175,41 @@ class _MyHomePageState extends State<MyHomePage> {
                     fontFamily: 'Times',
                     fontSize: 30,
                   ),
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                 ),
               ),
-              const Expanded(
-                child: SizedBox(
-                  width: 900,
-                ),
+              Divider(
+                height: 70,
+                thickness: 5,
               ),
               // Add Project button
               Expanded(
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.add,
-                    size: 30,
-                    color: Colors.white,
+                child: Container(
+                  alignment: Alignment.topRight,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            const AddProjectPopup(),
+                      );
+                    },
+                    backgroundColor: Color.fromARGB(123, 223, 211, 211),
+                    child: const Icon(Icons.add),
                   ),
-                  //show popup to add project
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          const AddProjectPopup(),
-                    );
-                  },
                 ),
               ),
             ],
+          ),
+          Divider(
+            height: 30,
+            thickness: 3,
+            color: Colors.white,
+          ),
+          Divider(
+            height: 30,
+            thickness: 0,
+            color: Color.fromARGB(255, 14, 41, 60),
           ),
           projectsView(),
         ],
@@ -284,8 +292,8 @@ class _projectsViewState extends State<projectsView> {
                                     fontSize: 20,
                                     wordSpacing: 3))),
                         Padding(
-                            padding:
-                                const EdgeInsets.only(left: 15, right: 15, bottom: 6),
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, bottom: 6),
                             child: Text(project.id,
                                 style: const TextStyle(
                                     color: Color.fromARGB(255, 230, 229, 232),
