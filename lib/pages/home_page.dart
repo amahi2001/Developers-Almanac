@@ -92,8 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    //if the user is not logged in and dev_mode is false, redirect to login page
-    check_if_signed_in(context);
     super.initState();
   }
 
@@ -164,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       )),
-      body: Column(
+      body: ListView(
         children: [
           Row(
             children: [
@@ -228,97 +226,90 @@ class _projectsViewState extends State<projectsView> {
   @override
   void initState() {
     super.initState();
-    String user_id = "None";
-    check_if_signed_in(context);
-    user_id = FirebaseAuth.instance.currentUser!.uid;
-    print ("User ID: " + user_id);
-    // Querying FireStore
     project_stream = projects
-        .orderBy("last_updated", descending: true)
         .where("userID", isEqualTo: user_id)
+        .orderBy("last_updated", descending: true)
         .snapshots();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: StreamBuilder<QuerySnapshot>(
-        stream: project_stream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            String error = snapshot.error.toString();
-            print(error);
-            return Text(error, style: const TextStyle(color: Colors.white));
-          }
+    return StreamBuilder<QuerySnapshot>(
+      stream: project_stream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          String error = snapshot.error.toString();
+          print(error);
+          return Text(error, style: const TextStyle(color: Colors.white));
+        }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading", style: TextStyle(color: Colors.white));
-          }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text("Loading", style: TextStyle(color: Colors.white));
+        }
 
-          return ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: snapshot.data!.size,
-              itemBuilder: (context, index) {
-                QueryDocumentSnapshot<Object?> project =
-                    snapshot.data!.docs[index];
+        return ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: snapshot.data!.size,
+            itemBuilder: (context, index) {
+              QueryDocumentSnapshot<Object?> project =
+                  snapshot.data!.docs[index];
 
-                if (!(project['project_title'].toLowerCase())
-                    .contains(searchT.toLowerCase())) {
-                  return Card();
-                }
+              if (!(project['project_title'].toLowerCase())
+                  .contains(searchT.toLowerCase())) {
+                return Card();
+              }
 
-                return Card(
-                  color: Colors.deepPurple.shade100,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      side: BorderSide(
-                          color: Colors.deepPurple.shade200, width: 1)),
-                  margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                  child:
-                      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Flexible(
-                      fit: FlexFit.tight,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 15, top: 6, right: 15, bottom: 3),
-                              child: Text(project['project_title'],
-                                  style: TextStyle(
-                                      color: Colors.deepPurple.shade900,
-                                      fontSize: 20,
-                                      wordSpacing: 3))),
-                          Padding(
-                              padding:
-                                  EdgeInsets.only(left: 15, right: 15, bottom: 6),
-                              child: Text(project.id,
-                                  style:
-                                      TextStyle(fontSize: 12, wordSpacing: 5))),
-                        ],
-                      ),
+              return Card(
+                color: Colors.deepPurple.shade100,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    side: BorderSide(
+                        color: Colors.deepPurple.shade200, width: 1)),
+                margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15, top: 6, right: 15, bottom: 3),
+                            child: Text(project['project_title'],
+                                style: TextStyle(
+                                    color: Colors.deepPurple.shade900,
+                                    fontSize: 20,
+                                    wordSpacing: 3))),
+                        Padding(
+                            padding:
+                                EdgeInsets.only(left: 15, right: 15, bottom: 6),
+                            child: Text(project.id,
+                                style:
+                                    TextStyle(fontSize: 12, wordSpacing: 5))),
+                      ],
                     ),
-                    // delete project button
-                    IconButton(
-                      icon: const Icon(
-                        Icons.delete_sweep_rounded,
-                        size: 30,
-                        color: Colors.red,
-                      ),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              DeleteProjectPopup(projectID: project.id),
-                        );
-                      },
+                  ),
+                  // delete project button
+                  IconButton(
+                    icon: const Icon(
+                      Icons.delete_sweep_rounded,
+                      size: 30,
+                      color: Colors.red,
                     ),
-                  ]),
-                );
-              });
-        },
-      ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            DeleteProjectPopup(projectID: project.id),
+                      );
+                    },
+                  ),
+                ]),
+              );
+            });
+      },
     );
   }
 }

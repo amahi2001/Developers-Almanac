@@ -8,7 +8,6 @@ import 'auth.dart';
 import 'pages/home_page.dart';
 import 'pages/login_page.dart';
 
-const bool dev_mode = true;
 
 DateTime today = DateTime(
     DateTime.now().year,
@@ -35,9 +34,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: new ThemeData(
           scaffoldBackgroundColor: Color.fromARGB(255, 14, 41, 60)),
-      home: dev_mode
-          ? const MyHomePage(title: "Developer's Almanac")
-          : const LoginPage(),
+      home: const LoginPage(),
     );
   }
 }

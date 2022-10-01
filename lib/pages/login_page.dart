@@ -1,4 +1,5 @@
 //login page
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../auth.dart';
@@ -11,6 +12,23 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    // if the user is signed in go to home page
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        print('signed in as ${user.displayName}');
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    const MyHomePage(title: 'Developer\'s Almanac')));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
