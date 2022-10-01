@@ -241,82 +241,84 @@ class _projectsViewState extends State<projectsView> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: project_stream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          String error = snapshot.error.toString();
-          print(error);
-          return Text(error, style: const TextStyle(color: Colors.white));
-        }
+    return Container(
+      child: StreamBuilder<QuerySnapshot>(
+        stream: project_stream,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            String error = snapshot.error.toString();
+            print(error);
+            return Text(error, style: const TextStyle(color: Colors.white));
+          }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading", style: TextStyle(color: Colors.white));
-        }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text("Loading", style: TextStyle(color: Colors.white));
+          }
 
-        return ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: snapshot.data!.size,
-            itemBuilder: (context, index) {
-              QueryDocumentSnapshot<Object?> project =
-                  snapshot.data!.docs[index];
+          return ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: snapshot.data!.size,
+              itemBuilder: (context, index) {
+                QueryDocumentSnapshot<Object?> project =
+                    snapshot.data!.docs[index];
 
-              if (!(project['project_title'].toLowerCase())
-                  .contains(searchT.toLowerCase())) {
-                return Card();
-              }
+                if (!(project['project_title'].toLowerCase())
+                    .contains(searchT.toLowerCase())) {
+                  return Card();
+                }
 
-              return Card(
-                color: Colors.deepPurple.shade100,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    side: BorderSide(
-                        color: Colors.deepPurple.shade200, width: 1)),
-                margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, top: 6, right: 15, bottom: 3),
-                            child: Text(project['project_title'],
-                                style: TextStyle(
-                                    color: Colors.deepPurple.shade900,
-                                    fontSize: 20,
-                                    wordSpacing: 3))),
-                        Padding(
-                            padding:
-                                EdgeInsets.only(left: 15, right: 15, bottom: 6),
-                            child: Text(project.id,
-                                style:
-                                    TextStyle(fontSize: 12, wordSpacing: 5))),
-                      ],
+                return Card(
+                  color: Colors.deepPurple.shade100,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      side: BorderSide(
+                          color: Colors.deepPurple.shade200, width: 1)),
+                  margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  child:
+                      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Flexible(
+                      fit: FlexFit.tight,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, top: 6, right: 15, bottom: 3),
+                              child: Text(project['project_title'],
+                                  style: TextStyle(
+                                      color: Colors.deepPurple.shade900,
+                                      fontSize: 20,
+                                      wordSpacing: 3))),
+                          Padding(
+                              padding:
+                                  EdgeInsets.only(left: 15, right: 15, bottom: 6),
+                              child: Text(project.id,
+                                  style:
+                                      TextStyle(fontSize: 12, wordSpacing: 5))),
+                        ],
+                      ),
                     ),
-                  ),
-                  // delete project button
-                  IconButton(
-                    icon: const Icon(
-                      Icons.delete_sweep_rounded,
-                      size: 30,
-                      color: Colors.red,
+                    // delete project button
+                    IconButton(
+                      icon: const Icon(
+                        Icons.delete_sweep_rounded,
+                        size: 30,
+                        color: Colors.red,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              DeleteProjectPopup(projectID: project.id),
+                        );
+                      },
                     ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            DeleteProjectPopup(projectID: project.id),
-                      );
-                    },
-                  ),
-                ]),
-              );
-            });
-      },
+                  ]),
+                );
+              });
+        },
+      ),
     );
   }
 }
