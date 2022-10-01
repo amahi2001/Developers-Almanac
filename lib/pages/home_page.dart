@@ -164,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       )),
-      body: ListView(
+      body: Column(
         children: [
           Row(
             children: [
