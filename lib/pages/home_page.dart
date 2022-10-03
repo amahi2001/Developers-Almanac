@@ -293,14 +293,6 @@ class _projectsViewState extends State<projectsView> {
                         Padding(
                             padding: const EdgeInsets.only(
                                 left: 15, right: 15, bottom: 6),
-                            child: Text(project['project_member'],
-                                style: const TextStyle(
-                                    color: Color.fromARGB(255, 230, 229, 232),
-                                    fontSize: 12,
-                                    wordSpacing: 5))),
-                        Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, right: 15, bottom: 6),
                             child: Text(project['project_description'],
                                 style: const TextStyle(
                                     color: Color.fromARGB(255, 230, 229, 232),
