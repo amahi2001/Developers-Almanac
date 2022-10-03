@@ -283,10 +283,24 @@ class _projectsViewState extends State<projectsView> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) =>
-                            DeleteProjectPopup(projectID:project.id),
+                            DeleteProjectPopup(projectID: project.id),
                       );
                     },
                   ),
+                  // edit project button
+                  IconButton(
+                      icon: const Icon(
+                        Icons.edit,
+                        size: 30,
+                        color: Colors.red,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    EditProjectPage(projectID: project.id)));
+                      }),
                 ]),
               );
             });
@@ -408,5 +422,22 @@ class _DeleteProjectPopupState extends State<DeleteProjectPopup> {
         ),
       ],
     );
+  }
+}
+
+// this widlet lets users edit a project given id
+// not completed
+class EditProjectPage extends StatefulWidget {
+  String projectID;
+  EditProjectPage({super.key, required this.projectID});
+
+  @override
+  State<EditProjectPage> createState() => _EditProjectPageState();
+}
+
+class _EditProjectPageState extends State<EditProjectPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
   }
 }
