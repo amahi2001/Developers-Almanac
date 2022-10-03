@@ -115,9 +115,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   },
                 ),
+                // Clear Icon
                 Builder(builder: (context) {
                   return IconButton(
-                      icon: const Icon(Icons.person),
+                      icon: const Icon(Icons.logout),
                       onPressed: () {
                         Scaffold.of(context)
                             .openEndDrawer(); // Open drawer if Profile Icon is clicked
