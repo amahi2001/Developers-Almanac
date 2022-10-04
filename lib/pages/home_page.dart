@@ -332,6 +332,8 @@ class _ProjectsViewState extends State<ProjectsView> {
                           MaterialPageRoute(
                               builder: (context) => Edit_project_page(
                                     project_id: project.id,
+                                    project_description: project['project_description'],
+                                    project_title: project['project_title'],
                                     user_id: user_id,
                                   )));
                     },
