@@ -6,6 +6,7 @@ import '../auth.dart';
 import '../main.dart';
 import 'home_page/widgets/home_page_widgets.dart';
 import 'login_page.dart';
+import 'edit_projects/edit_project.dart';
 
 String searchT = "";
 var numCalled = 0;
@@ -41,7 +42,7 @@ class __searchTextFieldState extends State<_searchTextField> {
         child: TextField(
           onChanged: (String value) async {
             //print(value);
-            projectsView();
+            ProjectsView();
             numCalled += 1;
           },
           controller: _projectSearchBar,
@@ -99,10 +100,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       // Code AppBar
       key: _scaffoldKey,
       appBar: AppBar(
-        leading: Image.asset("images/logo.png"),
+        // leading: Image.asset("images/logo.png"),
         title: const Text("Developer's Almanac"),
         actions: !typing
             ? <Widget>[
@@ -172,8 +174,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ListView(
         children: [
           Row(
-            children: [
-              const Expanded(
+            children: const [
+              Expanded(
                 child: Text(
                   "Projects",
                   style: TextStyle(
@@ -190,17 +192,17 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
-          Divider(
+          const Divider(
             height: 30,
             thickness: 3,
             color: Colors.white,
           ),
-          Divider(
+          const Divider(
             height: 30,
             thickness: 0,
             color: Color.fromARGB(255, 14, 41, 60),
           ),
-          projectsView(),
+          ProjectsView(),
         ],
       ),
       // Add Project button
@@ -219,14 +221,14 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 /// This widget lets the user view all of their projects
-class projectsView extends StatefulWidget {
-  projectsView({super.key});
+class ProjectsView extends StatefulWidget {
+  ProjectsView({super.key});
 
   @override
-  State<projectsView> createState() => _projectsViewState();
+  State<ProjectsView> createState() => _ProjectsViewState();
 }
 
-class _projectsViewState extends State<projectsView> {
+class _ProjectsViewState extends State<ProjectsView> {
   //Querying FireStore
   CollectionReference projects =
       FirebaseFirestore.instance.collection('Projects');
@@ -315,6 +317,23 @@ class _projectsViewState extends State<projectsView> {
                         builder: (BuildContext context) =>
                             DeleteProjectPopup(projectID: project.id),
                       );
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.edit_note_outlined,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      //go to edit project page
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Edit_project_page(
+                                    project_id: project.id,
+                                    user_id: user_id,
+                                  )));
                     },
                   ),
                 ]),

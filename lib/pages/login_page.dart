@@ -38,19 +38,19 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
           child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Image.asset("images/logo.png"),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Text(
+          const Text(
             "DEVELOPER'S ALMANAC",
             style: TextStyle(
                 color: Colors.white, fontFamily: 'Times', fontSize: 50),
           ),
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           ElevatedButton.icon(

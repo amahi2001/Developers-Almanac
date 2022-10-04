@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Developer's Almanac",
       debugShowCheckedModeBanner: false,
-      theme: new ThemeData(
-          scaffoldBackgroundColor: Color.fromARGB(255, 14, 41, 60)),
+      theme: ThemeData(
+          scaffoldBackgroundColor: const Color.fromARGB(255, 14, 41, 60)),
       home: const LoginPage(),
     );
   }
