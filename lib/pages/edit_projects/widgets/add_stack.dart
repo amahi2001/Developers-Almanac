@@ -8,8 +8,6 @@ class AddStackPopUp extends StatefulWidget {
 }
 
 class _AddStackPopUpState extends State<AddStackPopUp> {
-  
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

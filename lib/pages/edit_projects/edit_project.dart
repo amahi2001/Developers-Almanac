@@ -4,14 +4,9 @@ import 'package:flutter/material.dart';
 import 'widgets/add_stack.dart';
 
 class Edit_project_page extends StatefulWidget {
-  // String project_id;
-  // String? user_id;
-  // String project_title;
-  // String project_description;
 
   DocumentReference<Object?> query_doc;
 
-  // Edit_project_page({super.key, required this.project_id, required this.project_description, required this.project_title, required this.user_id});
   Edit_project_page({super.key, required this.query_doc});
 
   @override
@@ -26,7 +21,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
 
   late Future<QuerySnapshot<Map<String, dynamic>>> stack_snap;
   late Future<bool>isStackEmpty;
-
   @override
   void initState() {
     super.initState();

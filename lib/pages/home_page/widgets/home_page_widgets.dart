@@ -120,12 +120,14 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                     },
                   )
                   .then(((value) =>
+                      //todo fix up this form
                       projects.doc(value.id).collection("Stack").add({
                         'stack_type': _selectedStackType,
                         'stack_title': _projectTitleController.text,
                       })))
                   .catchError(
                       (error) => print("Failed to add project: $error"));
+                      //todo should have a error popup here
 
               Navigator.pop(context);
             }
