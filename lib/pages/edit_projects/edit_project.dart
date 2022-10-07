@@ -1,23 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-
 class Edit_project_page extends StatefulWidget {
-  String project_id;
-  String? user_id;
-  String project_title;
-  String project_description;
+  // String project_id;
+  // String? user_id;
+  // String project_title;
+  // String project_description;
 
-  Edit_project_page({super.key, required this.project_id, required this.project_description, required this.project_title, required this.user_id});
+  DocumentReference<Object?> query_doc;
+
+  // Edit_project_page({super.key, required this.project_id, required this.project_description, required this.project_title, required this.user_id});
+  Edit_project_page({super.key, required this.query_doc});
 
   @override
   State<Edit_project_page> createState() => _Edit_project_pageState();
 }
 
 class _Edit_project_pageState extends State<Edit_project_page> {
+  Future<QuerySnapshot<Map<String, dynamic>>> Stack() async {
+    final StackSnap = await widget.query_doc.collection('Stack').get();
+    return StackSnap;
+  }
+
+  late Future<QuerySnapshot<Map<String, dynamic>>> stack_snap;
+  late Future<bool>isStackEmpty;
 
   @override
   void initState() {
     super.initState();
+    stack_snap = Stack();
+    isStackEmpty = stack_snap.then((value) => value.docs.isEmpty);
   }
 
   @override
@@ -29,39 +41,15 @@ class _Edit_project_pageState extends State<Edit_project_page> {
         backgroundColor: const Color.fromARGB(255, 14, 41, 60),
         centerTitle: true,
       ),
-      body: Column(
+      body: Container(
+          child: Row(
         children: [
-          Text("Project ID: ${widget.project_id}",
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Times',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold)),
-          
-          Text("User ID: ${widget.user_id}",
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Times',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold)),
-          Text(
-            "Project Title: ${widget.project_title}",
-            style: const TextStyle(
-                color: Colors.white,
-                fontFamily: 'Times',
-                fontSize: 20,
-                fontWeight: FontWeight.bold),
-          ),
-          Text(
-            "Project Description: ${widget.project_description}",
-            style: const TextStyle(
-                color: Colors.white,
-                fontFamily: 'Times',
-                fontSize: 20,
-                fontWeight: FontWeight.bold),
-          ),
+          Column(children: [
+            FloatingActionButton(onPressed: () {}),
+            Text(widget.query_doc.id),
+          ])
         ],
-      ),
+      )),
     );
   }
 }

@@ -100,7 +100,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       // Code AppBar
       key: _scaffoldKey,
       appBar: AppBar(
@@ -236,6 +235,16 @@ class _ProjectsViewState extends State<ProjectsView> {
 
   @override
   void initState() {
+    void deleteAll() {
+      projects.get().then((querySnapshot) {
+        querySnapshot.docs.forEach((result) {
+          result.reference.delete();
+        });
+      });
+    }
+
+    // deleteAll();
+
     super.initState();
     project_stream = projects
         .where("userID", isEqualTo: user_id)
@@ -326,15 +335,15 @@ class _ProjectsViewState extends State<ProjectsView> {
                       color: Colors.white,
                     ),
                     onPressed: () {
+                      //
+                      DocumentReference<Object?> project_doc =
+                          projects.doc(project.id);
                       //go to edit project page
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Edit_project_page(
-                                    project_id: project.id,
-                                    project_description: project['project_description'],
-                                    project_title: project['project_title'],
-                                    user_id: user_id,
+                                    query_doc: project_doc,
                                   )));
                     },
                   ),
