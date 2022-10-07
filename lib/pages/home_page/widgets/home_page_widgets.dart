@@ -16,6 +16,8 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
   final _formKey = GlobalKey<FormState>();
   final _projectTitleController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
+  List<String> StackType = ["Frontend", "Backend", "Database", "Other"];
+  late String _selectedStackType = StackType.first;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,51 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                 return null;
               },
             ),
+            Card(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: DropdownButton(
+                      value: _selectedStackType,
+                      // icon: const Icon(Icons.arrow_downward),
+                      // elevation: 16,
+                      // style: const TextStyle(color: Colors.deepPurple),
+                      // underline: Container(
+                      //   height: 2,
+                      //   color: Colors.deepPurpleAccent,
+                      // ),
+                      onChanged: (String? value) {
+                        // This is called when the user selects an item.
+                        setState(() {
+                          _selectedStackType = value!;
+                        });
+                      },
+                      items: StackType.map(
+                          (String value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value),
+
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  Expanded(
+                      child: TextFormField(
+                    controller: _projectDescriptionController,
+                    decoration: const InputDecoration(
+                      hintText: 'Project Description',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a project description';
+                      }
+                      return null;
+                    },
+                  ))
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -59,14 +106,27 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
             String creation_date = DateTime.now().toString();
 
             if (_formKey.currentState!.validate()) {
+              CollectionReference projects =
+                  FirebaseFirestore.instance.collection('Projects');
               //add project to firestore
-              FirebaseFirestore.instance.collection('Projects').add({
-                'project_title': _projectTitleController.text,
-                'project_description': _projectDescriptionController.text,
-                'userID': FirebaseAuth.instance.currentUser!.uid,
-                'creation_date': today,
-                'last_updated': today,
-              });
+              projects
+                  .add(
+                    {
+                      'project_title': _projectTitleController.text,
+                      'project_description': _projectDescriptionController.text,
+                      'userID': FirebaseAuth.instance.currentUser!.uid,
+                      'creation_date': today,
+                      'last_updated': today,
+                    },
+                  )
+                  .then(((value) =>
+                      projects.doc(value.id).collection("Stack").add({
+                        'stack_type': _selectedStackType,
+                        'stack_title': _projectTitleController.text,
+                      })))
+                  .catchError(
+                      (error) => print("Failed to add project: $error"));
+
               Navigator.pop(context);
             }
           },
