@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'widgets/add_stack.dart';
+
 class Edit_project_page extends StatefulWidget {
   // String project_id;
   // String? user_id;
@@ -37,7 +39,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
     return Scaffold(
       appBar: AppBar(
         //retain the appbar from the previous page
-        title: const Text("Edit Project"),
+        title: const Text("Edit Project", style: TextStyle(color: Colors.white)),
         backgroundColor: const Color.fromARGB(255, 14, 41, 60),
         centerTitle: true,
       ),
@@ -45,8 +47,12 @@ class _Edit_project_pageState extends State<Edit_project_page> {
           child: Row(
         children: [
           Column(children: [
-            FloatingActionButton(onPressed: () {}),
-            Text(widget.query_doc.id),
+            FloatingActionButton(onPressed: () {
+              showDialog(context: context, 
+              builder: (BuildContext context) => const AddStackPopUp(),
+              );
+            }, child: const Icon(Icons.add)),
+            Text(widget.query_doc.id, style: TextStyle(color: Colors.white)),
           ])
         ],
       )),
