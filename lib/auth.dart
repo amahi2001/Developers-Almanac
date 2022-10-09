@@ -4,7 +4,8 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import 'pages/login_page.dart';
 
-String? user_id = FirebaseAuth.instance.currentUser?.uid;
+User? user_obj = FirebaseAuth.instance.currentUser;
+String? user_id = user_obj?.uid;
 
 // this file handle everything about authentication except the login page
 // E.g. sign in, sign up, sign out (including styling)

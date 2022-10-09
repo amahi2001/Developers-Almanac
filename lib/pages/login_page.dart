@@ -1,4 +1,5 @@
 //login page
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
     // if the user is signed in go to home page
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
-        print('signed in as ${user.displayName}');
+        print('user was already signed in as ${user.displayName}');
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(

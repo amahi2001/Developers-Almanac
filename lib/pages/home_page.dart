@@ -8,7 +8,6 @@ import 'home_page/widgets/home_page_widgets.dart';
 import 'login_page.dart';
 import 'edit_projects/edit_project.dart';
 
-
 String searchT = "";
 var numCalled = 0;
 
@@ -96,6 +95,22 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+    Users.doc(FirebaseAuth.instance.currentUser!.uid).get().then((value) {
+      if (value.data() == null) {
+        Users.doc(user_id).set({
+          'name': user_obj?.displayName,
+          'email': user_obj?.email,
+          'created': user_obj?.metadata.creationTime,
+          'last_login': user_obj?.metadata.lastSignInTime
+        });
+      }
+      else {
+        Users.doc(user_id).update({
+          'last_login': user_obj?.metadata.lastSignInTime
+        });
+      }
+    });
   }
 
   @override
@@ -248,7 +263,7 @@ class _ProjectsViewState extends State<ProjectsView> {
 
     super.initState();
     project_stream = projects
-        .where("userID", isEqualTo: user_id)
+        .where("members", arrayContains: user_obj?.email)
         .orderBy("last_updated", descending: true)
         .snapshots();
   }

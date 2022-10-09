@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'widgets/add_stack.dart';
-
+import '/auth.dart';
 class Edit_project_page extends StatefulWidget {
 
   DocumentReference<Object?> query_doc;

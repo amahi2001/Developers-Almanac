@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devs_almanac/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -114,9 +115,10 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                     {
                       'project_title': _projectTitleController.text,
                       'project_description': _projectDescriptionController.text,
-                      'userID': FirebaseAuth.instance.currentUser!.uid,
+                      'userID': user_id,
                       'creation_date': today,
                       'last_updated': today,
+                      'members': [user_obj?.email]
                     },
                   )
                   .then(((value) =>
