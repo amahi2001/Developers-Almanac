@@ -13,6 +13,7 @@ class Edit_project_page extends StatefulWidget {
 }
 
 class _Edit_project_pageState extends State<Edit_project_page> {
+  
   Future<QuerySnapshot<Map<String, dynamic>>> Stack() async {
     final StackSnap = await widget.query_doc.collection('Stack').get();
     return StackSnap;
@@ -37,18 +38,23 @@ class _Edit_project_pageState extends State<Edit_project_page> {
         centerTitle: true,
       ),
       body: Container(
-          child: Row(
+        child: Row(
         children: [
           Column(children: [
             FloatingActionButton(onPressed: () {
               showDialog(context: context, 
-              builder: (BuildContext context) => const AddStackPopUp(),
+                builder: (BuildContext context) => 
+                Column(children: [
+                  //ViewStacks(query_doc: widget.query_doc, snap_shot: stack_snap, id: widget.query_doc.id),
+                  AddStackPopUp(query_doc: widget.query_doc, snap_shot: stack_snap, id: widget.query_doc.id),
+                ],)
               );
             }, child: const Icon(Icons.add)),
             Text(widget.query_doc.id, style: TextStyle(color: Colors.white)),
           ])
         ],
-      )),
+      )
+      ),
     );
   }
 }

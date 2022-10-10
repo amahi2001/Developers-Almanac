@@ -104,11 +104,9 @@ class _MyHomePageState extends State<MyHomePage> {
           'created': user_obj?.metadata.creationTime,
           'last_login': user_obj?.metadata.lastSignInTime
         });
-      }
-      else {
-        Users.doc(user_id).update({
-          'last_login': user_obj?.metadata.lastSignInTime
-        });
+      } else {
+        Users.doc(user_id)
+            .update({'last_login': user_obj?.metadata.lastSignInTime});
       }
     });
   }
