@@ -45,7 +45,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
               showDialog(context: context, 
                 builder: (BuildContext context) => 
                 Column(children: [
-                  //ViewStacks(query_doc: widget.query_doc, snap_shot: stack_snap, id: widget.query_doc.id),
                   AddStackPopUp(query_doc: widget.query_doc, snap_shot: stack_snap, id: widget.query_doc.id),
                 ],)
               );

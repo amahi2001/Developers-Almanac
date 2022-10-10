@@ -20,6 +20,7 @@ class _AddStackPopUpState extends State<AddStackPopUp> {
   late String _selectedStackType = StackType.first;
   final _projectInfoController = TextEditingController();
   final _addStackKey = GlobalKey<FormState>();
+  bool foundMatch = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,22 +31,21 @@ class _AddStackPopUpState extends State<AddStackPopUp> {
         height: 100,
       ),
       AlertDialog(
-        title: Text('Add Stack'),
+        title: const Padding(padding: EdgeInsets.all(3.0), child: Align(
+          alignment: Alignment.bottomLeft, 
+          child: Text("Add Stacks", style: TextStyle(fontWeight: FontWeight.bold)))),
         content: Form(
             key: _addStackKey,
             child: Container(
               width: 500,
               child: Column(
                 children: [
-                  // ViewStacks(
-                  //     query_doc: widget.query_doc,
-                  //     snap_shot: widget.snap_shot,
-                  //     id: widget.id),
-                  Row(
+                    Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      DropdownButton(
-                          underline: SizedBox(),
+                      Padding(padding: EdgeInsets.all(1.0), 
+                      child:DropdownButton(
+                          underline: const SizedBox(),
                           value: _selectedStackType,
                           onChanged: (String? value) {
                             setState(() {
@@ -58,6 +58,7 @@ class _AddStackPopUpState extends State<AddStackPopUp> {
                               child: Text(value),
                             );
                           }).toList()),
+                      ),
                       Expanded(
                         child: SizedBox(
                           width: 900,
@@ -79,55 +80,76 @@ class _AddStackPopUpState extends State<AddStackPopUp> {
                           ),
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            setState(() {});
-                          },
-                        ),
-                      ),
                     ],
+                  ),
+                  Padding(padding: const EdgeInsets.only(top: 10, left: 1.0), child:
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Color.fromARGB(23, 255, 255, 255),
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: Row(children: const [
+                            Text('Current Stacks',
+                                selectionColor: Colors.white,
+                                style:
+                                  TextStyle(fontSize: 15)),
+                          ]))
+                    ),  
+                  ),
+                  ViewStacks(
+                      query_doc: widget.query_doc,
+                      snap_shot: widget.snap_shot,
+                      id: widget.id
                   ),
                 ],
               ),
             )),
         actions: [
-          Container(
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Row(children: [
-                TextButton(
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Row(children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Modify Stack'),
+              ),
+              TextButton(
+                  child: const Text('Add Stack'),
                   onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                    child: const Text('Add Stack'),
-                    onPressed: () {
-                      if (_addStackKey.currentState!.validate()) {
-                        widget.query_doc
-                            .collection('Stack')
-                            .get()
-                            .then((querySnapshot) {
-                          querySnapshot.docs.forEach((result) {
-                            if (_selectedStackType != result['stack_type'] &&
-                                _projectInfoController.text !=
-                                    result['stack_title']) {
-                              // widget.query_doc.collection("Stack").add({
-                              //   'stack_type': _selectedStackType,
-                              //   'stack_title': _projectInfoController.text,
-                              // });
-                            }
-                            print(result['stack_title']);
-                          });
+                    if (_addStackKey.currentState!.validate()) {
+                      print(foundMatch);
+                      widget.query_doc
+                          .collection('Stack')
+                          .get()
+                          .then((querySnapshot) {
+                        querySnapshot.docs.forEach((result) {
+                          if (_selectedStackType == result['stack_type'] &&
+                              _projectInfoController.text ==
+                                  result['stack_title']) {
+                            foundMatch = true;
+                            print("Match found. Not added to database");
+                          }
                         });
+                        if (foundMatch == false) {
+                        widget.query_doc.collection("Stack").add({
+                          'stack_type': _selectedStackType,
+                          'stack_title': _projectInfoController.text,
+                        });
+                        print("Added to database");
                       }
-                    }),
-              ]),
-            ),
+                      foundMatch = false;
+                      });
+                    }
+                  }),
+            ]),
           ),
         ],
       ),
@@ -154,13 +176,13 @@ class _ViewStacksState extends State<ViewStacks> {
   @override
   void initState() {
     super.initState();
-    project_stream = widget.query_doc.collection("Stacks").snapshots();
+    project_stream = widget.query_doc.collection("Stack").snapshots();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: widget.query_doc.collection("Stacks").snapshots(),
+      stream: widget.query_doc.collection("Stack").snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           String error = snapshot.error.toString();
@@ -173,27 +195,58 @@ class _ViewStacksState extends State<ViewStacks> {
         }
 
         print("WENT TO VIEWSTACK");
-        print(snapshot.data!.docs.first);
+        //print(snapshot.data!.docs);
 
-        return ListView.builder(
-            shrinkWrap: true,
-            itemCount: snapshot.data!.size,
-            itemBuilder: (context, index) {
-              QueryDocumentSnapshot<Object?> project =
-                  snapshot.data!.docs[index];
+        return Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(24, 14, 41, 60),
+                ),
+                  width: 500,
+                  height: 250,
+                child: Column(
+                  children: [
+                  Flexible(flex: 100, child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.size,
+                      itemBuilder: (context, index) {
+                        QueryDocumentSnapshot<Object?> project =
+                            snapshot.data!.docs[index];
 
-              print("TEST");
+                        if (!snapshot.hasData) {
+                          print('test phrase');
+                          return const Text("Loading.....");
+                        }
 
-              return Container(
-                  margin: const EdgeInsets.all(15.0),
-                  padding: const EdgeInsets.all(3.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blueAccent)),
-                  child: Row(children: [
-                    Text(project['stack_title']),
-                    Text(project['stack_type']),
-                  ]));
-            });
+                        return Container(
+                            width: 500,
+                            height: 60,
+                            decoration: const BoxDecoration(
+                              border: Border(
+                              bottom: BorderSide(width: 0.2, color: Color.fromARGB(172, 14, 41, 60)),
+                            )),
+                            child: Row(children: [
+                              Container(
+                                color: Colors.transparent,
+                                width: 500,
+                                height: 50,
+                                child: Card(
+                                child: Column(children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(5),
+                                      child: Row(children: [
+                                        Text('${project['stack_type']}: ${project['stack_title']}',
+                                            style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 15),
+                                        ),
+                                    ])),
+                                  ])
+                              ),
+                            )]
+                            )
+                          );
+                      }
+                  )
+               )]));
       },
     );
   }
