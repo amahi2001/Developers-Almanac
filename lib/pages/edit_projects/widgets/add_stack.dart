@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 List<String> StackType = ["Frontend", "Backend", "Database", "Other"];
 late String _selectedStackType = StackType.first;
+var selectedID = "";
 
 final _projectInfoController = TextEditingController();
 
@@ -41,7 +42,7 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
             padding: EdgeInsets.all(3.0),
             child: Align(
                 alignment: Alignment.bottomLeft,
-                child: Text("Add Stacks",
+                child: Text("Add / Modify Stacks",
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         content: Form(
             key: _addStackKey,
@@ -118,17 +119,23 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
               ),
             )),
         actions: [
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Row(children: [
-              TextButton(
+           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [ TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: const Text('Cancel'),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => ModifyStackPopup(
+                          query_doc: widget.query_doc,
+                          snap_shot: widget.snap_shot,
+                          id: selectedID));
+                },
                 child: const Text('Modify Stack'),
               ),
               TextButton(
@@ -145,9 +152,17 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                               _projectInfoController.text ==
                                   result['stack_title']) {
                             foundMatch = true;
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) => 
+                                const AlertDialog(
+                                  title: Text("Error. Data already exists in database.")
+                                )
+                            );
+                            }
                             print("Match found. Not added to database");
                           }
-                        });
+                        );
                         if (foundMatch == false) {
                           widget.query_doc.collection("Stack").add({
                             'stack_type': _selectedStackType,
@@ -159,7 +174,7 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                       });
                     }
                   }),
-            ]),
+            ],
           ),
         ],
       ),
@@ -210,7 +225,6 @@ class _ViewStacksState extends State<ViewStacks> {
         }
 
         print("WENT TO VIEWSTACK");
-        //print(snapshot.data!.docs);
 
         return Container(
             decoration: const BoxDecoration(
@@ -245,7 +259,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                   for (int i = 0; i < StackType.length; i++) {
                                     if (project['stack_type'] == StackType[i]) {
                                       _selectedStackType =
-                                        StackType.elementAt(i);
+                                          StackType.elementAt(i);
                                     }
                                   }
                                   if (_selectedIndex == index) {
@@ -255,6 +269,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                     _projectInfoController.text =
                                         project['stack_title'];
                                   }
+                                  selectedID = project.id;
                                   widget.callback();
                                 })),
                             child: Container(
@@ -266,11 +281,11 @@ class _ViewStacksState extends State<ViewStacks> {
                                       width: 0.2,
                                       color: Color.fromARGB(172, 14, 41, 60)),
                                 )),
-                                child: Row(children: [
-                                  Container(
+                                child: Row(children: [ Flexible( fit: FlexFit.tight ,
+                                  child: Container(                                  
                                     color: Colors.transparent,
                                     width: 500,
-                                    height: 50,
+                                    height: 60,
                                     child: Card(
                                         color: index == _selectedIndex
                                             ? Color.fromARGB(255, 14, 41, 60)
@@ -291,13 +306,121 @@ class _ViewStacksState extends State<ViewStacks> {
                                                               255, 0, 0, 0),
                                                       fontSize: 15),
                                                 ),
-                                              ])),
-                                        ])),
-                                  )
+                                                Expanded(child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                                                  IconButton(
+                                                  icon: const Icon(Icons.delete), 
+                                                  onPressed: () { 
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) =>
+                                                        DeleteStackPopup(query_doc: widget.query_doc,
+                                                      snap_shot: widget.snap_shot,
+                                                      id: project.id)
+                                                    );
+                                                  },
+                                                  color: index == _selectedIndex
+                                                          ? Color.fromARGB(255, 255, 0, 0)
+                                                          : Color.fromARGB(255, 14, 41, 60),
+                                                  )],
+                                              )),
+                                        ]))],
+                                  ))))
                                 ])));
                       }))
             ]));
       },
+    );
+  }
+}
+
+
+
+/// This widget lets the user delete a project given a project ID
+class DeleteStackPopup extends StatefulWidget {
+  final id;
+  final DocumentReference<Object?> query_doc;
+  final snap_shot;
+
+  const DeleteStackPopup(
+      {super.key,
+      required this.query_doc,
+      required this.snap_shot,
+      required this.id});
+
+  @override
+  State<DeleteStackPopup> createState() => _DeleteStackPopupState();
+}
+
+class _DeleteStackPopupState extends State<DeleteStackPopup> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Delete Stack'),
+      content: const Text('Are you sure you want to delete this stack?'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            print(widget.id);
+            widget.query_doc
+                .collection('Stack')
+                .doc(widget.id)
+                .delete();
+            Navigator.pop(context);
+          },
+          child: const Text('Delete'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Cancel'),
+        ),
+      ],
+    );
+  }
+}
+
+
+
+/// This widget lets the user delete a project given a project ID
+class ModifyStackPopup extends StatefulWidget {
+  final id;
+  final DocumentReference<Object?> query_doc;
+  final snap_shot;
+
+  const ModifyStackPopup(
+      {super.key,
+      required this.query_doc,
+      required this.snap_shot,
+      required this.id});
+
+  @override
+  State<ModifyStackPopup> createState() => _ModifyStackPopupState();
+}
+
+class _ModifyStackPopupState extends State<ModifyStackPopup> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Delete Stack'),
+      content: const Text('Are you sure you want to modify this stack?'),
+      actions: [
+        TextButton(
+          onPressed: () {
+             widget.query_doc.collection('Stack').doc(selectedID).update(
+              {'stack_type': _selectedStackType, 'stack_title': _projectInfoController.text }
+            );
+            Navigator.pop(context);
+          },
+          child: const Text('Modify'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Cancel'),
+        ),
+      ],
     );
   }
 }
