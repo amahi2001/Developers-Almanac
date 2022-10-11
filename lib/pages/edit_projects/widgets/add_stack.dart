@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+List<String> StackType = ["Frontend", "Backend", "Database", "Other"];
+late String _selectedStackType = StackType.first;
+
+final _projectInfoController = TextEditingController();
+
 class AddStackPopUp extends StatefulWidget {
   final id;
   final DocumentReference<Object?> query_doc;
@@ -12,13 +17,10 @@ class AddStackPopUp extends StatefulWidget {
       required this.id});
 
   @override
-  State<AddStackPopUp> createState() => _AddStackPopUpState();
+  State<AddStackPopUp> createState() => __AddStackPopUpState();
 }
 
-class _AddStackPopUpState extends State<AddStackPopUp> {
-  List<String> StackType = ["Frontend", "Backend", "Database", "Other"];
-  late String _selectedStackType = StackType.first;
-  final _projectInfoController = TextEditingController();
+class __AddStackPopUpState extends State<AddStackPopUp> {
   final _addStackKey = GlobalKey<FormState>();
   bool foundMatch = false;
 
@@ -31,33 +33,37 @@ class _AddStackPopUpState extends State<AddStackPopUp> {
         height: 100,
       ),
       AlertDialog(
-        title: const Padding(padding: EdgeInsets.all(3.0), child: Align(
-          alignment: Alignment.bottomLeft, 
-          child: Text("Add Stacks", style: TextStyle(fontWeight: FontWeight.bold)))),
+        title: const Padding(
+            padding: EdgeInsets.all(3.0),
+            child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text("Add Stacks",
+                    style: TextStyle(fontWeight: FontWeight.bold)))),
         content: Form(
             key: _addStackKey,
             child: Container(
               width: 500,
               child: Column(
                 children: [
-                    Row(
+                  Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Padding(padding: EdgeInsets.all(1.0), 
-                      child:DropdownButton(
-                          underline: const SizedBox(),
-                          value: _selectedStackType,
-                          onChanged: (String? value) {
-                            setState(() {
-                              _selectedStackType = value!;
-                            });
-                          },
-                          items: StackType.map((String value) {
-                            return DropdownMenuItem(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList()),
+                      Padding(
+                        padding: EdgeInsets.all(1.0),
+                        child: DropdownButton(
+                            underline: const SizedBox(),
+                            value: _selectedStackType,
+                            onChanged: (String? value) {
+                              setState(() {
+                                _selectedStackType = value!;
+                              });
+                            },
+                            items: StackType.map((String value) {
+                              return DropdownMenuItem(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList()),
                       ),
                       Expanded(
                         child: SizedBox(
@@ -82,26 +88,24 @@ class _AddStackPopUpState extends State<AddStackPopUp> {
                       ),
                     ],
                   ),
-                  Padding(padding: const EdgeInsets.only(top: 10, left: 1.0), child:
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: Color.fromARGB(23, 255, 255, 255),
-                      ),
-                      child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: Row(children: const [
-                            Text('Current Stacks',
-                                selectionColor: Colors.white,
-                                style:
-                                  TextStyle(fontSize: 15)),
-                          ]))
-                    ),  
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, left: 1.0),
+                    child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(23, 255, 255, 255),
+                        ),
+                        child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Row(children: const [
+                              Text('Current Stacks',
+                                  selectionColor: Colors.white,
+                                  style: TextStyle(fontSize: 15)),
+                            ]))),
                   ),
                   ViewStacks(
                       query_doc: widget.query_doc,
                       snap_shot: widget.snap_shot,
-                      id: widget.id
-                  ),
+                      id: widget.id),
                 ],
               ),
             )),
@@ -116,9 +120,7 @@ class _AddStackPopUpState extends State<AddStackPopUp> {
                 child: const Text('Cancel'),
               ),
               TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: () {},
                 child: const Text('Modify Stack'),
               ),
               TextButton(
@@ -139,13 +141,13 @@ class _AddStackPopUpState extends State<AddStackPopUp> {
                           }
                         });
                         if (foundMatch == false) {
-                        widget.query_doc.collection("Stack").add({
-                          'stack_type': _selectedStackType,
-                          'stack_title': _projectInfoController.text,
-                        });
-                        print("Added to database");
-                      }
-                      foundMatch = false;
+                          widget.query_doc.collection("Stack").add({
+                            'stack_type': _selectedStackType,
+                            'stack_title': _projectInfoController.text,
+                          });
+                          print("Added to database");
+                        }
+                        foundMatch = false;
                       });
                     }
                   }),
@@ -161,6 +163,7 @@ class ViewStacks extends StatefulWidget {
   final id;
   final DocumentReference<Object?> query_doc;
   final snap_shot;
+
   const ViewStacks(
       {super.key,
       required this.query_doc,
@@ -173,6 +176,8 @@ class ViewStacks extends StatefulWidget {
 
 class _ViewStacksState extends State<ViewStacks> {
   late Stream<QuerySnapshot> project_stream;
+  var _selectedIndex = -1;
+
   @override
   void initState() {
     super.initState();
@@ -198,14 +203,15 @@ class _ViewStacksState extends State<ViewStacks> {
         //print(snapshot.data!.docs);
 
         return Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(24, 14, 41, 60),
-                ),
-                  width: 500,
-                  height: 250,
-                child: Column(
-                  children: [
-                  Flexible(flex: 100, child: ListView.builder(
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(24, 14, 41, 60),
+            ),
+            width: 500,
+            height: 250,
+            child: Column(children: [
+              Flexible(
+                  flex: 100,
+                  child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemCount: snapshot.data!.size,
@@ -218,35 +224,58 @@ class _ViewStacksState extends State<ViewStacks> {
                           return const Text("Loading.....");
                         }
 
-                        return Container(
-                            width: 500,
-                            height: 60,
-                            decoration: const BoxDecoration(
-                              border: Border(
-                              bottom: BorderSide(width: 0.2, color: Color.fromARGB(172, 14, 41, 60)),
-                            )),
-                            child: Row(children: [
-                              Container(
-                                color: Colors.transparent,
+                        return GestureDetector(
+                            onTap: (() => setState(() {
+                                  if (_selectedIndex == index) {
+                                    _selectedIndex = -1;
+                                  } else {
+                                    _selectedIndex = index;
+                                    _selectedStackType = project['stack_type'];
+                                    _projectInfoController.text =
+                                        project['stack_title'];
+                                  }
+                                  print(_selectedStackType);
+                                })),
+                            child: Container(
                                 width: 500,
-                                height: 50,
-                                child: Card(
-                                child: Column(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(5),
-                                      child: Row(children: [
-                                        Text('${project['stack_type']}: ${project['stack_title']}',
-                                            style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 15),
-                                        ),
-                                    ])),
-                                  ])
-                              ),
-                            )]
-                            )
-                          );
-                      }
-                  )
-               )]));
+                                height: 60,
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                  bottom: BorderSide(
+                                      width: 0.2,
+                                      color: Color.fromARGB(172, 14, 41, 60)),
+                                )),
+                                child: Row(children: [
+                                  Container(
+                                    color: Colors.transparent,
+                                    width: 500,
+                                    height: 50,
+                                    child: Card(
+                                        color: index == _selectedIndex
+                                            ? Color.fromARGB(255, 14, 41, 60)
+                                            : Color.fromARGB(
+                                                255, 255, 255, 255),
+                                        child: Column(children: [
+                                          Padding(
+                                              padding: const EdgeInsets.all(5),
+                                              child: Row(children: [
+                                                Text(
+                                                  '${project['stack_type']}: ${project['stack_title']}',
+                                                  style: TextStyle(
+                                                      color: index ==
+                                                              _selectedIndex
+                                                          ? Color.fromARGB(255,
+                                                              255, 255, 255)
+                                                          : Color.fromARGB(
+                                                              255, 0, 0, 0),
+                                                      fontSize: 15),
+                                                ),
+                                              ])),
+                                        ])),
+                                  )
+                                ])));
+                      }))
+            ]));
       },
     );
   }
