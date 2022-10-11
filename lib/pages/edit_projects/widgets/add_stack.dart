@@ -24,6 +24,10 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
   final _addStackKey = GlobalKey<FormState>();
   bool foundMatch = false;
 
+  callback() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,9 +107,13 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                             ]))),
                   ),
                   ViewStacks(
-                      query_doc: widget.query_doc,
-                      snap_shot: widget.snap_shot,
-                      id: widget.id),
+                    query_doc: widget.query_doc,
+                    snap_shot: widget.snap_shot,
+                    id: widget.id,
+                    callback: () {
+                      callback();
+                    },
+                  ),
                 ],
               ),
             )),
@@ -160,6 +168,7 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
 }
 
 class ViewStacks extends StatefulWidget {
+  final Function() callback;
   final id;
   final DocumentReference<Object?> query_doc;
   final snap_shot;
@@ -168,7 +177,8 @@ class ViewStacks extends StatefulWidget {
       {super.key,
       required this.query_doc,
       required this.snap_shot,
-      required this.id});
+      required this.id,
+      required this.callback});
 
   @override
   State<ViewStacks> createState() => _ViewStacksState();
@@ -224,17 +234,28 @@ class _ViewStacksState extends State<ViewStacks> {
                           return const Text("Loading.....");
                         }
 
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Text("Loading",
+                              style: TextStyle(color: Colors.white));
+                        }
+
                         return GestureDetector(
                             onTap: (() => setState(() {
+                                  for (int i = 0; i < StackType.length; i++) {
+                                    if (project['stack_type'] == StackType[i]) {
+                                      _selectedStackType =
+                                        StackType.elementAt(i);
+                                    }
+                                  }
                                   if (_selectedIndex == index) {
                                     _selectedIndex = -1;
                                   } else {
                                     _selectedIndex = index;
-                                    _selectedStackType = project['stack_type'];
                                     _projectInfoController.text =
                                         project['stack_title'];
                                   }
-                                  print(_selectedStackType);
+                                  widget.callback();
                                 })),
                             child: Container(
                                 width: 500,
