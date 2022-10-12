@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devs_almanac/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,9 @@ class _AddMemberState extends State<AddMember> {
       querySnapshot.docs.forEach((doc) {
         String email = (doc.data() as dynamic)['email'];
         if (!result.contains(email)) {
-          result.add(email);
+          if (user_obj?.email != email) {
+            result.add(email);
+          }
         }
       });
     });
@@ -39,11 +42,12 @@ class _AddMemberState extends State<AddMember> {
               content: Form(
                 child: Column(
                   children: [
-                    Text('Add Member'),
+                    //Text('Add Member'),
                     DropdownButtonHideUnderline(
                       child: DropdownButton(
                         value: _selected_email ?? user_items.first,
-                        items: user_items.map<DropdownMenuItem<String>>((value) {
+                        items:
+                            user_items.map<DropdownMenuItem<String>>((value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -60,6 +64,26 @@ class _AddMemberState extends State<AddMember> {
                   ],
                 ),
               ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    CollectionReference projects =
+                        FirebaseFirestore.instance.collection('Projects');
+                    // Add members to project
+                    projects.doc(widget.query_doc.id).update({
+                      'members': [user_obj?.email, _selected_email.toString()]
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Add member'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                )
+              ],
             );
           } else {
             return const Center(child: CircularProgressIndicator());

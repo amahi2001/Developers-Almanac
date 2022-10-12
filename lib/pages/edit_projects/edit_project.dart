@@ -28,45 +28,100 @@ class _Edit_project_pageState extends State<Edit_project_page> {
     isStackEmpty = stack_snap.then((value) => value.docs.isEmpty);
   }
 
+  CollectionReference projects =
+      FirebaseFirestore.instance.collection('Projects');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         //retain the appbar from the previous page
-        title:
-            const Text("Edit Project", style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color.fromARGB(255, 14, 41, 60),
-        centerTitle: true,
-      ),
-      body: Container(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(children: [
-            FloatingActionButton(
+        // title:
+        //     const Text("Edit Project", style: TextStyle(color: Colors.white)),
+        // backgroundColor: const Color.fromARGB(255, 14, 41, 60),
+        // centerTitle: true,
+        title: const Text("Developer's Almanac"),
+        actions: <Widget>[
+          // Clear Icon
+          Builder(builder: (context) {
+            return IconButton(
+                icon: const Icon(Icons.logout),
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) => const AddStackPopUp(),
-                  );
-                },
-                child: const Icon(Icons.add)),
-            Text(widget.query_doc.id, style: TextStyle(color: Colors.white)),
-          ]),
-          Column(
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) => AddMember(query_doc: widget.query_doc,),
-                    );
-                  },
-                  child: const Text("add collab")),
-            ],
-          )
+                  Scaffold.of(context)
+                      .openEndDrawer(); // Open drawer if Profile Icon is clicked
+                });
+          }),
         ],
-      )),
+        backgroundColor: const Color.fromARGB(255, 14, 41, 60),
+      ),
+      body: ListView(
+        children: [
+          Row(
+            children: const [
+              Expanded(
+                child: Text(
+                  "Edit Project",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Times',
+                    fontSize: 30,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              Divider(
+                height: 70,
+                thickness: 5,
+              ),
+            ],
+          ),
+          const Divider(
+            height: 30,
+            thickness: 3,
+            color: Colors.white,
+          ),
+          const Divider(
+            height: 30,
+            thickness: 0,
+            color: Color.fromARGB(255, 14, 41, 60),
+          ),
+        ],
+      ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(left: 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: "btn1",
+              child: Icon(Icons.person_add),
+              backgroundColor: Color.fromARGB(123, 223, 211, 211),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AddMember(
+                    query_doc: widget.query_doc,
+                  ),
+                );
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              heroTag: "btn2",
+              child: Icon(Icons.add),
+              backgroundColor: Color.fromARGB(123, 223, 211, 211),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => const AddStackPopUp(),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
