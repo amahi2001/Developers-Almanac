@@ -17,6 +17,7 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
   final _formKey = GlobalKey<FormState>();
   final _projectTitleController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
+  final _stackNameController = TextEditingController();
   List<String> StackType = ["Frontend", "Backend", "Database", "Other"];
   late String _selectedStackType = StackType.first;
 
@@ -57,40 +58,42 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
               child: Row(
                 children: [
                   Expanded(
-                    child: DropdownButton(
-                      value: _selectedStackType,
-                      // icon: const Icon(Icons.arrow_downward),
-                      // elevation: 16,
-                      // style: const TextStyle(color: Colors.deepPurple),
-                      // underline: Container(
-                      //   height: 2,
-                      //   color: Colors.deepPurpleAccent,
-                      // ),
-                      onChanged: (String? value) {
-                        // This is called when the user selects an item.
-                        setState(() {
-                          _selectedStackType = value!;
-                        });
-                      },
-                      items: StackType.map(
-                          (String value) {
-                        return DropdownMenuItem(
-                          value: value,
-                          child: Text(value),
-
-                        );
-                      }).toList(),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        value: _selectedStackType,
+                        // icon: const Icon(Icons.arrow_downward),
+                        // elevation: 16,
+                        // style: const TextStyle(color: Colors.deepPurple),
+                        // underline: Container(
+                        //   height: 2,
+                        //   color: Colors.deepPurpleAccent,
+                        // ),
+                        onChanged: (String? value) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            _selectedStackType = value!;
+                          });
+                        },
+                        items: StackType.map(
+                            (String value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(value),
+                    
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                   Expanded(
                       child: TextFormField(
-                    controller: _projectDescriptionController,
+                    controller: _stackNameController,
                     decoration: const InputDecoration(
-                      hintText: 'Project Description',
+                      hintText: 'Primary stack item',
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a project description';
+                        return 'Please enter a stack item description';
                       }
                       return null;
                     },
@@ -125,7 +128,7 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                       //todo fix up this form
                       projects.doc(value.id).collection("Stack").add({
                         'stack_type': _selectedStackType,
-                        'stack_title': _projectTitleController.text,
+                        'stack_title': _stackNameController.text,
                       })))
                   .catchError(
                       (error) => print("Failed to add project: $error"));
