@@ -14,6 +14,7 @@ class Edit_project_page extends StatefulWidget {
 }
 
 class _Edit_project_pageState extends State<Edit_project_page> {
+  
   Future<QuerySnapshot<Map<String, dynamic>>> Stack() async {
     final StackSnap = await widget.query_doc.collection('Stack').get();
     return StackSnap;
@@ -115,7 +116,9 @@ class _Edit_project_pageState extends State<Edit_project_page> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (BuildContext context) => const AddStackPopUp(),
+                  builder: (BuildContext context) => Column(children: [
+                  AddStackPopUp(query_doc: widget.query_doc, snap_shot: stack_snap, id: widget.query_doc.id),
+                ],)
                 );
               },
             ),
