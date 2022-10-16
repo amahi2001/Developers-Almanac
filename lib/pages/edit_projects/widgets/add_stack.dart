@@ -11,11 +11,9 @@ final _projectInfoController = TextEditingController();
 class AddStackPopUp extends StatefulWidget {
   final id;
   final DocumentReference<Object?> query_doc;
-  final snap_shot;
   const AddStackPopUp(
       {super.key,
       required this.query_doc,
-      required this.snap_shot,
       required this.id});
 
   @override
@@ -61,7 +59,6 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                       ])),
                   viewStacksInAdd(
                     query_doc: widget.query_doc,
-                    snap_shot: widget.snap_shot,
                     id: widget.id,
                     callback: () {
                       callback();
@@ -173,12 +170,10 @@ class viewStacksInAdd extends StatefulWidget {
   final Function() callback;
   final id;
   final DocumentReference<Object?> query_doc;
-  final snap_shot;
 
   const viewStacksInAdd(
       {super.key,
       required this.query_doc,
-      required this.snap_shot,
       required this.id,
       required this.callback});
 
@@ -199,7 +194,7 @@ class _viewStacksInAddState extends State<viewStacksInAdd> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: widget.query_doc.collection("Stack").snapshots(),
+      stream: project_stream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           String error = snapshot.error.toString();
@@ -292,12 +287,10 @@ class _viewStacksInAddState extends State<viewStacksInAdd> {
 class DeleteStackPopup extends StatefulWidget {
   final id;
   final DocumentReference<Object?> query_doc;
-  final snap_shot;
 
   const DeleteStackPopup(
       {super.key,
       required this.query_doc,
-      required this.snap_shot,
       required this.id});
 
   @override
