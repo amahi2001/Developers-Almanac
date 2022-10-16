@@ -81,29 +81,41 @@ class _Edit_project_pageState extends State<Edit_project_page> {
               ),
             ],
           ),
-          const Divider(
-            indent: 20,
-            endIndent: 20,
-            height: 30,
-            thickness: 3,
-            color: Colors.white,
+          Row(
+            children: [
+              const Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Text(
+                    "Stacks",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Times',
+                      fontSize: 25,
+                    ),
+                    textAlign: TextAlign.left,
+                  )),
+                  const SizedBox(
+                    width: 20,
+                  ),
+              ElevatedButton(
+                // heroTag: "btn2",
+                child: const Icon(Icons.add),
+                // backgroundColor: Color.fromARGB(123, 223, 211, 211),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => Column(
+                            children: [
+                              AddStackPopUp(
+                                  query_doc: widget.query_doc,
+                                  snap_shot: stack_snap,
+                                  id: widget.query_doc.id),
+                            ],
+                          ));
+                },
+              ),
+            ],
           ),
-          const Divider(
-            height: 30,
-            thickness: 0,
-            color: Color.fromARGB(255, 14, 41, 60),
-          ),
-          const Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Text(
-                "Stacks",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Times',
-                  fontSize: 25,
-                ),
-                textAlign: TextAlign.left,
-              )),
           Row(
             children: [
               Padding(
@@ -121,14 +133,14 @@ class _Edit_project_pageState extends State<Edit_project_page> {
         ],
       ),
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(left: 30),
+        padding: const EdgeInsets.only(left: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
               heroTag: "btn1",
-              child: Icon(Icons.person_add),
-              backgroundColor: Color.fromARGB(123, 223, 211, 211),
+              child: const Icon(Icons.person_add),
+              backgroundColor: const Color.fromARGB(123, 223, 211, 211),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -138,7 +150,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                 );
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
           ],
@@ -189,7 +201,7 @@ class __EditStackState extends State<EditStack> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(1.0),
+                        padding: const EdgeInsets.all(1.0),
                         child: DropdownButton(
                             underline: const SizedBox(),
                             value: _selectedStackType,
@@ -428,7 +440,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                                           255, 146, 153, 192),
                                                       width: 1)),
                                               color: index == _selectedIndex
-                                                  ? Color.fromARGB(
+                                                  ? const Color.fromARGB(
                                                       255, 14, 41, 60)
                                                   : const Color.fromARGB(
                                                       255, 22, 66, 97),
@@ -444,13 +456,13 @@ class _ViewStacksState extends State<ViewStacks> {
                                                           style: TextStyle(
                                                               color: index ==
                                                                       _selectedIndex
-                                                                  ? Color
+                                                                  ? const Color
                                                                       .fromARGB(
                                                                           255,
                                                                           255,
                                                                           255,
                                                                           255)
-                                                                  : Color
+                                                                  : const Color
                                                                       .fromARGB(
                                                                           255,
                                                                           255,
@@ -488,13 +500,13 @@ class _ViewStacksState extends State<ViewStacks> {
                                                               },
                                                               color: index ==
                                                                       _selectedIndex
-                                                                  ? Color
+                                                                  ? const Color
                                                                       .fromARGB(
                                                                           255,
                                                                           255,
                                                                           0,
                                                                           0)
-                                                                  : Color
+                                                                  : const Color
                                                                       .fromARGB(
                                                                           255,
                                                                           255,
@@ -520,13 +532,13 @@ class _ViewStacksState extends State<ViewStacks> {
                                                               },
                                                               color: index ==
                                                                       _selectedIndex
-                                                                  ? Color
+                                                                  ? const Color
                                                                       .fromARGB(
                                                                           255,
                                                                           255,
                                                                           0,
                                                                           0)
-                                                                  : Color
+                                                                  : const Color
                                                                       .fromARGB(
                                                                           255,
                                                                           255,
