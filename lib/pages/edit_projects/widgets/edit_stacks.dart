@@ -11,7 +11,6 @@ late String _selectedStackType;
 class ModifyStack extends StatefulWidget {
   final id;
   final DocumentReference<Object?> query_doc;
-  final snap_shot;
 
   final stack_type;
   final technology;
@@ -19,7 +18,6 @@ class ModifyStack extends StatefulWidget {
   const ModifyStack(
       {super.key,
       required this.query_doc,
-      required this.snap_shot,
       required this.id,
       required this.stack_type,
       required this.technology});
@@ -115,9 +113,7 @@ class _ModifyStackState extends State<ModifyStack> {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => ModifyStackPopup(
-                        query_doc: widget.query_doc,
-                        snap_shot: widget.snap_shot,
-                        id: widget.id));
+                        query_doc: widget.query_doc, stack_id: widget.id));
               },
               child: const Text('Save'),
             ),
@@ -130,15 +126,11 @@ class _ModifyStackState extends State<ModifyStack> {
 
 /// This widget lets the user modify a project given a project ID
 class ModifyStackPopup extends StatefulWidget {
-  final id;
+  final stack_id;
   final DocumentReference<Object?> query_doc;
-  final snap_shot;
 
   const ModifyStackPopup(
-      {super.key,
-      required this.query_doc,
-      required this.snap_shot,
-      required this.id});
+      {super.key, required this.query_doc, required this.stack_id});
 
   @override
   State<ModifyStackPopup> createState() => _ModifyStackPopupState();
@@ -153,7 +145,7 @@ class _ModifyStackPopupState extends State<ModifyStackPopup> {
       actions: [
         TextButton(
           onPressed: () {
-            widget.query_doc.collection('Stack').doc(widget.id).update({
+            widget.query_doc.collection('Stack').doc(widget.stack_id).update({
               'stack_type': _selectedStackType,
               'stack_title': _projectInfoController.text
             });

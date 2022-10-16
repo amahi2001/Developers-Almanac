@@ -20,18 +20,9 @@ class Edit_project_page extends StatefulWidget {
 }
 
 class _Edit_project_pageState extends State<Edit_project_page> {
-  Future<QuerySnapshot<Map<String, dynamic>>> Stack() async {
-    final StackSnap = await widget.query_doc.collection('Stack').get();
-    return StackSnap;
-  }
-
-  late Future<QuerySnapshot<Map<String, dynamic>>> stack_snap;
-  late Future<bool> isStackEmpty;
   @override
   void initState() {
     super.initState();
-    stack_snap = Stack();
-    isStackEmpty = stack_snap.then((value) => value.docs.isEmpty);
   }
 
   CollectionReference projects =
@@ -94,9 +85,9 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                     ),
                     textAlign: TextAlign.left,
                   )),
-                  const SizedBox(
-                    width: 20,
-                  ),
+              const SizedBox(
+                width: 20,
+              ),
               ElevatedButton(
                 // heroTag: "btn2",
                 child: const Icon(Icons.add),
@@ -108,7 +99,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                             children: [
                               AddStackPopUp(
                                   query_doc: widget.query_doc,
-                                  snap_shot: stack_snap,
                                   id: widget.query_doc.id),
                             ],
                           ));
@@ -124,7 +114,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                       width: 500,
                       child: ViewStacks(
                         query_doc: widget.query_doc,
-                        snap_shot: stack_snap,
                         id: widget.query_doc.id,
                         callback: () {},
                       ))),
@@ -163,11 +152,9 @@ class _Edit_project_pageState extends State<Edit_project_page> {
 class EditStack extends StatefulWidget {
   final id;
   final DocumentReference<Object?> query_doc;
-  final snap_shot;
   const EditStack(
       {super.key,
       required this.query_doc,
-      required this.snap_shot,
       required this.id});
 
   @override
@@ -256,7 +243,6 @@ class __EditStackState extends State<EditStack> {
                   ),
                   ViewStacks(
                     query_doc: widget.query_doc,
-                    snap_shot: widget.snap_shot,
                     id: widget.id,
                     callback: () {
                       callback();
@@ -279,9 +265,7 @@ class __EditStackState extends State<EditStack> {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => ModifyStackPopup(
-                        query_doc: widget.query_doc,
-                        snap_shot: widget.snap_shot,
-                        id: selectedID));
+                        query_doc: widget.query_doc, stack_id: selectedID));
               },
               child: const Text('Modify Stack'),
             ),
@@ -329,12 +313,10 @@ class ViewStacks extends StatefulWidget {
   final Function() callback;
   final id;
   final DocumentReference<Object?> query_doc;
-  final snap_shot;
 
   const ViewStacks(
       {super.key,
       required this.query_doc,
-      required this.snap_shot,
       required this.id,
       required this.callback});
 
@@ -355,7 +337,7 @@ class _ViewStacksState extends State<ViewStacks> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: widget.query_doc.collection("Stack").snapshots(),
+      stream: project_stream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           String error = snapshot.error.toString();
@@ -457,17 +439,17 @@ class _ViewStacksState extends State<ViewStacks> {
                                                               color: index ==
                                                                       _selectedIndex
                                                                   ? const Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          255,
-                                                                          255,
-                                                                          255)
+                                                                          .fromARGB(
+                                                                      255,
+                                                                      255,
+                                                                      255,
+                                                                      255)
                                                                   : const Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          255,
-                                                                          255,
-                                                                          255),
+                                                                          .fromARGB(
+                                                                      255,
+                                                                      255,
+                                                                      255,
+                                                                      255),
                                                               fontSize: 15),
                                                         ),
                                                         Expanded(
@@ -488,8 +470,6 @@ class _ViewStacksState extends State<ViewStacks> {
                                                                         ModifyStack(
                                                                           query_doc:
                                                                               widget.query_doc,
-                                                                          snap_shot:
-                                                                              widget.snap_shot,
                                                                           id: project
                                                                               .id,
                                                                           stack_type:
@@ -501,17 +481,17 @@ class _ViewStacksState extends State<ViewStacks> {
                                                               color: index ==
                                                                       _selectedIndex
                                                                   ? const Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          255,
-                                                                          0,
-                                                                          0)
+                                                                          .fromARGB(
+                                                                      255,
+                                                                      255,
+                                                                      0,
+                                                                      0)
                                                                   : const Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          255,
-                                                                          255,
-                                                                          255),
+                                                                          .fromARGB(
+                                                                      255,
+                                                                      255,
+                                                                      255,
+                                                                      255),
                                                             ),
                                                             IconButton(
                                                               icon: const Icon(
@@ -524,26 +504,23 @@ class _ViewStacksState extends State<ViewStacks> {
                                                                         query_doc:
                                                                             widget
                                                                                 .query_doc,
-                                                                        snap_shot:
-                                                                            widget
-                                                                                .snap_shot,
                                                                         id: project
                                                                             .id));
                                                               },
                                                               color: index ==
                                                                       _selectedIndex
                                                                   ? const Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          255,
-                                                                          0,
-                                                                          0)
+                                                                          .fromARGB(
+                                                                      255,
+                                                                      255,
+                                                                      0,
+                                                                      0)
                                                                   : const Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          255,
-                                                                          255,
-                                                                          255),
+                                                                          .fromARGB(
+                                                                      255,
+                                                                      255,
+                                                                      255,
+                                                                      255),
                                                             )
                                                           ],
                                                         )),
