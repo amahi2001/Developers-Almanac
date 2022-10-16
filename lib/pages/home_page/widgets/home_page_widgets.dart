@@ -74,12 +74,10 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                             _selectedStackType = value!;
                           });
                         },
-                        items: StackType.map(
-                            (String value) {
+                        items: StackType.map((String value) {
                           return DropdownMenuItem(
                             value: value,
                             child: Text(value),
-                    
                           );
                         }).toList(),
                       ),
@@ -132,7 +130,7 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                       })))
                   .catchError(
                       (error) => print("Failed to add project: $error"));
-                      //todo should have a error popup here
+              //todo should have a error popup here
 
               Navigator.pop(context);
             }
@@ -183,6 +181,65 @@ class _DeleteProjectPopupState extends State<DeleteProjectPopup> {
           child: const Text('Cancel'),
         ),
       ],
+    );
+  }
+}
+
+/// This widget lets the user show the selected project's information
+class ShowProjectPopup extends StatefulWidget {
+  String project_ID;
+  ShowProjectPopup({super.key, required this.project_ID});
+
+  @override
+  State<ShowProjectPopup> createState() => _ShowProjectPopupState();
+}
+
+class _ShowProjectPopupState extends State<ShowProjectPopup> {
+  // Querying Firestore
+  CollectionReference projects =
+      FirebaseFirestore.instance.collection('Projects');
+  Future<List> projectInfo() async {
+    List info = [];
+    await projects.get().then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        String info_str = doc.data() as dynamic;
+        info.add(info_str);
+      });
+    });
+    return info;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 10,
+      color: const Color.fromARGB(255, 22, 66, 97),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+          side: const BorderSide(
+              color: Color.fromARGB(255, 146, 153, 192), width: 1)),
+      margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(
+            fit: FlexFit.tight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Padding(
+                    padding:
+                        EdgeInsets.only(left: 15, top: 6, right: 15, bottom: 3),
+                    child: Text('Project Name',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 241, 240, 244),
+                            fontSize: 25,
+                            wordSpacing: 3))),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
