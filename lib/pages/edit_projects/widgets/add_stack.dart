@@ -42,7 +42,7 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
             padding: EdgeInsets.all(3.0),
             child: Align(
                 alignment: Alignment.bottomLeft,
-                child: Text("Add / Modify Stacks",
+                child: Text("Add Stack",
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         content: Form(
             key: _addStackKey,
@@ -50,6 +50,21 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
               width: 500,
               child: Column(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.all(.0),
+                    child: Row(children: const [
+                      Text('Current Stacks',
+                          selectionColor: Colors.white,
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                    ])),
+                  ViewStacks(
+                    query_doc: widget.query_doc,
+                    snap_shot: widget.snap_shot,
+                    id: widget.id,
+                    callback: () {
+                      callback();
+                    },
+                  ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -99,44 +114,17 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                         decoration: const BoxDecoration(
                           color: Color.fromARGB(23, 255, 255, 255),
                         ),
-                        child: Padding(
-                            padding: const EdgeInsets.all(1.0),
-                            child: Row(children: const [
-                              Text('Current Stacks',
-                                  selectionColor: Colors.white,
-                                  style: TextStyle(fontSize: 15)),
-                            ]))),
-                  ),
-                  ViewStacks(
-                    query_doc: widget.query_doc,
-                    snap_shot: widget.snap_shot,
-                    id: widget.id,
-                    callback: () {
-                      callback();
-                    },
-                  ),
+                  )),
                 ],
               ),
             )),
         actions: [
            Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [ TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
-              ),
+            children: [ 
               TextButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) => ModifyStackPopup(
-                          query_doc: widget.query_doc,
-                          snap_shot: widget.snap_shot,
-                          id: selectedID));
-                },
-                child: const Text('Modify Stack'),
+                child: const Text("Cancel"),
+                onPressed:(() => Navigator.pop(context))
               ),
               TextButton(
                   child: const Text('Add Stack'),
@@ -254,78 +242,38 @@ class _ViewStacksState extends State<ViewStacks> {
                               style: TextStyle(color: Colors.white));
                         }
 
-                        return GestureDetector(
-                            onTap: (() => setState(() {
-                                  for (int i = 0; i < StackType.length; i++) {
-                                    if (project['stack_type'] == StackType[i]) {
-                                      _selectedStackType =
-                                          StackType.elementAt(i);
-                                    }
-                                  }
-                                  if (_selectedIndex == index) {
-                                    _selectedIndex = -1;
-                                  } else {
-                                    _selectedIndex = index;
-                                    _projectInfoController.text =
-                                        project['stack_title'];
-                                  }
-                                  selectedID = project.id;
-                                  widget.callback();
-                                })),
-                            child: Container(
+                        return Container(
                                 width: 500,
                                 height: 60,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                  bottom: BorderSide(
-                                      width: 0.2,
-                                      color: Color.fromARGB(172, 14, 41, 60)),
-                                )),
                                 child: Row(children: [ Flexible( fit: FlexFit.tight ,
                                   child: Container(                                  
-                                    color: Colors.transparent,
+                                    color: Color.fromARGB(172, 255, 255, 255),
                                     width: 500,
                                     height: 60,
                                     child: Card(
-                                        color: index == _selectedIndex
-                                            ? Color.fromARGB(255, 14, 41, 60)
-                                            : Color.fromARGB(
-                                                255, 255, 255, 255),
+                                        shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(5),
+                                                    side: const BorderSide(
+                                                        color: Color.fromARGB(
+                                                            255, 146, 153, 192),
+                                                        width: 1)),
+                                        color:  const Color.fromARGB(
+                                                      255, 22, 66, 97),
                                         child: Column(children: [
                                           Padding(
-                                              padding: const EdgeInsets.all(5),
+                                              padding: const EdgeInsets.all(15),
                                               child: Row(children: [
                                                 Text(
                                                   '${project['stack_type']}: ${project['stack_title']}',
                                                   style: TextStyle(
-                                                      color: index ==
-                                                              _selectedIndex
-                                                          ? Color.fromARGB(255,
-                                                              255, 255, 255)
-                                                          : Color.fromARGB(
-                                                              255, 0, 0, 0),
+                                                      color: Color.fromARGB(255,
+                                                              255, 255, 255),
                                                       fontSize: 15),
                                                 ),
-                                                Expanded(child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                                                  IconButton(
-                                                  icon: const Icon(Icons.delete), 
-                                                  onPressed: () { 
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext context) =>
-                                                        DeleteStackPopup(query_doc: widget.query_doc,
-                                                      snap_shot: widget.snap_shot,
-                                                      id: project.id)
-                                                    );
-                                                  },
-                                                  color: index == _selectedIndex
-                                                          ? Color.fromARGB(255, 255, 0, 0)
-                                                          : Color.fromARGB(255, 14, 41, 60),
-                                                  )],
-                                              )),
                                         ]))],
                                   ))))
-                                ])));
+                                ]));
                       }))
             ]));
       },
@@ -368,51 +316,6 @@ class _DeleteStackPopupState extends State<DeleteStackPopup> {
             Navigator.pop(context);
           },
           child: const Text('Delete'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Cancel'),
-        ),
-      ],
-    );
-  }
-}
-
-
-
-/// This widget lets the user delete a project given a project ID
-class ModifyStackPopup extends StatefulWidget {
-  final id;
-  final DocumentReference<Object?> query_doc;
-  final snap_shot;
-
-  const ModifyStackPopup(
-      {super.key,
-      required this.query_doc,
-      required this.snap_shot,
-      required this.id});
-
-  @override
-  State<ModifyStackPopup> createState() => _ModifyStackPopupState();
-}
-
-class _ModifyStackPopupState extends State<ModifyStackPopup> {
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Delete Stack'),
-      content: const Text('Are you sure you want to modify this stack?'),
-      actions: [
-        TextButton(
-          onPressed: () {
-             widget.query_doc.collection('Stack').doc(selectedID).update(
-              {'stack_type': _selectedStackType, 'stack_title': _projectInfoController.text }
-            );
-            Navigator.pop(context);
-          },
-          child: const Text('Modify'),
         ),
         TextButton(
           onPressed: () {
