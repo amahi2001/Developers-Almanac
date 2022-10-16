@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../main.dart';
+import '../../edit_projects/edit_project.dart' as global;
 
 ///add projects popup
 class AddProjectPopup extends StatefulWidget {
@@ -18,8 +19,7 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
   final _projectTitleController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
   final _stackNameController = TextEditingController();
-  List<String> StackType = ["Frontend", "Backend", "Database", "Other"];
-  late String _selectedStackType = StackType.first;
+  late String _selectedStackType = global.StackType.first;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                             _selectedStackType = value!;
                           });
                         },
-                        items: StackType.map(
+                        items: global.StackType.map(
                             (String value) {
                           return DropdownMenuItem(
                             value: value,

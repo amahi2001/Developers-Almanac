@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../edit_project.dart' as global;
+//adding and viewing stacks
 
-List<String> StackType = ["Frontend", "Backend", "Database", "Other"];
-late String _selectedStackType = StackType.first;
+late String _selectedStackType = global.StackType.first;
 var selectedID = "";
 
 final _projectInfoController = TextEditingController();
@@ -51,13 +52,14 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(.0),
-                    child: Row(children: const [
-                      Text('Current Stacks',
-                          selectionColor: Colors.white,
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                    ])),
-                  ViewStacks(
+                      padding: const EdgeInsets.all(.0),
+                      child: Row(children: const [
+                        Text('Current Stacks',
+                            selectionColor: Colors.white,
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold)),
+                      ])),
+                  viewStacksInAdd(
                     query_doc: widget.query_doc,
                     snap_shot: widget.snap_shot,
                     id: widget.id,
@@ -78,7 +80,7 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                                 _selectedStackType = value!;
                               });
                             },
-                            items: StackType.map((String value) {
+                            items: global.StackType.map((String value) {
                               return DropdownMenuItem(
                                 value: value,
                                 child: Text(value),
@@ -109,23 +111,22 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 1.0),
-                    child: Container(
+                      padding: const EdgeInsets.only(top: 10, left: 1.0),
+                      child: Container(
                         decoration: const BoxDecoration(
                           color: Color.fromARGB(23, 255, 255, 255),
                         ),
-                  )),
+                      )),
                 ],
               ),
             )),
         actions: [
-           Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [ 
+            children: [
               TextButton(
-                child: const Text("Cancel"),
-                onPressed:(() => Navigator.pop(context))
-              ),
+                  child: const Text("Cancel"),
+                  onPressed: (() => Navigator.pop(context))),
               TextButton(
                   child: const Text('Add Stack'),
                   onPressed: () {
@@ -142,15 +143,13 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                             foundMatch = true;
                             showDialog(
                                 context: context,
-                                builder: (BuildContext context) => 
-                                const AlertDialog(
-                                  title: Text("Error. Data already exists in database.")
-                                )
-                            );
-                            }
-                            print("Match found. Not added to database");
+                                builder: (BuildContext context) =>
+                                    const AlertDialog(
+                                        title: Text(
+                                            "Error. Data already exists in database.")));
                           }
-                        );
+                          print("Match found. Not added to database");
+                        });
                         if (foundMatch == false) {
                           widget.query_doc.collection("Stack").add({
                             'stack_type': _selectedStackType,
@@ -170,13 +169,13 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
   }
 }
 
-class ViewStacks extends StatefulWidget {
+class viewStacksInAdd extends StatefulWidget {
   final Function() callback;
   final id;
   final DocumentReference<Object?> query_doc;
   final snap_shot;
 
-  const ViewStacks(
+  const viewStacksInAdd(
       {super.key,
       required this.query_doc,
       required this.snap_shot,
@@ -184,10 +183,10 @@ class ViewStacks extends StatefulWidget {
       required this.callback});
 
   @override
-  State<ViewStacks> createState() => _ViewStacksState();
+  State<viewStacksInAdd> createState() => _viewStacksInAddState();
 }
 
-class _ViewStacksState extends State<ViewStacks> {
+class _viewStacksInAddState extends State<viewStacksInAdd> {
   late Stream<QuerySnapshot> project_stream;
   var _selectedIndex = -1;
 
@@ -243,37 +242,45 @@ class _ViewStacksState extends State<ViewStacks> {
                         }
 
                         return Container(
-                                width: 500,
-                                height: 60,
-                                child: Row(children: [ Flexible( fit: FlexFit.tight ,
-                                  child: Container(                                  
-                                    color: Color.fromARGB(172, 255, 255, 255),
-                                    width: 500,
-                                    height: 60,
-                                    child: Card(
-                                        shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(5),
-                                                    side: const BorderSide(
-                                                        color: Color.fromARGB(
-                                                            255, 146, 153, 192),
-                                                        width: 1)),
-                                        color:  const Color.fromARGB(
-                                                      255, 22, 66, 97),
-                                        child: Column(children: [
-                                          Padding(
-                                              padding: const EdgeInsets.all(15),
-                                              child: Row(children: [
-                                                Text(
-                                                  '${project['stack_type']}: ${project['stack_title']}',
-                                                  style: TextStyle(
-                                                      color: Color.fromARGB(255,
-                                                              255, 255, 255),
-                                                      fontSize: 15),
-                                                ),
-                                        ]))],
-                                  ))))
-                                ]));
+                            width: 500,
+                            height: 60,
+                            child: Row(children: [
+                              Flexible(
+                                  fit: FlexFit.tight,
+                                  child: Container(
+                                      color: Color.fromARGB(172, 255, 255, 255),
+                                      width: 500,
+                                      height: 60,
+                                      child: Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              side: const BorderSide(
+                                                  color: Color.fromARGB(
+                                                      255, 146, 153, 192),
+                                                  width: 1)),
+                                          color: const Color.fromARGB(
+                                              255, 22, 66, 97),
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(15),
+                                                  child: Row(children: [
+                                                    Text(
+                                                      '${project['stack_type']}: ${project['stack_title']}',
+                                                      style: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              255,
+                                                              255,
+                                                              255),
+                                                          fontSize: 15),
+                                                    ),
+                                                  ]))
+                                            ],
+                                          ))))
+                            ]));
                       }))
             ]));
       },
@@ -281,9 +288,7 @@ class _ViewStacksState extends State<ViewStacks> {
   }
 }
 
-
-
-/// This widget lets the user delete a project given a project ID
+/// This widget lets the user delete a stack given a stack ID
 class DeleteStackPopup extends StatefulWidget {
   final id;
   final DocumentReference<Object?> query_doc;
@@ -309,10 +314,7 @@ class _DeleteStackPopupState extends State<DeleteStackPopup> {
         TextButton(
           onPressed: () {
             print(widget.id);
-            widget.query_doc
-                .collection('Stack')
-                .doc(widget.id)
-                .delete();
+            widget.query_doc.collection('Stack').doc(widget.id).delete();
             Navigator.pop(context);
           },
           child: const Text('Delete'),
