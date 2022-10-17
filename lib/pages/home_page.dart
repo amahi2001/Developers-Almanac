@@ -343,7 +343,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                           // View project button
                           IconButton(
                             icon: const Icon(
-                              Icons.view_headline_rounded,
+                              Icons.remove_red_eye_rounded,
                               size: 30,
                               color: Colors.white,
                             ),
