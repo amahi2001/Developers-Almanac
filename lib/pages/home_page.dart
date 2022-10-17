@@ -294,74 +294,114 @@ class _ProjectsViewState extends State<ProjectsView> {
                 return const Card();
               }
 
-              return Card(
-                color: const Color.fromARGB(255, 22, 66, 97),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    side: const BorderSide(
-                        color: Color.fromARGB(255, 146, 153, 192), width: 1)),
-                margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, top: 6, right: 15, bottom: 3),
-                            child: Text(project['project_title'],
-                                style: const TextStyle(
-                                    color: Color.fromARGB(255, 241, 240, 244),
-                                    fontSize: 20,
-                                    wordSpacing: 3))),
-                        Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, right: 15, bottom: 6),
-                            child: Text(project['project_description'],
-                                style: const TextStyle(
-                                    color: Color.fromARGB(255, 230, 229, 232),
-                                    fontSize: 12,
-                                    wordSpacing: 5))),
-                      ],
-                    ),
+              return Align(
+                alignment: Alignment.centerLeft,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Card(
+                    elevation: 10,
+                    color: const Color.fromARGB(255, 22, 66, 97),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        side: const BorderSide(
+                            color: Color.fromARGB(255, 146, 153, 192),
+                            width: 1)),
+                    margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            fit: FlexFit.tight,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, top: 6, right: 15, bottom: 3),
+                                    child: Text(project['project_title'],
+                                        style: const TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 241, 240, 244),
+                                            fontSize: 20,
+                                            wordSpacing: 3))),
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 15, bottom: 6),
+                                    child: Text(
+                                        "Updated on " +
+                                            project['last_updated']
+                                                .toDate()
+                                                .toString(),
+                                        style: const TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 230, 229, 232),
+                                            fontSize: 12,
+                                            wordSpacing: 5))),
+                              ],
+                            ),
+                          ),
+                          // View project button
+                          IconButton(
+                            icon: const Icon(
+                              Icons.view_headline_rounded,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              // Popup
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      ShowProjectPopup(
+                                        project_ID: project.id,
+                                        title: project['project_title'],
+                                        description:
+                                            project['project_description'],
+                                        members: project['members'],
+                                        created: project['creation_date']
+                                            .toDate()
+                                            .toString(),
+                                      ));
+                            },
+                          ),
+                          // Edit project button
+                          IconButton(
+                            icon: const Icon(
+                              Icons.edit_note_outlined,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              //
+                              DocumentReference<Object?> project_doc =
+                                  projects.doc(project.id);
+                              //go to edit project page
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Edit_project_page(
+                                            project_query_doc: project_doc,
+                                          )));
+                            },
+                          ),
+                          // Delete project button
+                          IconButton(
+                            icon: const Icon(
+                              Icons.delete_sweep_rounded,
+                              size: 30,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    DeleteProjectPopup(projectID: project.id),
+                              );
+                            },
+                          ),
+                        ]),
                   ),
-                  // delete project button
-                  IconButton(
-                    icon: const Icon(
-                      Icons.delete_sweep_rounded,
-                      size: 30,
-                      color: Colors.red,
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            DeleteProjectPopup(projectID: project.id),
-                      );
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.edit_note_outlined,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      //
-                      DocumentReference<Object?> project_doc =
-                          projects.doc(project.id);
-                      //go to edit project page
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Edit_project_page(
-                                    project_query_doc: project_doc,
-                                  )));
-                    },
-                  ),
-                ]),
+                ),
               );
             });
       },
