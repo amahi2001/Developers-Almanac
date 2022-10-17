@@ -9,12 +9,10 @@ var selectedID = "";
 final _projectInfoController = TextEditingController();
 
 class AddStackPopUp extends StatefulWidget {
-  final id;
-  final DocumentReference<Object?> query_doc;
+  final project_id;
+  final DocumentReference<Object?> project_query_doc;
   const AddStackPopUp(
-      {super.key,
-      required this.query_doc,
-      required this.id});
+      {super.key, required this.project_query_doc, required this.project_id});
 
   @override
   State<AddStackPopUp> createState() => __AddStackPopUpState();
@@ -58,8 +56,8 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                                 fontSize: 15, fontWeight: FontWeight.bold)),
                       ])),
                   viewStacksInAdd(
-                    query_doc: widget.query_doc,
-                    id: widget.id,
+                    query_doc: widget.project_query_doc,
+                    id: widget.project_id,
                     callback: () {
                       callback();
                     },
@@ -68,7 +66,7 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(1.0),
+                        padding: const EdgeInsets.all(1.0),
                         child: DropdownButton(
                             underline: const SizedBox(),
                             value: _selectedStackType,
@@ -129,7 +127,7 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                   onPressed: () {
                     if (_addStackKey.currentState!.validate()) {
                       print(foundMatch);
-                      widget.query_doc
+                      widget.project_query_doc
                           .collection('Stack')
                           .get()
                           .then((querySnapshot) {
@@ -148,7 +146,7 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                           print("Match found. Not added to database");
                         });
                         if (foundMatch == false) {
-                          widget.query_doc.collection("Stack").add({
+                          widget.project_query_doc.collection("Stack").add({
                             'stack_type': _selectedStackType,
                             'stack_title': _projectInfoController.text,
                           });
@@ -182,19 +180,19 @@ class viewStacksInAdd extends StatefulWidget {
 }
 
 class _viewStacksInAddState extends State<viewStacksInAdd> {
-  late Stream<QuerySnapshot> project_stream;
+  late Stream<QuerySnapshot> stack_stream;
   var _selectedIndex = -1;
 
   @override
   void initState() {
     super.initState();
-    project_stream = widget.query_doc.collection("Stack").snapshots();
+    stack_stream = widget.query_doc.collection("Stack").snapshots();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: project_stream,
+      stream: stack_stream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           String error = snapshot.error.toString();
@@ -243,7 +241,7 @@ class _viewStacksInAddState extends State<viewStacksInAdd> {
                               Flexible(
                                   fit: FlexFit.tight,
                                   child: Container(
-                                      color: Color.fromARGB(172, 255, 255, 255),
+                                      color: const Color.fromARGB(172, 255, 255, 255),
                                       width: 500,
                                       height: 60,
                                       child: Card(
@@ -264,7 +262,7 @@ class _viewStacksInAddState extends State<viewStacksInAdd> {
                                                   child: Row(children: [
                                                     Text(
                                                       '${project['stack_type']}: ${project['stack_title']}',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: Color.fromARGB(
                                                               255,
                                                               255,
@@ -289,9 +287,7 @@ class DeleteStackPopup extends StatefulWidget {
   final DocumentReference<Object?> query_doc;
 
   const DeleteStackPopup(
-      {super.key,
-      required this.query_doc,
-      required this.id});
+      {super.key, required this.query_doc, required this.id});
 
   @override
   State<DeleteStackPopup> createState() => _DeleteStackPopupState();

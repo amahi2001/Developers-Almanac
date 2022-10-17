@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'widgets/add_bugs.dart';
 import 'widgets/add_collab.dart';
 import 'widgets/add_stack.dart';
 import '/auth.dart';
@@ -11,9 +12,9 @@ var selectedID = "";
 final _projectInfoController = TextEditingController();
 
 class Edit_project_page extends StatefulWidget {
-  DocumentReference<Object?> query_doc;
+  DocumentReference<Object?> project_query_doc;
 
-  Edit_project_page({super.key, required this.query_doc});
+  Edit_project_page({super.key, required this.project_query_doc});
 
   @override
   State<Edit_project_page> createState() => _Edit_project_pageState();
@@ -24,9 +25,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
   void initState() {
     super.initState();
   }
-
-  CollectionReference projects =
-      FirebaseFirestore.instance.collection('Projects');
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +64,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                   textAlign: TextAlign.left,
                 ),
               ),
-              Divider(
-                height: 70,
-                thickness: 5,
-              ),
             ],
           ),
           Row(
@@ -89,17 +83,15 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                 width: 20,
               ),
               ElevatedButton(
-                // heroTag: "btn2",
                 child: const Icon(Icons.add),
-                // backgroundColor: Color.fromARGB(123, 223, 211, 211),
                 onPressed: () {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) => Column(
                             children: [
                               AddStackPopUp(
-                                  query_doc: widget.query_doc,
-                                  id: widget.query_doc.id),
+                                  project_query_doc: widget.project_query_doc,
+                                  project_id: widget.project_query_doc.id),
                             ],
                           ));
                 },
@@ -113,8 +105,8 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                   child: SizedBox(
                       width: 500,
                       child: ViewStacks(
-                        query_doc: widget.query_doc,
-                        id: widget.query_doc.id,
+                        project_query_doc: widget.project_query_doc,
+                        id: widget.project_query_doc.id,
                         callback: () {},
                       ))),
             ],
@@ -134,7 +126,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) => AddMember(
-                    query_doc: widget.query_doc,
+                    query_doc: widget.project_query_doc,
                   ),
                 );
               },
@@ -149,174 +141,14 @@ class _Edit_project_pageState extends State<Edit_project_page> {
   }
 }
 
-class EditStack extends StatefulWidget {
-  final id;
-  final DocumentReference<Object?> query_doc;
-  const EditStack(
-      {super.key,
-      required this.query_doc,
-      required this.id});
-
-  @override
-  State<EditStack> createState() => __EditStackState();
-}
-
-class __EditStackState extends State<EditStack> {
-  final _addStackKey = GlobalKey<FormState>();
-  bool foundMatch = false;
-
-  callback() {
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-      children: [
-        Container(
-          width: 100,
-          height: 100,
-        ),
-        Form(
-            key: _addStackKey,
-            child: Container(
-              width: 500,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: DropdownButton(
-                            underline: const SizedBox(),
-                            value: _selectedStackType,
-                            onChanged: (String? value) {
-                              setState(() {
-                                _selectedStackType = value!;
-                              });
-                            },
-                            items: StackType.map((String value) {
-                              return DropdownMenuItem(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList()),
-                      ),
-                      Expanded(
-                        child: SizedBox(
-                          width: 900,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: TextFormField(
-                              controller: _projectInfoController,
-                              decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText: 'Enter Technology:',
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Project Technology';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 1.0),
-                    child: Container(
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(23, 255, 255, 255),
-                        ),
-                        child: Padding(
-                            padding: const EdgeInsets.all(1.0),
-                            child: Row(children: const [
-                              Text('Current Stacks',
-                                  selectionColor: Colors.white,
-                                  style: TextStyle(fontSize: 15)),
-                            ]))),
-                  ),
-                  ViewStacks(
-                    query_doc: widget.query_doc,
-                    id: widget.id,
-                    callback: () {
-                      callback();
-                    },
-                  ),
-                ],
-              ),
-            )),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) => ModifyStackPopup(
-                        query_doc: widget.query_doc, stack_id: selectedID));
-              },
-              child: const Text('Modify Stack'),
-            ),
-            TextButton(
-                child: const Text('Add Stack'),
-                onPressed: () {
-                  if (_addStackKey.currentState!.validate()) {
-                    print(foundMatch);
-                    widget.query_doc
-                        .collection('Stack')
-                        .get()
-                        .then((querySnapshot) {
-                      querySnapshot.docs.forEach((result) {
-                        if (_selectedStackType == result['stack_type'] &&
-                            _projectInfoController.text ==
-                                result['stack_title']) {
-                          foundMatch = true;
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => const AlertDialog(
-                                  title: Text(
-                                      "Error. Data already exists in database.")));
-                        }
-                        print("Match found. Not added to database");
-                      });
-                      if (foundMatch == false) {
-                        widget.query_doc.collection("Stack").add({
-                          'stack_type': _selectedStackType,
-                          'stack_title': _projectInfoController.text,
-                        });
-                        print("Added to database");
-                      }
-                      foundMatch = false;
-                    });
-                  }
-                }),
-          ],
-        ),
-      ],
-    ));
-  }
-}
-
 class ViewStacks extends StatefulWidget {
   final Function() callback;
   final id;
-  final DocumentReference<Object?> query_doc;
+  final DocumentReference<Object?> project_query_doc;
 
   const ViewStacks(
       {super.key,
-      required this.query_doc,
+      required this.project_query_doc,
       required this.id,
       required this.callback});
 
@@ -325,19 +157,19 @@ class ViewStacks extends StatefulWidget {
 }
 
 class _ViewStacksState extends State<ViewStacks> {
-  late Stream<QuerySnapshot> project_stream;
-  var _selectedIndex = -1;
+  late Stream<QuerySnapshot> stackStream;
+  int _selectedIndex = -1;
 
   @override
   void initState() {
     super.initState();
-    project_stream = widget.query_doc.collection("Stack").snapshots();
+    stackStream = widget.project_query_doc.collection("Stack").snapshots();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: project_stream,
+      stream: stackStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           String error = snapshot.error.toString();
@@ -365,7 +197,7 @@ class _ViewStacksState extends State<ViewStacks> {
                       shrinkWrap: true,
                       itemCount: snapshot.data!.size,
                       itemBuilder: (context, index) {
-                        QueryDocumentSnapshot<Object?> project =
+                        QueryDocumentSnapshot<Object?> stack =
                             snapshot.data!.docs[index];
 
                         if (!snapshot.hasData) {
@@ -378,13 +210,11 @@ class _ViewStacksState extends State<ViewStacks> {
                           return const Text("Loading",
                               style: TextStyle(color: Colors.white));
                         }
-
                         return GestureDetector(
                             onTap: (() => setState(() {
-                                  for (int i = 0; i < StackType.length; i++) {
-                                    if (project['stack_type'] == StackType[i]) {
-                                      _selectedStackType =
-                                          StackType.elementAt(i);
+                                  for (var x in StackType) {
+                                    if (stack['stack_type'] == x) {
+                                      _selectedStackType = x;
                                     }
                                   }
                                   if (_selectedIndex == index) {
@@ -392,9 +222,9 @@ class _ViewStacksState extends State<ViewStacks> {
                                   } else {
                                     _selectedIndex = index;
                                     _projectInfoController.text =
-                                        project['stack_title'];
+                                        stack['stack_title'];
                                   }
-                                  selectedID = project.id;
+                                  selectedID = stack.id;
                                   widget.callback();
                                 })),
                             child: Container(
@@ -434,7 +264,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                                               5),
                                                       child: Row(children: [
                                                         Text(
-                                                          '${project['stack_type']}: ${project['stack_title']}',
+                                                          '${stack['stack_type']}: ${stack['stack_title']}',
                                                           style: TextStyle(
                                                               color: index ==
                                                                       _selectedIndex
@@ -458,6 +288,12 @@ class _ViewStacksState extends State<ViewStacks> {
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
+                                                            AddBugButton(
+                                                              isSelected: index ==
+                                                                  _selectedIndex,
+                                                              project_query_doc: widget.project_query_doc,
+                                                              stack_id: stack.id,
+                                                            ),
                                                             IconButton(
                                                               icon: const Icon(
                                                                   Icons.edit),
@@ -469,13 +305,13 @@ class _ViewStacksState extends State<ViewStacks> {
                                                                             context) =>
                                                                         ModifyStack(
                                                                           query_doc:
-                                                                              widget.query_doc,
-                                                                          id: project
+                                                                              widget.project_query_doc,
+                                                                          id: stack
                                                                               .id,
                                                                           stack_type:
-                                                                              project['stack_type'],
+                                                                              stack['stack_type'],
                                                                           technology:
-                                                                              project['stack_title'],
+                                                                              stack['stack_title'],
                                                                         ));
                                                               },
                                                               color: index ==
@@ -503,8 +339,8 @@ class _ViewStacksState extends State<ViewStacks> {
                                                                     builder: (BuildContext context) => DeleteStackPopup(
                                                                         query_doc:
                                                                             widget
-                                                                                .query_doc,
-                                                                        id: project
+                                                                                .project_query_doc,
+                                                                        id: stack
                                                                             .id));
                                                               },
                                                               color: index ==
@@ -521,7 +357,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                                                       255,
                                                                       255,
                                                                       255),
-                                                            )
+                                                            ),
                                                           ],
                                                         )),
                                                       ]))

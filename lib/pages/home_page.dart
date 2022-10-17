@@ -357,7 +357,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => Edit_project_page(
-                                    query_doc: project_doc,
+                                    project_query_doc: project_doc,
                                   )));
                     },
                   ),
