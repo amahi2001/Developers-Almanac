@@ -188,57 +188,120 @@ class _DeleteProjectPopupState extends State<DeleteProjectPopup> {
 /// This widget lets the user show the selected project's information
 class ShowProjectPopup extends StatefulWidget {
   String project_ID;
-  ShowProjectPopup({super.key, required this.project_ID});
+  final String title;
+  String description;
+  List<dynamic> members;
+  String created;
+  ShowProjectPopup(
+      {super.key,
+      required this.project_ID,
+      required this.title,
+      required this.description,
+      required this.members,
+      required this.created});
 
   @override
   State<ShowProjectPopup> createState() => _ShowProjectPopupState();
 }
 
 class _ShowProjectPopupState extends State<ShowProjectPopup> {
-  // Querying Firestore
-  CollectionReference projects =
-      FirebaseFirestore.instance.collection('Projects');
-  Future<List> projectInfo() async {
-    List info = [];
-    await projects.get().then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        String info_str = doc.data() as dynamic;
-        info.add(info_str);
-      });
-    });
-    return info;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 10,
-      color: const Color.fromARGB(255, 22, 66, 97),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-          side: const BorderSide(
-              color: Color.fromARGB(255, 146, 153, 192), width: 1)),
-      margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(
-            fit: FlexFit.tight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Padding(
-                    padding:
-                        EdgeInsets.only(left: 15, top: 6, right: 15, bottom: 3),
-                    child: Text('Project Name',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 241, 240, 244),
-                            fontSize: 25,
-                            wordSpacing: 3))),
-              ],
-            ),
-          )
-        ],
+    return Align(
+      alignment: Alignment.centerRight,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.5,
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: Card(
+          elevation: 10,
+          color: const Color.fromARGB(255, 22, 66, 97),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+              side: const BorderSide(
+                  color: Color.fromARGB(255, 146, 153, 192), width: 1)),
+          margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                fit: FlexFit.tight,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+                        child: Text('Project Name',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 241, 240, 244),
+                                fontSize: 30,
+                                wordSpacing: 3))),
+                    Padding(
+                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+                        child: Text(widget.title,
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 230, 229, 232),
+                                fontSize: 25,
+                                wordSpacing: 3))),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+                        child: Text('Project Description',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 241, 240, 244),
+                                fontSize: 25,
+                                wordSpacing: 3))),
+                    Padding(
+                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+                        child: Text(widget.description,
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 230, 229, 232),
+                                fontSize: 20,
+                                wordSpacing: 3))),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+                        child: Text('Project Member(s)',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 241, 240, 244),
+                                fontSize: 25,
+                                wordSpacing: 3))),
+                    Padding(
+                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+                        child: Text(widget.members.toString(),
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 230, 229, 232),
+                                fontSize: 20,
+                                wordSpacing: 3))),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+                        child: Text('Created',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 241, 240, 244),
+                                fontSize: 25,
+                                wordSpacing: 3))),
+                    Padding(
+                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+                        child: Text(widget.created,
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 230, 229, 232),
+                                fontSize: 20,
+                                wordSpacing: 3))),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

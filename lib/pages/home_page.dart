@@ -352,7 +352,16 @@ class _ProjectsViewState extends State<ProjectsView> {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      ShowProjectPopup(project_ID: project.id));
+                                      ShowProjectPopup(
+                                        project_ID: project.id,
+                                        title: project['project_title'],
+                                        description:
+                                            project['project_description'],
+                                        members: project['members'],
+                                        created: project['creation_date']
+                                            .toDate()
+                                            .toString(),
+                                      ));
                             },
                           ),
                           // Edit project button
