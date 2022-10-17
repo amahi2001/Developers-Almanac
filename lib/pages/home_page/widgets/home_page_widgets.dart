@@ -74,8 +74,7 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                             _selectedStackType = value!;
                           });
                         },
-                        items: global.StackType.map(
-                            (String value) {
+                        items: global.StackType.map((String value) {
                           return DropdownMenuItem(
                             value: value,
                             child: Text(value),
@@ -229,10 +228,10 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
-                    Padding(
+                    const Padding(
                         padding: EdgeInsets.only(left: 15, top: 6, right: 15),
                         child: Text('Project Name',
                             style: TextStyle(
@@ -240,16 +239,16 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
                                 fontSize: 30,
                                 wordSpacing: 3))),
                     Padding(
-                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+                        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
                         child: Text(widget.title,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Color.fromARGB(255, 230, 229, 232),
                                 fontSize: 25,
                                 wordSpacing: 3))),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Padding(
+                    const Padding(
                         padding: EdgeInsets.only(left: 15, top: 6, right: 15),
                         child: Text('Project Description',
                             style: TextStyle(
@@ -257,16 +256,16 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
                                 fontSize: 25,
                                 wordSpacing: 3))),
                     Padding(
-                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+                        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
                         child: Text(widget.description,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Color.fromARGB(255, 230, 229, 232),
                                 fontSize: 20,
                                 wordSpacing: 3))),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Padding(
+                    const Padding(
                         padding: EdgeInsets.only(left: 15, top: 6, right: 15),
                         child: Text('Project Member(s)',
                             style: TextStyle(
@@ -274,29 +273,23 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
                                 fontSize: 25,
                                 wordSpacing: 3))),
                     Padding(
-                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+                        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
                         child: Text(widget.members.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Color.fromARGB(255, 230, 229, 232),
                                 fontSize: 20,
                                 wordSpacing: 3))),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Padding(
+                    const Padding(
                         padding: EdgeInsets.only(left: 15, top: 6, right: 15),
                         child: Text('Created',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 241, 240, 244),
                                 fontSize: 25,
                                 wordSpacing: 3))),
-                    Padding(
-                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
-                        child: Text(widget.created,
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 230, 229, 232),
-                                fontSize: 20,
-                                wordSpacing: 3))),
+                    project_preview_attr(text: widget.created),
                   ],
                 ),
               )
@@ -305,5 +298,21 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
         ),
       ),
     );
+  }
+}
+
+class project_preview_attr extends StatelessWidget {
+  final String text;
+  const project_preview_attr({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
+        child: Text(this.text,
+            style: const TextStyle(
+                color: Color.fromARGB(255, 241, 240, 244),
+                fontSize: 25,
+                wordSpacing: 3)));
   }
 }
