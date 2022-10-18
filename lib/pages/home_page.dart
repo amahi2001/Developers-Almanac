@@ -298,7 +298,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                 alignment: Alignment.centerLeft,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
-                  child: GestureDetector(
+                  child: InkWell(
                     onTap: () => {
                       showDialog(
                           context: context,
