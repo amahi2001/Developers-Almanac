@@ -217,7 +217,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                 style: TextStyle(color: Colors.white)
                             );
                           }
-                          return GestureDetector(
+                          return InkWell(
                               onTap: (() => setState(() {
                                   for (var x in StackType) {
                                     if (stack['stack_type'] == x) {
