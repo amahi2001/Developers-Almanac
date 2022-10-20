@@ -236,15 +236,18 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
                         child: Text('Project Name',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 241, 240, 244),
+                                fontFamily: 'Times',
                                 fontSize: 30,
                                 wordSpacing: 3))),
-                    Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
-                        child: Text(widget.title,
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 230, 229, 232),
-                                fontSize: 25,
-                                wordSpacing: 3))),
+                    project_preview_attr(text: widget.title),
+                    // Padding(
+                    //     padding:
+                    //         const EdgeInsets.only(left: 15, top: 6, right: 15),
+                    //     child: Text(widget.title,
+                    //         style: const TextStyle(
+                    //             color: Color.fromARGB(255, 230, 229, 232),
+                    //             fontSize: 25,
+                    //             wordSpacing: 3))),
                     const SizedBox(
                       height: 20,
                     ),
@@ -253,15 +256,18 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
                         child: Text('Project Description',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 241, 240, 244),
+                                fontFamily: 'Times',
                                 fontSize: 25,
                                 wordSpacing: 3))),
-                    Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
-                        child: Text(widget.description,
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 230, 229, 232),
-                                fontSize: 20,
-                                wordSpacing: 3))),
+                    project_preview_attr(text: widget.description),
+                    // Padding(
+                    //     padding:
+                    //         const EdgeInsets.only(left: 15, top: 6, right: 15),
+                    //     child: Text(widget.description,
+                    //         style: const TextStyle(
+                    //             color: Color.fromARGB(255, 230, 229, 232),
+                    //             fontSize: 20,
+                    //             wordSpacing: 3))),
                     const SizedBox(
                       height: 20,
                     ),
@@ -270,15 +276,18 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
                         child: Text('Project Member(s)',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 241, 240, 244),
+                                fontFamily: 'Times',
                                 fontSize: 25,
                                 wordSpacing: 3))),
-                    Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
-                        child: Text(widget.members.toString(),
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 230, 229, 232),
-                                fontSize: 20,
-                                wordSpacing: 3))),
+                    project_preview_attr(text: widget.members.toString()),
+                    // Padding(
+                    //     padding:
+                    //         const EdgeInsets.only(left: 15, top: 6, right: 15),
+                    //     child: Text(widget.members.toString(),
+                    //         style: const TextStyle(
+                    //             color: Color.fromARGB(255, 230, 229, 232),
+                    //             fontSize: 20,
+                    //             wordSpacing: 3))),
                     const SizedBox(
                       height: 20,
                     ),
@@ -287,6 +296,7 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
                         child: Text('Created',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 241, 240, 244),
+                                fontFamily: 'Times',
                                 fontSize: 25,
                                 wordSpacing: 3))),
                     project_preview_attr(text: widget.created),
@@ -312,6 +322,7 @@ class project_preview_attr extends StatelessWidget {
         child: Text(this.text,
             style: const TextStyle(
                 color: Color.fromARGB(255, 241, 240, 244),
+                fontFamily: 'Times',
                 fontSize: 25,
                 wordSpacing: 3)));
   }

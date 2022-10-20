@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import '../auth.dart';
 import 'home_page.dart';
@@ -54,7 +55,28 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(
             height: 50,
           ),
-          ElevatedButton.icon(
+          // ElevatedButton.icon(
+          //   onPressed: () async {
+          //     await signInWithGoogle().then((value) {
+          //       print("${value.user!.email} has logged in");
+          //       Navigator.pushReplacement(
+          //         context,
+          //         MaterialPageRoute(
+          //             builder: (context) =>
+          //                 const MyHomePage(title: 'Developer\'s Almanac')),
+          //       );
+          //     }).catchError(
+          //       (e) => AlertDialog(
+          //         title: const Text('Error'),
+          //         content: Text(e.toString()),
+          //       ),
+          //     );
+          //   },
+          //   icon: Icon(Icons.login),
+          //   label: Text('Login with Google'),
+          // ),
+          SignInButton(
+            Buttons.Google,
             onPressed: () async {
               await signInWithGoogle().then((value) {
                 print("${value.user!.email} has logged in");
@@ -71,8 +93,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               );
             },
-            icon: Icon(Icons.login),
-            label: Text('Login with Google'),
           )
         ],
       )),
