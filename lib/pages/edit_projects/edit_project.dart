@@ -264,8 +264,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                   _selectedIndex = -1;
                                 } else {
                                   _selectedIndex = index;
-                                  _projectInfoController.text =
-                                      stack['stack_title'];
+                                  _projectInfoController.text = stack['stack_title'];
                                 }
                                 selectedID = stack.id;
                                 widget.callback();
@@ -275,17 +274,19 @@ class _ViewStacksState extends State<ViewStacks> {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      ViewBugOverlay(
-                                        stackID: stack.id,
-                                        stackCollection: stackCollection,
-                                      ));
+                                    ViewBugOverlay(
+                                      stackID: stack.id,
+                                      stackCollection: stackCollection,
+                                      stackTitle: stack['stack_title'],
+                                      stackType: stack['stack_type'],
+                                    )
+                              );
                             }),
                             child: Card(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                     side: const BorderSide(
-                                        color: Color.fromARGB(
-                                            255, 146, 153, 192),
+                                        color: Color.fromARGB(255, 146, 153, 192),
                                         width: 1)),
                                 color: index == _selectedIndex
                                     ? const Color.fromARGB(255, 14, 41, 60)
@@ -305,14 +306,11 @@ class _ViewStacksState extends State<ViewStacks> {
                                       ),
                                       Expanded(
                                         child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.end,
                                           children: [
                                         AddBugButton(
-                                          isSelected:
-                                              index == _selectedIndex,
-                                          project_query_doc:
-                                              widget.project_query_doc,
+                                          isSelected: index == _selectedIndex,
+                                          project_query_doc: widget.project_query_doc,
                                           stack_id: stack.id,
                                         ),
                                         IconButton(
@@ -320,22 +318,18 @@ class _ViewStacksState extends State<ViewStacks> {
                                           onPressed: () {
                                             showDialog(
                                                 context: context,
-                                                builder: (BuildContext
-                                                        context) =>
+                                                builder: (BuildContext context) =>
                                                     ModifyStack(
-                                                      query_doc: widget
-                                                          .project_query_doc,
+                                                      query_doc: widget.project_query_doc,
                                                       id: stack.id,
-                                                      stack_type: stack[
-                                                          'stack_type'],
-                                                      technology: stack[
-                                                          'stack_title'],
-                                                    ));
+                                                      stack_type: stack['stack_type'],
+                                                      technology: stack['stack_title'],
+                                                    )
+                                                );
                                           },
                                           color: index == _selectedIndex
                                               ? red
-                                              : const Color.fromARGB(
-                                                  255, 255, 255, 255),
+                                              : const Color.fromARGB(255, 255, 255, 255),
                                         ),
                                         IconButton(
                                           icon: const Icon(Icons.delete),
@@ -345,8 +339,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                                 builder: (BuildContext
                                                         context) =>
                                                     DeleteStackPopup(
-                                                        query_doc: widget
-                                                            .project_query_doc,
+                                                        query_doc: widget.project_query_doc,
                                                         id: stack.id));
                                           },
                                           color: index == _selectedIndex

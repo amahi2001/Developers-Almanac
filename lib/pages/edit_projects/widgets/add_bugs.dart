@@ -175,3 +175,44 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
     );
   }
 }
+
+/// This widget lets the user delete a stack given a stack ID
+class DeleteBugPopup extends StatefulWidget {
+  final CollectionReference bugCollection;
+  final String bugID;
+
+  const DeleteBugPopup({
+    super.key, 
+    required this.bugCollection,
+    required this.bugID
+  });
+
+  @override
+  State<DeleteBugPopup> createState() => _DeleteBugPopupState();
+}
+
+class _DeleteBugPopupState extends State<DeleteBugPopup> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Delete Bug'),
+      content: const Text('Are you sure you want to delete this bug?'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            widget.bugCollection.doc(widget.bugID).delete();
+            Navigator.pop(context);
+          },
+          child: const Text('Delete'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Cancel'),
+        ),
+      ],
+    );
+  }
+}
+
