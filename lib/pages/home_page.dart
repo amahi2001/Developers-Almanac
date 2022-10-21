@@ -259,6 +259,7 @@ class _ProjectsViewState extends State<ProjectsView> {
       });
     }
 
+    //! do not delete this method
     // deleteAll();
 
     super.initState();

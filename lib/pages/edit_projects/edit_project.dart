@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
 import 'package:flutter/material.dart';
 import 'widgets/add_bugs.dart';
 import 'widgets/add_collab.dart';
 import 'widgets/add_stack.dart';
 import '/auth.dart';
 import 'widgets/edit_stacks.dart';
+
+const Color white = Color.fromARGB(255, 255, 255, 255);
+const Color red = Color.fromARGB(255, 255, 0, 0);
 
 List<String> StackType = ["Frontend", "Backend", "Database", "Other"];
 String _selectedStackType = StackType.first;
@@ -41,11 +45,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //retain the appbar from the previous page
-        // title:
-        //     const Text("Edit Project", style: TextStyle(color: Colors.white)),
-        // backgroundColor: const Color.fromARGB(255, 14, 41, 60),
-        // centerTitle: true,
         title: const Text("Developer's Almanac"),
         actions: <Widget>[
           // Clear Icon
@@ -145,13 +144,11 @@ class _Edit_project_pageState extends State<Edit_project_page> {
             children: [
               Padding(
                   padding: const EdgeInsets.only(left: 15),
-                  child: SizedBox(
-                      width: 500,
-                      child: ViewStacks(
-                        project_query_doc: widget.project_query_doc,
-                        id: widget.project_query_doc.id,
-                        callback: () {},
-                      ))),
+                  child: ViewStacks(
+                    project_query_doc: widget.project_query_doc,
+                    id: widget.project_query_doc.id,
+                    callback: () {},
+                  )),
             ],
           )
         ],
@@ -201,12 +198,14 @@ class ViewStacks extends StatefulWidget {
 
 class _ViewStacksState extends State<ViewStacks> {
   late Stream<QuerySnapshot> stackStream;
+  late CollectionReference stackCollection;
   int _selectedIndex = -1;
 
   @override
   void initState() {
     super.initState();
-    stackStream = widget.project_query_doc.collection("Stack").snapshots();
+    stackCollection = widget.project_query_doc.collection("Stack");
+    stackStream = stackCollection.snapshots();
   }
 
   @override
@@ -254,162 +253,110 @@ class _ViewStacksState extends State<ViewStacks> {
                               style: TextStyle(color: Colors.white));
                         }
                         return InkWell(
-                            onTap: (() => setState(() {
-                                  for (var x in StackType) {
-                                    if (stack['stack_type'] == x) {
-                                      _selectedStackType = x;
-                                    }
+                            onTap: (() {
+                              setState(() {
+                                for (var x in StackType) {
+                                  if (stack['stack_type'] == x) {
+                                    _selectedStackType = x;
                                   }
-                                  if (_selectedIndex == index) {
-                                    _selectedIndex = -1;
-                                  } else {
-                                    _selectedIndex = index;
-                                    _projectInfoController.text =
-                                        stack['stack_title'];
-                                  }
-                                  selectedID = stack.id;
-                                  widget.callback();
-                                })),
-                            child: Container(
-                                width: 500,
-                                height: 60,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                  bottom: BorderSide(
-                                      width: 0.2,
-                                      color: Color.fromARGB(172, 14, 41, 60)),
-                                )),
-                                child: Row(children: [
-                                  Flexible(
-                                      fit: FlexFit.tight,
-                                      child: Container(
-                                          color: Colors.transparent,
-                                          width: 500,
-                                          height: 60,
-                                          child: Card(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  side: const BorderSide(
-                                                      color: Color.fromARGB(
-                                                          255, 146, 153, 192),
-                                                      width: 1)),
+                                }
+                                if (_selectedIndex == index) {
+                                  _selectedIndex = -1;
+                                } else {
+                                  _selectedIndex = index;
+                                  _projectInfoController.text =
+                                      stack['stack_title'];
+                                }
+                                selectedID = stack.id;
+                                widget.callback();
+                              });
+
+                              //show Bugs in Stack
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      ViewBugOverlay(
+                                        stackID: stack.id,
+                                        stackCollection: stackCollection,
+                                      ));
+                            }),
+                            child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    side: const BorderSide(
+                                        color: Color.fromARGB(
+                                            255, 146, 153, 192),
+                                        width: 1)),
+                                color: index == _selectedIndex
+                                    ? const Color.fromARGB(255, 14, 41, 60)
+                                    : const Color.fromARGB(255, 22, 66, 97),
+                                child: Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Row(children: [
+                                      Expanded(
+                                        child: Text(
+                                          '${stack['stack_type']}: ${stack['stack_title']}',
+                                          style: TextStyle(
                                               color: index == _selectedIndex
-                                                  ? const Color.fromARGB(
-                                                      255, 14, 41, 60)
-                                                  : const Color.fromARGB(
-                                                      255, 22, 66, 97),
-                                              child: Column(
-                                                children: [
-                                                  Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5),
-                                                      child: Row(children: [
-                                                        Text(
-                                                          '${stack['stack_type']}: ${stack['stack_title']}',
-                                                          style: TextStyle(
-                                                              color: index ==
-                                                                      _selectedIndex
-                                                                  ? const Color
-                                                                          .fromARGB(
-                                                                      255,
-                                                                      255,
-                                                                      255,
-                                                                      255)
-                                                                  : const Color
-                                                                          .fromARGB(
-                                                                      255,
-                                                                      255,
-                                                                      255,
-                                                                      255),
-                                                              fontSize: 15),
-                                                        ),
-                                                        Expanded(
-                                                            child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            AddBugButton(
-                                                              isSelected: index ==
-                                                                  _selectedIndex,
-                                                              project_query_doc:
-                                                                  widget
-                                                                      .project_query_doc,
-                                                              stack_id:
-                                                                  stack.id,
-                                                            ),
-                                                            IconButton(
-                                                              icon: const Icon(
-                                                                  Icons.edit),
-                                                              onPressed: () {
-                                                                showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder: (BuildContext
-                                                                            context) =>
-                                                                        ModifyStack(
-                                                                          query_doc:
-                                                                              widget.project_query_doc,
-                                                                          id: stack
-                                                                              .id,
-                                                                          stack_type:
-                                                                              stack['stack_type'],
-                                                                          technology:
-                                                                              stack['stack_title'],
-                                                                        ));
-                                                              },
-                                                              color: index ==
-                                                                      _selectedIndex
-                                                                  ? const Color
-                                                                          .fromARGB(
-                                                                      255,
-                                                                      255,
-                                                                      0,
-                                                                      0)
-                                                                  : const Color
-                                                                          .fromARGB(
-                                                                      255,
-                                                                      255,
-                                                                      255,
-                                                                      255),
-                                                            ),
-                                                            IconButton(
-                                                              icon: const Icon(
-                                                                  Icons.delete),
-                                                              onPressed: () {
-                                                                showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder: (BuildContext context) => DeleteStackPopup(
-                                                                        query_doc:
-                                                                            widget
-                                                                                .project_query_doc,
-                                                                        id: stack
-                                                                            .id));
-                                                              },
-                                                              color: index ==
-                                                                      _selectedIndex
-                                                                  ? const Color
-                                                                          .fromARGB(
-                                                                      255,
-                                                                      255,
-                                                                      0,
-                                                                      0)
-                                                                  : const Color
-                                                                          .fromARGB(
-                                                                      255,
-                                                                      255,
-                                                                      255,
-                                                                      255),
-                                                            ),
-                                                          ],
-                                                        )),
-                                                      ]))
-                                                ],
-                                              ))))
-                                ])));
+                                                  ? red
+                                                  : white,
+                                              fontSize: 15),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: [
+                                        AddBugButton(
+                                          isSelected:
+                                              index == _selectedIndex,
+                                          project_query_doc:
+                                              widget.project_query_doc,
+                                          stack_id: stack.id,
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    ModifyStack(
+                                                      query_doc: widget
+                                                          .project_query_doc,
+                                                      id: stack.id,
+                                                      stack_type: stack[
+                                                          'stack_type'],
+                                                      technology: stack[
+                                                          'stack_title'],
+                                                    ));
+                                          },
+                                          color: index == _selectedIndex
+                                              ? red
+                                              : const Color.fromARGB(
+                                                  255, 255, 255, 255),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    DeleteStackPopup(
+                                                        query_doc: widget
+                                                            .project_query_doc,
+                                                        id: stack.id));
+                                          },
+                                          color: index == _selectedIndex
+                                              ? red
+                                              : white,
+                                        ),
+                                          ],
+                                        ),
+                                      ),
+                                    ]))));
                       }))
             ]));
       },
