@@ -347,10 +347,8 @@ class _ProjectsViewState extends State<ProjectsView> {
                                       padding: const EdgeInsets.only(
                                           left: 15, right: 15, bottom: 6),
                                       child: Text(
-                                          "Updated on " +
-                                              project['last_updated']
-                                                  .toDate()
-                                                  .toString(),
+                                          "Updated on ${project['last_updated']
+                                                  .toDate()}",
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 230, 229, 232),

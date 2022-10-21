@@ -23,7 +23,7 @@ class _AddBugButtonState extends State<AddBugButton> {
       icon: const Icon(Icons.bug_report),
       color: widget.isSelected
           ? const Color.fromARGB(255, 255, 0, 0)
-          : Color.fromARGB(255, 193, 125, 47),
+          : const Color.fromARGB(255, 193, 125, 47),
       onPressed: () {
         showDialog(
             context: context,
@@ -131,7 +131,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
               Padding(
                 padding: const EdgeInsets.all(.0),
                 child: CheckboxListTile(
-                  title: Text("Bug Solved"),
+                  title: const Text("Bug Solved"),
                   value: _bugSolved,
                   onChanged: (val) {
                     setState(() {

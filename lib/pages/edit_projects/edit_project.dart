@@ -163,7 +163,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
           children: [
             FloatingActionButton(
               heroTag: "btn1",
-              child: const Icon(Icons.person_add),
               backgroundColor: const Color.fromARGB(123, 223, 211, 211),
               onPressed: () {
                 showDialog(
@@ -173,6 +172,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                   ),
                 );
               },
+              child: const Icon(Icons.person_add),
             ),
             const SizedBox(
               height: 10,

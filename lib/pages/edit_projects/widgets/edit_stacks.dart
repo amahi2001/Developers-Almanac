@@ -56,7 +56,7 @@ class _ModifyStackState extends State<ModifyStack> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(1.0),
+                      padding: const EdgeInsets.all(1.0),
                       child: DropdownButton(
                           underline: const SizedBox(),
                           value: _selectedStackType,

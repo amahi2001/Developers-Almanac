@@ -55,26 +55,6 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(
             height: 50,
           ),
-          // ElevatedButton.icon(
-          //   onPressed: () async {
-          //     await signInWithGoogle().then((value) {
-          //       print("${value.user!.email} has logged in");
-          //       Navigator.pushReplacement(
-          //         context,
-          //         MaterialPageRoute(
-          //             builder: (context) =>
-          //                 const MyHomePage(title: 'Developer\'s Almanac')),
-          //       );
-          //     }).catchError(
-          //       (e) => AlertDialog(
-          //         title: const Text('Error'),
-          //         content: Text(e.toString()),
-          //       ),
-          //     );
-          //   },
-          //   icon: Icon(Icons.login),
-          //   label: Text('Login with Google'),
-          // ),
           SignInButton(
             Buttons.Google,
             onPressed: () async {
@@ -87,10 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                           const MyHomePage(title: 'Developer\'s Almanac')),
                 );
               }).catchError(
-                (e) => AlertDialog(
-                  title: const Text('Error'),
-                  content: Text(e.toString()),
-                ),
+                (e) => print(e),
               );
             },
           )

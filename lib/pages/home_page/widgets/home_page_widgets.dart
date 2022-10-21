@@ -61,13 +61,6 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton(
                         value: _selectedStackType,
-                        // icon: const Icon(Icons.arrow_downward),
-                        // elevation: 16,
-                        // style: const TextStyle(color: Colors.deepPurple),
-                        // underline: Container(
-                        //   height: 2,
-                        //   color: Colors.deepPurpleAccent,
-                        // ),
                         onChanged: (String? value) {
                           // This is called when the user selects an item.
                           setState(() {
@@ -231,75 +224,23 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
                     const SizedBox(
                       height: 30,
                     ),
-                    const Padding(
-                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
-                        child: Text('Project Name',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 241, 240, 244),
-                                fontFamily: 'Times',
-                                fontSize: 30,
-                                wordSpacing: 3))),
-                    project_preview_attr(text: widget.title),
-                    // Padding(
-                    //     padding:
-                    //         const EdgeInsets.only(left: 15, top: 6, right: 15),
-                    //     child: Text(widget.title,
-                    //         style: const TextStyle(
-                    //             color: Color.fromARGB(255, 230, 229, 232),
-                    //             fontSize: 25,
-                    //             wordSpacing: 3))),
+                    const project_preview_name(text: 'Project Title'),
+                    project_preview_desc(text: widget.title),
                     const SizedBox(
                       height: 20,
                     ),
-                    const Padding(
-                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
-                        child: Text('Project Description',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 241, 240, 244),
-                                fontFamily: 'Times',
-                                fontSize: 25,
-                                wordSpacing: 3))),
-                    project_preview_attr(text: widget.description),
-                    // Padding(
-                    //     padding:
-                    //         const EdgeInsets.only(left: 15, top: 6, right: 15),
-                    //     child: Text(widget.description,
-                    //         style: const TextStyle(
-                    //             color: Color.fromARGB(255, 230, 229, 232),
-                    //             fontSize: 20,
-                    //             wordSpacing: 3))),
+                    const project_preview_name(text: 'Project Description'),
+                    project_preview_desc(text: widget.description),
                     const SizedBox(
                       height: 20,
                     ),
-                    const Padding(
-                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
-                        child: Text('Project Member(s)',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 241, 240, 244),
-                                fontFamily: 'Times',
-                                fontSize: 25,
-                                wordSpacing: 3))),
-                    project_preview_attr(text: widget.members.toString()),
-                    // Padding(
-                    //     padding:
-                    //         const EdgeInsets.only(left: 15, top: 6, right: 15),
-                    //     child: Text(widget.members.toString(),
-                    //         style: const TextStyle(
-                    //             color: Color.fromARGB(255, 230, 229, 232),
-                    //             fontSize: 20,
-                    //             wordSpacing: 3))),
+                    const project_preview_name(text: 'Project Member(s)'),
+                    project_preview_desc(text: widget.members.toString()),
                     const SizedBox(
                       height: 20,
                     ),
-                    const Padding(
-                        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
-                        child: Text('Created',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 241, 240, 244),
-                                fontFamily: 'Times',
-                                fontSize: 25,
-                                wordSpacing: 3))),
-                    project_preview_attr(text: widget.created),
+                    const project_preview_name(text: 'Created'),
+                    project_preview_desc(text: widget.created),
                   ],
                 ),
               )
@@ -311,9 +252,9 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
   }
 }
 
-class project_preview_attr extends StatelessWidget {
+class project_preview_desc extends StatelessWidget {
   final String text;
-  const project_preview_attr({super.key, required this.text});
+  const project_preview_desc({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -321,6 +262,23 @@ class project_preview_attr extends StatelessWidget {
         padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
         child: Text(this.text,
             style: const TextStyle(
+                color: Color.fromARGB(255, 241, 240, 244),
+                fontFamily: 'Times',
+                fontSize: 25,
+                wordSpacing: 3)));
+  }
+}
+
+class project_preview_name extends StatelessWidget {
+  final String text;
+  const project_preview_name({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+        child: Text('Created',
+            style: TextStyle(
                 color: Color.fromARGB(255, 241, 240, 244),
                 fontFamily: 'Times',
                 fontSize: 25,
