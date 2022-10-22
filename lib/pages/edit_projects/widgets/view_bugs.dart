@@ -34,7 +34,9 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
     super.initState();
     print(widget.stackID);
     print("View Bugs");
-    bugStream = widget.stackCollection.doc(widget.stackID).collection("Bug").snapshots();
+    bugStream = widget.stackCollection.doc(widget.stackID).collection("Bug")
+    .orderBy('created_at', descending: true)
+    .snapshots();
   }
 
   @override
@@ -77,7 +79,7 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                           child: Text(
                             '${widget.stackType}: ${widget.stackTitle}',
                             textAlign: TextAlign.center,   
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 25,
                               wordSpacing: 3,
@@ -86,11 +88,11 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(bottom: 12.0),
+                        padding: const EdgeInsets.only(bottom: 12.0),
                         child: Text(
                           'Bug Count: ${snapshot.data!.size}',
                           textAlign: TextAlign.center,   
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15,
                             wordSpacing: 3,
@@ -105,10 +107,10 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                           QueryDocumentSnapshot<Object?> bug = snapshot.data!.docs[index];
 
                           return Padding(
-                            padding: EdgeInsets.only(left:10, right: 10, bottom: 5),
+                            padding: const EdgeInsets.only(left:10, right: 10, bottom: 5),
                             child: Card(
                                 elevation: 10,
-                                color: Color.fromARGB(255, 30, 82, 119),
+                                color: const Color.fromARGB(255, 30, 82, 119),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                     side: const BorderSide(
