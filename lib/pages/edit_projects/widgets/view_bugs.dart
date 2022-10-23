@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import '../edit_bug.dart';
 import '../edit_project.dart';
-import 'add_bugs.dart';
 
 class ViewBugOverlay extends StatefulWidget {
   final String stackID;
@@ -130,19 +127,31 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                                 top: 6,
                                                 right: 15,
                                                 bottom: 3),
-                                            child: Text(bug['bug_name'],
-                                                style: const TextStyle(
-                                                    color: white,
-                                                    fontSize: 20,
-                                                    wordSpacing: 3))),
+                                            child: Center(
+                                              child: Text(bug['bug_name'],
+                                  
+                                                  style: const TextStyle(
+                                                      color: Colors.orange,
+                                                      fontSize: 20,
+                                                      wordSpacing: 3)),
+                                            )),
+                                        const Divider(
+                                          color: Colors.orange,
+                                          thickness: 2,
+                                          // indent: 10,
+                                          // endIndent: 10,
+                                        ),
+                                        const Bug_Description_field_text(text: "Description:"),
                                         Bug_Description_Text(
                                             text: bug['bug_description']),
+                                        const Bug_Description_field_text(text: "Created on:"),
                                         Bug_Description_Text(
                                             text: bug['created_at']
                                                 .toDate()
                                                 .toString()),
+                                        const Bug_Description_field_text(text: "Was Solved:"),
                                         Bug_Description_Text(
-                                            text: bug['is_solved'].toString()),
+                                            text: bug['is_solved'] ? "Yes" : "No"),
                                       ],
                                     ),
                                   ),
@@ -180,6 +189,20 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
   }
 }
 
+class Bug_Description_field_text extends StatelessWidget {
+  final String text;
+  const Bug_Description_field_text({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Text(text,
+          style: const TextStyle(color: Colors.limeAccent, fontSize: 18, wordSpacing: 3)),
+    );
+  }
+}
+
 class Bug_Description_Text extends StatelessWidget {
   final String text;
   const Bug_Description_Text({super.key, required this.text});
@@ -187,12 +210,10 @@ class Bug_Description_Text extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 6),
+        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 6, top: 6),
         child: Text(text,
-            style: const TextStyle(
-                color: white,
-                fontSize: 12,
-                wordSpacing: 5)));
+            style:
+                const TextStyle(color: white, fontSize: 15, wordSpacing: 5)));
   }
 }
 
