@@ -306,14 +306,12 @@ class _ProjectsViewState extends State<ProjectsView> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) => ShowProjectPopup(
-                                project_ID: project.id,
-                                title: project['project_title'],
-                                description: project['project_description'],
-                                members: project['members'],
-                                created: project['creation_date']
-                                    .toDate()
-                                    .toString(),
-                              ))
+                              project_ID: project.id,
+                              title: project['project_title'],
+                              description: project['project_description'],
+                              members: project['members'],
+                              created:
+                                  project['creation_date'].toDate().toString()))
                     },
                     child: Card(
                       elevation: 10,
@@ -348,8 +346,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                       padding: const EdgeInsets.only(
                                           left: 15, right: 15, bottom: 6),
                                       child: Text(
-                                          "Updated on ${project['last_updated']
-                                                  .toDate()}",
+                                          "Updated on ${project['last_updated'].toDate()}",
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 230, 229, 232),
@@ -390,7 +387,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                               icon: const Icon(
                                 Icons.delete_sweep_rounded,
                                 size: 30,
-                                color: Colors.red,
+                                color: Color.fromARGB(255, 185, 55, 45),
                               ),
                               onPressed: () {
                                 showDialog(

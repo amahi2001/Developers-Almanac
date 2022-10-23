@@ -224,22 +224,22 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
                     const SizedBox(
                       height: 30,
                     ),
-                    const project_preview_name(text: 'Project Title'),
+                    const project_preview_desc(text: 'Project Title'),
                     project_preview_desc(text: widget.title),
                     const SizedBox(
                       height: 20,
                     ),
-                    const project_preview_name(text: 'Project Description'),
+                    const project_preview_desc(text: 'Project Description'),
                     project_preview_desc(text: widget.description),
                     const SizedBox(
                       height: 20,
                     ),
-                    const project_preview_name(text: 'Project Member(s)'),
+                    const project_preview_desc(text: 'Project Member(s)'),
                     project_preview_desc(text: widget.members.toString()),
                     const SizedBox(
                       height: 20,
                     ),
-                    const project_preview_name(text: 'Created'),
+                    const project_preview_desc(text: 'Created'),
                     project_preview_desc(text: widget.created),
                   ],
                 ),
@@ -262,23 +262,6 @@ class project_preview_desc extends StatelessWidget {
         padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
         child: Text(this.text,
             style: const TextStyle(
-                color: Color.fromARGB(255, 241, 240, 244),
-                fontFamily: 'Times',
-                fontSize: 25,
-                wordSpacing: 3)));
-  }
-}
-
-class project_preview_name extends StatelessWidget {
-  final String text;
-  const project_preview_name({super.key, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Padding(
-        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
-        child: Text('Created',
-            style: TextStyle(
                 color: Color.fromARGB(255, 241, 240, 244),
                 fontFamily: 'Times',
                 fontSize: 25,
