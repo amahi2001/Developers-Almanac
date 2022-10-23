@@ -254,7 +254,10 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
 
 class project_preview_desc extends StatelessWidget {
   final String text;
-  const project_preview_desc({super.key, required this.text});
+  const project_preview_desc({
+    super.key, 
+    required this.text
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -262,24 +265,27 @@ class project_preview_desc extends StatelessWidget {
         padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
         child: Text(this.text,
             style: const TextStyle(
-                color: Color.fromARGB(255, 241, 240, 244),
+                color: Color.fromARGB(255, 220, 220, 222),
                 fontFamily: 'Times',
-                fontSize: 25,
+                fontSize: 20,
                 wordSpacing: 3)));
   }
 }
 
 class project_preview_name extends StatelessWidget {
   final String text;
-  const project_preview_name({super.key, required this.text});
+  const project_preview_name({
+    super.key, 
+    required this.text
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
         padding: EdgeInsets.only(left: 15, top: 6, right: 15),
-        child: Text('Created',
-            style: TextStyle(
-                color: Color.fromARGB(255, 241, 240, 244),
+        child: Text(this.text,
+            style: const TextStyle(
+                color: Color.fromARGB(255, 255, 255, 255),
                 fontFamily: 'Times',
                 fontSize: 25,
                 wordSpacing: 3)));
