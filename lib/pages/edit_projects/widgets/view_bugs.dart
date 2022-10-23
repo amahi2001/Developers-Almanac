@@ -47,7 +47,7 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
           height: MediaQuery.of(context).size.height * 0.8,
           child: Card(
               elevation: 10,
-              color: const Color.fromARGB(255, 22, 66, 97),
+              color: theme_color,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                   side: const BorderSide(
@@ -58,7 +58,6 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
-                    //todo some text that says no data
                     String error = snapshot.error.toString();
                     print(error);
                     return Text(error,
@@ -109,7 +108,7 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
 
                           return Card(
                             elevation: 10,
-                            color: const Color.fromARGB(255, 22, 66, 97),
+                            color: theme_color,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
                                 side: const BorderSide(

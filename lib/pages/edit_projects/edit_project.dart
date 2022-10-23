@@ -9,6 +9,7 @@ import 'widgets/edit_stacks.dart';
 
 const Color white = Color.fromARGB(255, 255, 255, 255);
 const Color red = Color.fromARGB(255, 255, 0, 0);
+const Color theme_color = Color.fromARGB(255, 22, 66, 97);
 
 List<String> StackType = ["Frontend", "Backend", "Database", "Other"];
 String _selectedStackType = StackType.first;
@@ -308,7 +309,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                         width: 1)),
                                 color: index == _selectedIndex
                                     ? const Color.fromARGB(255, 14, 41, 60)
-                                    : const Color.fromARGB(255, 22, 66, 97),
+                                    : theme_color,
                                 child: Padding(
                                     padding: const EdgeInsets.all(5),
                                     child: Row(children: [

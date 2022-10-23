@@ -317,7 +317,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                     },
                     child: Card(
                       elevation: 10,
-                      color: const Color.fromARGB(255, 22, 66, 97),
+                      color: theme_color,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                           side: const BorderSide(
