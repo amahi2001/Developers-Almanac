@@ -374,13 +374,6 @@ class _ProjectsViewState extends State<ProjectsView> {
                                         builder: (context) => Edit_project_page(
                                               project_query_doc: project_doc,
                                               project_ID: project.id,
-                                              title: project['project_title'],
-                                              description: project[
-                                                  'project_description'],
-                                              members: project['members'],
-                                              created: project['creation_date']
-                                                  .toDate()
-                                                  .toString(),
                                             )));
                               },
                             ),

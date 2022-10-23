@@ -73,7 +73,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
             if (!snapshot.hasData) {
               return Text("No Data");
             }
-
             return ListView(
               children: [
                 Row(
@@ -104,9 +103,11 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                             color: Color.fromARGB(255, 230, 229, 232),
                             fontSize: 25,
                             wordSpacing: 3))),
-                project_preview_attr(text: snapshot.data["project_description"]),
+                project_preview_attr(
+                    text: snapshot.data["project_description"]),
                 project_preview_attr(text: snapshot.data["members"].toString()),
-                project_preview_attr(text: snapshot.data["creation_date"]),
+                project_preview_attr(
+                    text: snapshot.data["creation_date"].toDate().toString()),
                 // Horizontal Divider
                 const Divider(
                   height: 30,
