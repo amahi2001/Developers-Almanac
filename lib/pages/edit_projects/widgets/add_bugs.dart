@@ -50,10 +50,10 @@ class AddBugPopUp extends StatefulWidget {
 class _AddBugPopUpState extends State<AddBugPopUp> {
   final _addBugKey = GlobalKey<FormState>();
   final TextEditingController _bugNameController = TextEditingController();
-  final TextEditingController _bugDescriptionController =
-      TextEditingController();
-  final TextEditingController _bugErrorOutputController =
-      TextEditingController();
+  final TextEditingController _bugDescriptionController = TextEditingController();
+  final TextEditingController _bugErrorOutputController = TextEditingController();
+    final TextEditingController _bugSolutionsController = TextEditingController();
+
   bool _bugSolved = false;
 
   callback() {
@@ -127,20 +127,37 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(.0),
+                  padding: const EdgeInsets.only(top: 15),
                   child: CheckboxListTile(
                     title: const Text("Bug Solved"),
                     value: _bugSolved,
                     onChanged: (val) {
                       setState(() {
                         _bugSolved = val!;
-                        print(val);
-                        print(_bugSolved);
                         callback();
                       });
                     },
                   ),
                 ),
+                Visibility(
+                    visible: _bugSolved,
+                    child: Padding(
+                      padding: const EdgeInsets.all(.0),
+                      child: TextFormField(
+                        controller: _bugSolutionsController,
+                        decoration: const InputDecoration(
+                          border: UnderlineInputBorder(),
+                          labelText: 'Enter Solution:',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Solution';
+                          }
+                          return null;
+                        },
+                    ),
+                  ),
+                ), 
               ],
             ),
           )),
@@ -163,6 +180,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                 'bug_name': _bugNameController.text,
                 'bug_description': _bugDescriptionController.text,
                 'error_output': _bugErrorOutputController.text,
+                'solution': _bugSolutionsController.text,
                 'is_solved': _bugSolved,
                 'created_at': today,
               }).then((value) {
