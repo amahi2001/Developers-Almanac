@@ -262,13 +262,13 @@ class project_preview_desc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
-        child: Text(this.text,
+        padding: const EdgeInsets.only(top: 10),
+        child: Align(alignment: Alignment.topLeft,
+          child: Text(this.text,
             style: const TextStyle(
                 color: Color.fromARGB(255, 220, 220, 222),
                 fontFamily: 'Times',
-                fontSize: 20,
-                wordSpacing: 3)));
+                fontSize: 13))));
   }
 }
 
@@ -282,12 +282,14 @@ class project_preview_name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+        padding: EdgeInsets.only(top: 20),
+        child: Align(alignment: Alignment.topLeft, 
         child: Text(this.text,
             style: const TextStyle(
                 color: Color.fromARGB(255, 255, 255, 255),
                 fontFamily: 'Times',
-                fontSize: 25,
-                wordSpacing: 3)));
+                fontSize: 15,
+                fontWeight: FontWeight.w300,
+                wordSpacing: 3))));
   }
 }

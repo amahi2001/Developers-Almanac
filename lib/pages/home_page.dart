@@ -9,7 +9,11 @@ import 'login_page.dart';
 import 'edit_projects/edit_project.dart';
 
 String searchT = "";
-var numCalled = 0;
+
+String projectName = "";
+String projectDescription = "";
+String projectMembers = "";
+String projectCreated = "";
 
 /// this widget let's us search through projects
 class _searchTextField extends StatefulWidget {
@@ -42,8 +46,7 @@ class __searchTextFieldState extends State<_searchTextField> {
         child: TextField(
           onChanged: (String value) async {
             //print(value);
-            ProjectsView();
-            numCalled += 1;
+            ProjectsView(notifyParent: () {});
           },
           controller: _projectSearchBar,
           autofocus: true, //Display the keyboard when TextField is displayed
@@ -193,16 +196,16 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.only(left: 50, right: 50),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:  [
+              children: [
                 Text(
-                    "Projects",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Times',
-                      fontSize: 30,
-                    ),
-                    textAlign: TextAlign.left,
+                  "Projects",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Times',
+                    fontSize: 30,
                   ),
+                  textAlign: TextAlign.left,
+                ),
                 Divider(
                   height: 50,
                   thickness: 5,
@@ -212,21 +215,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     Icons.add,
                     size: 30,
                     color: Colors.white,
-                  ), 
-                  onPressed: () { 
+                  ),
+                  onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (BuildContext context) => const AddProjectPopup(),
-                    ); 
+                      builder: (BuildContext context) =>
+                          const AddProjectPopup(),
+                    );
                   },
                 )
               ],
             ),
           ),
           // Horizontal Divider
-          Padding(
-            padding: EdgeInsets.only(left:45, right: 45),
-              child: const Divider(
+          const Padding(
+            padding: EdgeInsets.only(left: 45, right: 45),
+            child: Divider(
               height: 30,
               thickness: 3,
               color: Colors.white,
@@ -238,10 +242,61 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Color.fromARGB(255, 14, 41, 60),
           ),
           Padding(
-            padding: EdgeInsets.only(left:45, right: 45),
-              child: ProjectsView(),
+            padding: const EdgeInsets.only(left: 45, right: 45),
+            child: Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                      width: 300,
+                      height: 500,
+                      child: ProjectsView(notifyParent: refresh)),
+                ),
+
+                Expanded(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: 500,
+                    child: Column(
+                      children: [
+                        Card(
+                          elevation: 10,
+                          color: const Color.fromARGB(255, 22, 66, 97),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              side: const BorderSide(
+                                  color: Color.fromARGB(255, 146, 153, 192),
+                                  width: 1)),
+                          margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                          child: SizedBox(
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Row(
+                                children: [
+                                  Column(
+                                    children: [
+                                      // add conditional:
+                                      // if no projects, dont display sizedbox, otherwise return sizedBox
+                                      SizedBox(
+                                        height: 450,
+                                        width: MediaQuery.of(context).size.width * 0.3,
+                                        child: SingleChildScrollView(
+                                          child: ProjectInfoPreviewView(),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          // ProjectsView(),
         ],
       ),
       // Add Project button
@@ -259,9 +314,37 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class ProjectInfoPreviewView extends StatefulWidget {
+  ProjectInfoPreviewView({super.key});
+  @override
+  State<ProjectInfoPreviewView> createState() => _ProjectInfoPreviewViewState();
+}
+
+class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
+  @override
+  Widget build(Object context) {
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 0.5, left: 15),
+      child: Column(children: [
+        const project_preview_name(text: 'Project Title'),
+        project_preview_desc(text: projectName),
+        const project_preview_name(text: 'Project Description'),
+        project_preview_desc(text: projectDescription),
+        const project_preview_name(text: 'Project Member(s)'),
+        project_preview_desc(text: projectMembers),
+        const project_preview_name(text: 'Created'),
+        project_preview_desc(text: projectCreated),
+      ]),
+    );
+  }
+}
+
 /// This widget lets the user view all of their projects
 class ProjectsView extends StatefulWidget {
-  ProjectsView({super.key});
+  final Function() notifyParent;
+  ProjectsView({super.key, required this.notifyParent});
+  //ProjectsView({super.key});
 
   @override
   State<ProjectsView> createState() => _ProjectsViewState();
@@ -327,17 +410,14 @@ class _ProjectsViewState extends State<ProjectsView> {
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: InkWell(
                     onTap: () => {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) => ShowProjectPopup(
-                                project_ID: project.id,
-                                title: project['project_title'],
-                                description: project['project_description'],
-                                members: project['members'],
-                                created: project['creation_date']
-                                    .toDate()
-                                    .toString(),
-                              ))
+                      setState(() {
+                        projectName = project['project_title'];
+                        projectDescription = project['project_description'];
+                        projectMembers = project['members'].toString();
+                        projectCreated =
+                            project['creation_date'].toDate().toString();
+                        widget.notifyParent();
+                      }),
                     },
                     child: Card(
                       elevation: 10,
