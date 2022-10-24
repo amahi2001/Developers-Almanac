@@ -53,6 +53,7 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
               child: StreamBuilder<QuerySnapshot>(
                 stream: bugStream,
                 builder: (BuildContext context,
+                   
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     String error = snapshot.error.toString();
@@ -63,6 +64,7 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Text("Loading",
+                       
                         style: TextStyle(color: Colors.white));
                   }
 

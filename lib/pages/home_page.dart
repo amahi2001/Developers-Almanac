@@ -186,51 +186,75 @@ class _MyHomePageState extends State<MyHomePage> {
       )),
       body: ListView(
         children: [
-          Row(
-            children: const [
-              Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: Text(
-                  "Projects",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Times',
-                    fontSize: 30,
+          SizedBox(
+            height: 30,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 50, right: 50),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children:  [
+                Text(
+                    "Projects",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Times',
+                      fontSize: 30,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
-                  textAlign: TextAlign.left,
+                Divider(
+                  height: 50,
+                  thickness: 5,
                 ),
-              ),
-              Divider(
-                height: 70,
-                thickness: 5,
-              ),
-            ],
+                IconButton(
+                  icon: const Icon(
+                    Icons.add,
+                    size: 30,
+                    color: Colors.white,
+                  ), 
+                  onPressed: () { 
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => const AddProjectPopup(),
+                    ); 
+                  },
+                )
+              ],
+            ),
           ),
           // Horizontal Divider
-          const Divider(
-            height: 30,
-            thickness: 3,
-            color: Colors.white,
+          Padding(
+            padding: EdgeInsets.only(left:45, right: 45),
+              child: const Divider(
+              height: 30,
+              thickness: 3,
+              color: Colors.white,
+            ),
           ),
           const Divider(
             height: 30,
             thickness: 0,
             color: Color.fromARGB(255, 14, 41, 60),
           ),
-          ProjectsView(),
+          Padding(
+            padding: EdgeInsets.only(left:45, right: 45),
+              child: ProjectsView(),
+          ),
+          // ProjectsView(),
         ],
       ),
       // Add Project button
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Color.fromARGB(123, 223, 211, 211),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => const AddProjectPopup(),
-          );
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   backgroundColor: Color.fromARGB(123, 223, 211, 211),
+      //   onPressed: () {
+      //     showDialog(
+      //       context: context,
+      //       builder: (BuildContext context) => const AddProjectPopup(),
+      //     );
+      //   },
+      // ),
     );
   }
 }
