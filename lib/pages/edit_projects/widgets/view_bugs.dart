@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../edit_bug.dart';
+import 'edit_bug.dart';
 import '../edit_project.dart';
 
 class ViewBugOverlay extends StatefulWidget {
@@ -53,7 +53,6 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
               child: StreamBuilder<QuerySnapshot>(
                 stream: bugStream,
                 builder: (BuildContext context,
-                   
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     String error = snapshot.error.toString();
@@ -64,7 +63,6 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Text("Loading",
-                       
                         style: TextStyle(color: Colors.white));
                   }
 
@@ -131,7 +129,6 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                                 bottom: 3),
                                             child: Center(
                                               child: Text(bug['bug_name'],
-                                  
                                                   style: const TextStyle(
                                                       color: Colors.orange,
                                                       fontSize: 20,
@@ -143,17 +140,22 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                           // indent: 10,
                                           // endIndent: 10,
                                         ),
-                                        const Bug_Description_field_text(text: "Description:"),
+                                        const Bug_Description_field_text(
+                                            text: "Description:"),
                                         Bug_Description_Text(
                                             text: bug['bug_description']),
-                                        const Bug_Description_field_text(text: "Created on:"),
+                                        const Bug_Description_field_text(
+                                            text: "Created on:"),
                                         Bug_Description_Text(
                                             text: bug['created_at']
                                                 .toDate()
                                                 .toString()),
-                                        const Bug_Description_field_text(text: "Was Solved:"),
+                                        const Bug_Description_field_text(
+                                            text: "Was Solved:"),
                                         Bug_Description_Text(
-                                            text: bug['is_solved'] ? "Yes" : "No"),
+                                            text: bug['is_solved']
+                                                ? "Yes"
+                                                : "No"),
                                       ],
                                     ),
                                   ),
@@ -164,7 +166,15 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                       color: Colors.white,
                                     ),
                                     onPressed: () {
-                                      //todo go to edit bug page
+                                      //go to view bugs page
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Edit_bug_page(
+                                                    bug_ID: bug.id,
+                                                    bug_query_doc: bugDoc,
+                                                  )));
                                     },
                                   ),
                                   // Delete project button
@@ -200,7 +210,8 @@ class Bug_Description_field_text extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Text(text,
-          style: const TextStyle(color: Colors.limeAccent, fontSize: 18, wordSpacing: 3)),
+          style: const TextStyle(
+              color: Colors.limeAccent, fontSize: 18, wordSpacing: 3)),
     );
   }
 }

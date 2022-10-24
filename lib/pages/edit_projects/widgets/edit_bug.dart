@@ -1,11 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
 import 'package:flutter/material.dart';
-import 'widgets/add_bugs.dart';
-import 'widgets/add_collab.dart';
-import 'widgets/add_stack.dart';
-import '/auth.dart';
-import 'widgets/edit_stacks.dart';
+
 
 class Edit_bug_page extends StatefulWidget {
   final DocumentReference<Object?> bug_query_doc;
@@ -20,6 +15,8 @@ class Edit_bug_page extends StatefulWidget {
 class _Edit_bug_pageState extends State<Edit_bug_page> {
   @override
   void initState() {
+    print(widget.bug_ID);
+    print(widget.bug_query_doc);
     super.initState();
   }
 
@@ -53,10 +50,10 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
               return Text("Error: ${snapshot.error}");
             }
             if (!snapshot.hasData) {
-              return Text("No Data");
+              return const Text("No Data");
             }
             return Padding(
-              padding: EdgeInsets.only(left: 50, right: 50),
+              padding: const EdgeInsets.only(left: 50, right: 50),
               child: ListView(
                 children: [
                   Row(
@@ -114,7 +111,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                     color: Color.fromARGB(255, 14, 41, 60),
                   ),
                   Padding(
-                      padding: EdgeInsets.only(left: 15, right: 15),
+                      padding: const EdgeInsets.only(left: 15, right: 15),
                       child: Column(children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,26 +158,6 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
         ));
   }
 }
-
-// class ViewSolutions extends StatefulWidget {
-//   final Function() callback;
-//   final bug_id;
-//   final DocumentReference<Object?> bug_query_doc;
-
-//   const ViewSolutions(
-//       {super.key,
-//       required this.bug_query_doc,
-//       required this.bug_id,
-//       required this.callback});
-
-//   @override
-//   State<ViewSolutions> createState() => _ViewSolutionsState();
-// }
-
-// class _ViewSolutionsState extends State<ViewSolutions> {
-//   late Stream<
-// }
-
 // Custom widget to show project info
 class bug_preview_desc extends StatelessWidget {
   final String text;
@@ -206,7 +183,7 @@ class bug_preview_name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
         child: Text(this.text,
             style: const TextStyle(
                 color: Color.fromARGB(255, 255, 255, 255),

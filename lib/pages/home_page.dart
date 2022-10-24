@@ -186,15 +186,15 @@ class _MyHomePageState extends State<MyHomePage> {
       )),
       body: ListView(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Padding(
-            padding: EdgeInsets.only(left: 50, right: 50),
+            padding: const EdgeInsets.only(left: 50, right: 50),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children:  [
-                Text(
+                const Text(
                     "Projects",
                     style: TextStyle(
                       color: Colors.white,
@@ -203,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     textAlign: TextAlign.left,
                   ),
-                Divider(
+                const Divider(
                   height: 50,
                   thickness: 5,
                 ),
@@ -224,9 +224,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           // Horizontal Divider
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(left:45, right: 45),
-              child: const Divider(
+              child: Divider(
               height: 30,
               thickness: 3,
               color: Colors.white,
@@ -238,23 +238,12 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Color.fromARGB(255, 14, 41, 60),
           ),
           Padding(
-            padding: EdgeInsets.only(left:45, right: 45),
+            padding: const EdgeInsets.only(left:45, right: 45),
               child: ProjectsView(),
           ),
           // ProjectsView(),
         ],
       ),
-      // Add Project button
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   backgroundColor: Color.fromARGB(123, 223, 211, 211),
-      //   onPressed: () {
-      //     showDialog(
-      //       context: context,
-      //       builder: (BuildContext context) => const AddProjectPopup(),
-      //     );
-      //   },
-      // ),
     );
   }
 }
