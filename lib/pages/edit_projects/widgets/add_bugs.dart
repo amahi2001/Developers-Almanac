@@ -50,10 +50,10 @@ class AddBugPopUp extends StatefulWidget {
 class _AddBugPopUpState extends State<AddBugPopUp> {
   final _addBugKey = GlobalKey<FormState>();
   final TextEditingController _bugNameController = TextEditingController();
-  final TextEditingController _bugDescriptionController =
-      TextEditingController();
-  final TextEditingController _bugErrorOutputController =
-      TextEditingController();
+  final TextEditingController _bugDescriptionController = TextEditingController();
+  final TextEditingController _bugErrorOutputController = TextEditingController();
+    final TextEditingController _bugSolutionsController = TextEditingController();
+
   bool _bugSolved = false;
 
   callback() {
@@ -62,7 +62,6 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.stack_id);
     return AlertDialog(
       // title: Text('Add Bug ${widget.stack_id}'),
       title: const Padding(
@@ -127,20 +126,37 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(.0),
+                  padding: const EdgeInsets.only(top: 15),
                   child: CheckboxListTile(
                     title: const Text("Bug Solved"),
                     value: _bugSolved,
                     onChanged: (val) {
                       setState(() {
                         _bugSolved = val!;
-                        print(val);
-                        print(_bugSolved);
                         callback();
                       });
                     },
                   ),
                 ),
+                Visibility(
+                    visible: _bugSolved,
+                    child: Padding(
+                      padding: const EdgeInsets.all(.0),
+                      child: TextFormField(
+                        controller: _bugSolutionsController,
+                        decoration: const InputDecoration(
+                          border: UnderlineInputBorder(),
+                          labelText: 'Enter Solution:',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Solution';
+                          }
+                          return null;
+                        },
+                    ),
+                  ),
+                ), 
               ],
             ),
           )),
@@ -163,6 +179,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                 'bug_name': _bugNameController.text,
                 'bug_description': _bugDescriptionController.text,
                 'error_output': _bugErrorOutputController.text,
+                'solution': _bugSolutionsController.text,
                 'is_solved': _bugSolved,
                 'created_at': today,
               }).then((value) {
@@ -171,43 +188,6 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
               }).catchError((error) => print("Failed to add bug: $error"));
             }
           },
-        ),
-      ],
-    );
-  }
-}
-
-/// This widget lets the user delete a stack given a stack ID
-class DeleteBugPopup extends StatefulWidget {
-  final CollectionReference bugCollection;
-  final String bugID;
-
-  const DeleteBugPopup(
-      {super.key, required this.bugCollection, required this.bugID});
-
-  @override
-  State<DeleteBugPopup> createState() => _DeleteBugPopupState();
-}
-
-class _DeleteBugPopupState extends State<DeleteBugPopup> {
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Delete Bug'),
-      content: const Text('Are you sure you want to delete this bug?'),
-      actions: [
-        TextButton(
-          onPressed: () {
-            widget.bugCollection.doc(widget.bugID).delete();
-            Navigator.pop(context);
-          },
-          child: const Text('Delete'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Cancel'),
         ),
       ],
     );

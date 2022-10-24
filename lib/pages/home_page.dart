@@ -301,20 +301,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      // Add Project button
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   backgroundColor: Color.fromARGB(123, 223, 211, 211),
-      //   onPressed: () {
-      //     showDialog(
-      //       context: context,
-      //       builder: (BuildContext context) => const AddProjectPopup(),
-      //     );
-      //   },
-      // ),
     );
   }
 }
+
 
 class ProjectInfoPreviewView extends StatefulWidget {
   ProjectInfoPreviewView({super.key});
@@ -438,7 +428,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                     },
                     child: Card(
                       elevation: 10,
-                      color: const Color.fromARGB(255, 22, 66, 97),
+                      color: theme_color,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                           side: const BorderSide(

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../main.dart';
@@ -207,7 +206,7 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
         height: MediaQuery.of(context).size.height * 0.8,
         child: Card(
           elevation: 10,
-          color: const Color.fromARGB(255, 22, 66, 97),
+          color: global.theme_color,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
               side: const BorderSide(
