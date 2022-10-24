@@ -188,16 +188,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       )),
       body: ListView(
+        physics: const NeverScrollableScrollPhysics(),
         children: [
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Padding(
-            padding: EdgeInsets.only(left: 50, right: 50),
+            padding: const EdgeInsets.only(left: 50, right: 50),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "Projects",
                   style: TextStyle(
                     color: Colors.white,
@@ -206,7 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                Divider(
+                const Divider(
                   height: 50,
                   thickness: 5,
                 ),
@@ -251,7 +252,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 500,
                       child: ProjectsView(notifyParent: refresh)),
                 ),
-
                 Expanded(
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.5,
@@ -278,7 +278,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                       // if no projects, dont display sizedbox, otherwise return sizedBox
                                       SizedBox(
                                         height: 450,
-                                        width: MediaQuery.of(context).size.width * 0.3,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
                                         child: SingleChildScrollView(
                                           child: ProjectInfoPreviewView(),
                                         ),
@@ -323,7 +325,6 @@ class ProjectInfoPreviewView extends StatefulWidget {
 class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
   @override
   Widget build(Object context) {
-
     return Padding(
       padding: const EdgeInsets.only(top: 0.5, left: 15),
       child: Column(children: [
@@ -358,6 +359,14 @@ class _ProjectsViewState extends State<ProjectsView> {
 
   @override
   void initState() {
+    super.initState();
+
+    // Figure out how to add data to container in beginning
+    projectName = "Placeholder";
+    projectDescription = "Placeholder";
+    projectMembers = "Placeholder";
+    projectCreated = "Placeholder";
+
     void deleteAll() {
       projects.get().then((querySnapshot) {
         querySnapshot.docs.forEach((result) {
@@ -398,6 +407,14 @@ class _ProjectsViewState extends State<ProjectsView> {
             itemBuilder: (context, index) {
               QueryDocumentSnapshot<Object?> project =
                   snapshot.data!.docs[index];
+
+              // if (index == 0) {
+              //   firstprojectName = project['project_title'];
+              //   firstprojectDescription = project['project_description'];
+              //   firstprojectMembers = project['members'].toString();
+              //   firstprojectCreated =
+              //       project['creation_date'].toDate().toString();
+              // }
 
               if (!(project['project_title'].toLowerCase())
                   .contains(searchT.toLowerCase())) {

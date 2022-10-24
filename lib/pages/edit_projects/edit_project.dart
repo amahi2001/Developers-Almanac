@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'widgets/add_bugs.dart';
 import 'widgets/add_collab.dart';
 import 'widgets/add_stack.dart';
-// import '/auth.dart';
+import '/auth.dart';
 import 'widgets/edit_stacks.dart';
 
 const Color white = Color.fromARGB(255, 255, 255, 255);
@@ -57,8 +57,13 @@ class _Edit_project_pageState extends State<Edit_project_page> {
             return IconButton(
                 icon: const Icon(Icons.logout),
                 onPressed: () {
-                  Scaffold.of(context)
-                      .openEndDrawer(); // Open drawer if Profile Icon is clicked
+                        // Scaffold.of(context)
+                        //     .openEndDrawer(); // Open drawer if Profile Icon is clicked
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        const LogoutPopup(),
+                  );
                 });
           }),
         ],
