@@ -331,6 +331,49 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
   }
 }
 
+// COPIED FROM HOME_PAGE_WIDGETS (CODE WAS NOT WORKING WITHOUT IT), PLEASE FIX IF IT BOTHERS YOU. THANK YOU - JOYCE
+class project_preview_name extends StatelessWidget {
+  final String text;
+  const project_preview_name({
+    super.key, 
+    required this.text
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: Align(alignment: Alignment.topLeft, 
+        child: Text(this.text,
+            style: const TextStyle(
+                color: Color.fromARGB(255, 255, 255, 255),
+                fontFamily: 'Times',
+                fontSize: 15,
+                fontWeight: FontWeight.w300,
+                wordSpacing: 3))));
+  }
+}
+
+class project_preview_desc extends StatelessWidget {
+  final String text;
+  const project_preview_desc({
+    super.key, 
+    required this.text
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Align(alignment: Alignment.topLeft,
+          child: Text(this.text,
+            style: const TextStyle(
+                color: Color.fromARGB(255, 220, 220, 222),
+                fontFamily: 'Times',
+                fontSize: 13))));
+  }
+}
+
 /// This widget lets the user view all of their projects
 class ProjectsView extends StatefulWidget {
   final Function() notifyParent;
