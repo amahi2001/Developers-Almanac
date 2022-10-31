@@ -1,3 +1,4 @@
+import 'package:devs_almanac/pages/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -198,10 +199,10 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   "Projects",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppStyle.sectionColor,
                     fontFamily: 'Times',
                     fontSize: 30,
                   ),
@@ -229,12 +230,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           // Horizontal Divider
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(left: 45, right: 45),
             child: Divider(
               height: 30,
               thickness: 3,
-              color: Colors.white,
+              color: AppStyle.sectionColor,
             ),
           ),
           const Divider(
@@ -278,9 +279,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       // if no projects, dont display sizedbox, otherwise return sizedBox
                                       SizedBox(
                                         height: 450,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.3,
+                                        width: MediaQuery.of(context).size.width * 0.3,
                                         child: SingleChildScrollView(
                                           child: ProjectInfoPreviewView(),
                                         ),
@@ -345,8 +344,8 @@ class project_preview_name extends StatelessWidget {
         padding: EdgeInsets.only(top: 20),
         child: Align(alignment: Alignment.topLeft, 
         child: Text(this.text,
-            style: const TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
+            style: TextStyle(
+                color: AppStyle.fieldText,
                 fontFamily: 'Times',
                 fontSize: 15,
                 fontWeight: FontWeight.w300,
@@ -367,8 +366,8 @@ class project_preview_desc extends StatelessWidget {
         padding: const EdgeInsets.only(top: 10),
         child: Align(alignment: Alignment.topLeft,
           child: Text(this.text,
-            style: const TextStyle(
-                color: Color.fromARGB(255, 220, 220, 222),
+            style: TextStyle(
+                color: AppStyle.descriptionText,
                 fontFamily: 'Times',
                 fontSize: 13))));
   }
@@ -493,9 +492,8 @@ class _ProjectsViewState extends State<ProjectsView> {
                                           right: 15,
                                           bottom: 3),
                                       child: Text(project['project_title'],
-                                          style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 241, 240, 244),
+                                          style: TextStyle(
+                                              color: AppStyle.projectTitle,
                                               fontSize: 20,
                                               wordSpacing: 3))),
                                   Padding(
@@ -504,8 +502,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                       child: Text(
                                           "Updated on ${project['last_updated'].toDate()}",
                                           style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 230, 229, 232),
+                                              color: Color.fromARGB(255, 230, 229, 232),
                                               fontSize: 12,
                                               wordSpacing: 5))),
                                 ],

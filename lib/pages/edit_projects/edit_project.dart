@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
+import 'package:devs_almanac/pages/style.dart';
 import 'package:flutter/material.dart';
 import 'widgets/add_bugs.dart';
 import 'widgets/add_collab.dart';
@@ -162,7 +163,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                             Text(
                               "Stacks",
                               style: TextStyle(
-                                color: Colors.white,
+                                color: AppStyle.sectionColor,
                                 fontFamily: 'Times',
                                 fontSize: 25,
                               ),
@@ -192,20 +193,79 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                             ),
                           ],
                         ),
-                        // const Divider(
-                        //   height: 30,
-                        //   thickness: 0,
-                        //   color: Color.fromARGB(255, 14, 41, 60),
-                        // ),
+                        // Row(
+                        //   children: [
+                        //     ViewStacks(
+                        //       project_query_doc: widget.project_query_doc,
+                        //       id: widget.project_query_doc.id,
+                        //       callback: () {},
+                        //     )
+                        //   ],
+                        // )
                         Row(
                           children: [
-                            ViewStacks(
-                              project_query_doc: widget.project_query_doc,
-                              id: widget.project_query_doc.id,
-                              callback: () {},
-                            )
+                            Expanded(
+                              child: SizedBox(
+                                  width: 300,
+                                  height: 500,
+                                  child: ViewStacks(
+                                    project_query_doc: widget.project_query_doc,
+                                    id: widget.project_query_doc.id,
+                                    callback: () {},
+                                  )
+                              ),
+                            ),
+                            Expanded(
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                height: 500,
+                                child: Column(
+                                  children: [
+                                    Card(
+                                      elevation: 10,
+                                      color: const Color.fromARGB(255, 22, 66, 97),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5),
+                                          side: const BorderSide(
+                                              color: Color.fromARGB(255, 146, 153, 192),
+                                              width: 1)),
+                                      margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                      child: SizedBox(
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Row(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  // add conditional:
+                                                  // if no projects, dont display sizedbox, otherwise return sizedBox
+                                                  SizedBox(
+                                                    height: 450,
+                                                    width: MediaQuery.of(context).size.width * 0.3,
+                                                    child: SingleChildScrollView(
+                                                      child: Text(
+                                                        'New Bug View',
+                                                        style: TextStyle(
+                                                          color: AppStyle.sectionColor,
+                                                          fontFamily: 'Times',
+                                                          fontSize: 25,
+                                                        ),
+                                                      )
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -432,8 +492,8 @@ class project_preview_desc extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
         child: Text(this.text,
-            style: const TextStyle(
-                color: Color.fromARGB(255, 220, 220, 222),
+            style: TextStyle(
+                color: AppStyle.descriptionText,
                 fontFamily: 'Times',
                 fontSize: 20,
                 wordSpacing: 3)));
@@ -452,8 +512,8 @@ class project_preview_name extends StatelessWidget {
     return Padding(
         padding: EdgeInsets.only(left: 15, top: 6, right: 15),
         child: Text(this.text,
-            style: const TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
+            style: TextStyle(
+                color: AppStyle.fieldText,
                 fontFamily: 'Times',
                 fontSize: 22,
                 wordSpacing: 3)));

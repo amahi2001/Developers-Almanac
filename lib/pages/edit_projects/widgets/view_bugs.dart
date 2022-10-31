@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devs_almanac/pages/style.dart';
 import 'package:flutter/material.dart';
 
 import 'edit_bug.dart';
@@ -74,8 +75,8 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                         child: Text(
                           '${widget.stackType}: ${widget.stackTitle}',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: AppStyle.sectionColor,
                             fontSize: 25,
                             wordSpacing: 3,
                           ),
@@ -129,8 +130,8 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                                 bottom: 3),
                                             child: Center(
                                               child: Text(bug['bug_name'],
-                                                  style: const TextStyle(
-                                                      color: Colors.orange,
+                                                  style: TextStyle(
+                                                      color: AppStyle.projectTitle,
                                                       fontSize: 20,
                                                       wordSpacing: 3)),
                                             )),
@@ -159,37 +160,42 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                       ],
                                     ),
                                   ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.edit_note_outlined,
-                                      size: 30,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      //go to view bugs page
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Edit_bug_page(
-                                                    bug_ID: bug.id,
-                                                    bug_query_doc: bugDoc,
-                                                  )));
-                                    },
-                                  ),
-                                  // Delete project button
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.delete_sweep_rounded,
-                                      size: 30,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              DeleteBugPopup(bugDoc: bugDoc));
-                                    },
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.edit_note_outlined,
+                                          size: 30,
+                                          color: Colors.white,
+                                        ),
+                                        onPressed: () {
+                                          //go to view bugs page
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Edit_bug_page(
+                                                        bug_ID: bug.id,
+                                                        bug_query_doc: bugDoc,
+                                                      )));
+                                        },
+                                      ),
+                                      // Delete project button
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.delete_sweep_rounded,
+                                          size: 30,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  DeleteBugPopup(bugDoc: bugDoc));
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ]),
                           );
@@ -210,8 +216,12 @@ class Bug_Description_field_text extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Text(text,
-          style: const TextStyle(
-              color: Colors.limeAccent, fontSize: 18, wordSpacing: 3)),
+        style: TextStyle(
+          color: AppStyle.fieldText, 
+          fontSize: 18, 
+          wordSpacing: 3
+        )
+      ),
     );
   }
 }

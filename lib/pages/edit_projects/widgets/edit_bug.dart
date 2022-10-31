@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devs_almanac/pages/style.dart';
 import 'package:flutter/material.dart';
 
 
@@ -125,8 +126,15 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const bug_preview_name(
-                                          text: 'Bug Solution(s)'),
+                                      Text(
+                                        "Bug Solution(s)",
+                                        style: TextStyle(
+                                          color: AppStyle.sectionColor,
+                                          fontFamily: 'Times',
+                                          fontSize: 25,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
                                       const SizedBox(
                                         width: 20,
                                       ),
@@ -168,8 +176,8 @@ class bug_preview_desc extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
         child: Text(this.text,
-            style: const TextStyle(
-                color: Color.fromARGB(255, 220, 220, 222),
+            style: TextStyle(
+                color: AppStyle.descriptionText,
                 fontFamily: 'Times',
                 fontSize: 20,
                 wordSpacing: 3)));
@@ -185,8 +193,8 @@ class bug_preview_name extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
         child: Text(this.text,
-            style: const TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
+            style: TextStyle(
+                color: AppStyle.fieldText,
                 fontFamily: 'Times',
                 fontSize: 22,
                 wordSpacing: 3)));
