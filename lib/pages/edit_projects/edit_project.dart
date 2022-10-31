@@ -193,15 +193,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                             ),
                           ],
                         ),
-                        // Row(
-                        //   children: [
-                        //     ViewStacks(
-                        //       project_query_doc: widget.project_query_doc,
-                        //       id: widget.project_query_doc.id,
-                        //       callback: () {},
-                        //     )
-                        //   ],
-                        // )
                         Row(
                           children: [
                             Expanded(

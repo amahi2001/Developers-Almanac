@@ -151,8 +151,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  bug_preview_desc(
-                                      text: snapshot.data["solution"])
+                                  bug_preview_desc(text: snapshot.data["solution"])
                                 ],
                               ),
                             )

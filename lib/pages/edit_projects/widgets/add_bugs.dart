@@ -52,9 +52,11 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
   final TextEditingController _bugNameController = TextEditingController();
   final TextEditingController _bugDescriptionController = TextEditingController();
   final TextEditingController _bugErrorOutputController = TextEditingController();
-    final TextEditingController _bugSolutionsController = TextEditingController();
+  final TextEditingController _bugSolutionsController = TextEditingController();
+  final TextEditingController _bugLanguageController = TextEditingController();
 
   bool _bugSolved = false;
+  double formHeight = 220;
 
   callback() {
     setState(() {});
@@ -74,7 +76,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
           key: _addBugKey,
           child: Container(
             width: 300,
-            height: 300,
+            height: formHeight,
             child: Column(
               children: [
                 Padding(
@@ -133,6 +135,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                     onChanged: (val) {
                       setState(() {
                         _bugSolved = val!;
+                        formHeight = formHeight == 220 ? 340 : 220;
                         callback();
                       });
                     },
@@ -157,6 +160,25 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                     ),
                   ),
                 ), 
+                Visibility(
+                    visible: _bugSolved,
+                    child: Padding(
+                      padding: const EdgeInsets.all(.0),
+                      child: TextFormField(
+                        controller: _bugLanguageController,
+                        decoration: const InputDecoration(
+                          border: UnderlineInputBorder(),
+                          labelText: 'Enter Programming Language:',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Programming Language';
+                          }
+                          return null;
+                        },
+                    ),
+                  ),
+                ), 
               ],
             ),
           )),
@@ -171,6 +193,12 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
           child: const Text('Add Bug'),
           onPressed: () {
             if (_addBugKey.currentState!.validate()) {
+              List<Solution> addArray = [
+                Solution(
+                  solution: _bugSolutionsController.text, 
+                  language: _bugLanguageController.text
+                )
+              ];
               widget.project_query_doc
                   .collection("Stack")
                   .doc(widget.stack_id)
@@ -192,4 +220,11 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
       ],
     );
   }
+}
+
+class Solution {
+  String solution;
+  String language;
+
+  Solution({required this.solution, required this.language});
 }
