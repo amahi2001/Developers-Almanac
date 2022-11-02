@@ -40,7 +40,7 @@ class _LogoutPopupState extends State<LogoutPopup> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Logout'),
-      content: Text('Are you sure you want to logout?'),
+      content: const Text('Are you sure you want to logout?'),
       actions: [
         ElevatedButton(
           onPressed: () {
@@ -57,10 +57,7 @@ class _LogoutPopupState extends State<LogoutPopup> {
                 MaterialPageRoute(builder: (context) => const LoginPage()),
               );
             }).catchError(
-              (e) => AlertDialog(
-                title: const Text('Error'),
-                content: Text(e.toString()),
-              ),
+              (e) => print(e)
             );
           },
           child: const Text('Logout'),
