@@ -193,12 +193,14 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
           child: const Text('Add Bug'),
           onPressed: () {
             if (_addBugKey.currentState!.validate()) {
-              List<Solution> addArray = [
-                Solution(
-                  solution: _bugSolutionsController.text, 
-                  language: _bugLanguageController.text
-                )
-              ];
+              final Map<String, String> solutionMap = {
+                "solution": _bugSolutionsController.text,
+                "language": _bugLanguageController.text,
+                "time": today.toString(),
+              };
+
+              print(solutionMap);
+
               widget.project_query_doc
                   .collection("Stack")
                   .doc(widget.stack_id)
@@ -207,7 +209,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                 'bug_name': _bugNameController.text,
                 'bug_description': _bugDescriptionController.text,
                 'error_output': _bugErrorOutputController.text,
-                'solution': _bugSolutionsController.text,
+                'solution': FieldValue.arrayUnion([solutionMap]),
                 'is_solved': _bugSolved,
                 'created_at': today,
               }).then((value) {
@@ -220,11 +222,4 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
       ],
     );
   }
-}
-
-class Solution {
-  String solution;
-  String language;
-
-  Solution({required this.solution, required this.language});
 }
