@@ -162,7 +162,14 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                         maxLines: 15,
                         controller: _bugSolutionsController,
                         decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                            width: 1, color: Colors.grey), 
+                          ),
+                           focusedBorder: OutlineInputBorder( //<-- SEE HERE
+                          borderSide: BorderSide(
+                            width: 2, color: Colors.blueAccent), 
+                          ),
                           labelText: 'Enter Solution:',
                         ),
                         validator: (value) {

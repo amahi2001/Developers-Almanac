@@ -95,14 +95,14 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                             right: 15,
                                             bottom: 3),
                                       ),
-                                      // child: Center(
-                                      //   child: Text(bug['bug_name'],
-                                      //       style: TextStyle(
-                                      //           color:
-                                      //               AppStyle.projectTitle,
-                                      //           fontSize: 20,
-                                      //           wordSpacing: 3)),
-                                      // )),
+                                      Center(
+                                        child: Text(bug['bug_name'],
+                                            style: TextStyle(
+                                                color:
+                                                    AppStyle.projectTitle,
+                                                fontSize: 20,
+                                                wordSpacing: 3)),
+                                      ),
                                       const Divider(
                                         color: Colors.orange,
                                         thickness: 2,
