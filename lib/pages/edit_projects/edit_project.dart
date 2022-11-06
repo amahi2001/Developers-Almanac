@@ -289,8 +289,9 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                                       stackID: selectedID,
                                                       stackCollection: widget
                                                           .project_query_doc
-                                                          .collection("Stack"),
-                                                      callback: refresh)
+                                                          .collection("Stack")
+                                                    )
+                                                      //notifyParent: refresh)
                                                   : Text("NOTHING HERE"),
                                             ],
                                           )),
