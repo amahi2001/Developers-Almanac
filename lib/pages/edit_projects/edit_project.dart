@@ -56,6 +56,8 @@ class _Edit_project_pageState extends State<Edit_project_page> {
 
   @override
   Widget build(BuildContext context) {
+
+    print(selectedID);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Developer's Almanac"),
@@ -226,60 +228,72 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                   child: Column(
                                     children: [
                                       Card(
-                                        elevation: 10,
-                                        color: const Color.fromARGB(
-                                            255, 22, 66, 97),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            side: const BorderSide(
-                                                color: Color.fromARGB(
-                                                    255, 146, 153, 192),
-                                                width: 1)),
-                                        margin: const EdgeInsets.fromLTRB(
-                                            5, 5, 5, 5),
-                                        child: SizedBox(
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Row(
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    // add conditional:
-                                                    // if no projects, dont display sizedbox, otherwise return sizedBox
-                                                    Center(
-                                                        child: SizedBox(
-                                                      height: 400,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.3,
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 0.5,
-                                                                  left: 15),
-                                                          child: Column(
-                                                              children: [
-                                                                bug_preview_name(
-                                                                    text:
-                                                                        '${bugType} : ${bugName}')
-                                                              ]),
-                                                        ),
+                                          elevation: 10,
+                                          color: const Color.fromARGB(
+                                              255, 22, 66, 97),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              side: const BorderSide(
+                                                  color: Color.fromARGB(
+                                                      255, 146, 153, 192),
+                                                  width: 1)),
+                                          margin: const EdgeInsets.fromLTRB(
+                                              5, 5, 5, 5),
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                child: Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Row(
+                                                    children: [
+                                                      Column(
+                                                        children: [
+                                                          // add conditional:
+                                                          // if no projects, dont display sizedbox, otherwise return sizedBox
+                                                          Center(
+                                                              child: SizedBox(
+                                                            height: 70,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.3,
+                                                            child:
+                                                                SingleChildScrollView(
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        top:
+                                                                            0.5,
+                                                                        left:
+                                                                            15),
+                                                                child: Column(
+                                                                    children: [
+                                                                      bug_preview_name(
+                                                                          text:
+                                                                              '${bugType} : ${bugName}')
+                                                                    ]),
+                                                              ),
+                                                            ),
+                                                          ))
+                                                        ],
                                                       ),
-                                                      ViewBugOverlay(stackID: selectedID, stackCollection: collection);
-                                                    ))
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              selectedID != ""
+                                                  ? ViewBugOverlay(
+                                                      stackID: selectedID,
+                                                      stackCollection: widget
+                                                          .project_query_doc
+                                                          .collection("Stack"),
+                                                      callback: refresh)
+                                                  : Text("NOTHING HERE"),
+                                            ],
+                                          )),
                                     ],
                                   ),
                                 ),
@@ -337,6 +351,8 @@ class _ViewStacksState extends State<ViewStacks> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Text("Loading", style: TextStyle(color: Colors.white));
         }
+
+        print("View Stack");
 
         return Container(
             decoration: const BoxDecoration(
@@ -405,7 +421,12 @@ class _ViewStacksState extends State<ViewStacks> {
                                 collection = stackCollection;
                                 widget.callback();
 
-
+                                // showDialog(
+                                //     context: context,
+                                //     builder: (BuildContext context) =>
+                                //         ViewBugOverlay(
+                                //             stackID: selectedID,
+                                //             stackCollection: collection));
                               });
                             }),
                             child: Card(

@@ -440,14 +440,6 @@ class _ProjectsViewState extends State<ProjectsView> {
               QueryDocumentSnapshot<Object?> project =
                   snapshot.data!.docs[index];
 
-              // if (index == 0) {
-              //   firstprojectName = project['project_title'];
-              //   firstprojectDescription = project['project_description'];
-              //   firstprojectMembers = project['members'].toString();
-              //   firstprojectCreated =
-              //       project['creation_date'].toDate().toString();
-              // }
-
               if (!(project['project_title'].toLowerCase())
                   .contains(searchT.toLowerCase())) {
                 return const Card();
