@@ -7,14 +7,14 @@ import '../../../langs.dart';
 
 class AddBugButton extends StatefulWidget {
   final bool isSelected;
-  final DocumentReference<Object?> projectQueryDoc;
-  final String stackID;
+  final DocumentReference<Object?> project_query_doc;
+  final String stack_id;
 
   const AddBugButton(
       {super.key,
       required this.isSelected,
-      required this.projectQueryDoc,
-      required this.stackID});
+      required this.project_query_doc,
+      required this.stack_id});
 
   @override
   State<AddBugButton> createState() => _AddBugButtonState();
@@ -32,8 +32,8 @@ class _AddBugButtonState extends State<AddBugButton> {
         showDialog(
             context: context,
             builder: (BuildContext context) => AddBugPopUp(
-                project_query_doc: widget.projectQueryDoc,
-                stack_id: widget.stackID));
+                project_query_doc: widget.project_query_doc,
+                stack_id: widget.stack_id));
       },
     );
   }
@@ -150,8 +150,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                     child: Padding(
                         padding: const EdgeInsets.all(.0),
                         child: DropdownSearch<String>(
-                          // ignore: prefer_const_constructors
-                          popupProps: PopupProps.menu(
+                          popupProps: const PopupProps.menu(
                             showSearchBox: true,
                             showSelectedItems: true,
                             // disabledItemFn: (String s) => s.startsWith('I'),
