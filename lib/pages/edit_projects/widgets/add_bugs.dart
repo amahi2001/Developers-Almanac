@@ -56,7 +56,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
   final TextEditingController _bugLanguageController = TextEditingController();
 
   bool _bugSolved = false;
-  double formHeight = 220;
+  double formHeight = 500;
 
   callback() {
     setState(() {});
@@ -74,8 +74,8 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                   style: TextStyle(fontWeight: FontWeight.bold)))),
       content: Form(
           key: _addBugKey,
-          child: Container(
-            width: 300,
+          child: SingleChildScrollView(child: Container(
+            width: 800,
             height: formHeight,
             child: Column(
               children: [
@@ -112,19 +112,31 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(.0),
-                  child: TextFormField(
+                  padding: const EdgeInsets.all(10),
+                  child:  TextFormField(
+                    minLines: 10,
+                    maxLines: 15,
                     controller: _bugErrorOutputController,
                     decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                        width: 1, color: Colors.grey), 
+                      ),
+                      focusedBorder: OutlineInputBorder( //<-- SEE HERE
+                      borderSide: BorderSide(
+                        width: 2, color: Colors.blueAccent), 
+                      ),
                       labelText: 'Enter Error Output:',
+                  
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter Error Output';
                       }
                       return null;
+                      
                     },
+                    
                   ),
                 ),
                 Padding(
@@ -135,7 +147,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                     onChanged: (val) {
                       setState(() {
                         _bugSolved = val!;
-                        formHeight = formHeight == 220 ? 340 : 220;
+                        formHeight = formHeight == 500 ? 900 : 920;
                         callback();
                       });
                     },
@@ -144,8 +156,10 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                 Visibility(
                     visible: _bugSolved,
                     child: Padding(
-                      padding: const EdgeInsets.all(.0),
+                      padding: const EdgeInsets.all(10),
                       child: TextFormField(
+                        minLines: 10,
+                        maxLines: 15,
                         controller: _bugSolutionsController,
                         decoration: const InputDecoration(
                           border: UnderlineInputBorder(),
@@ -167,6 +181,10 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                       child: TextFormField(
                         controller: _bugLanguageController,
                         decoration: const InputDecoration(
+                           enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                            width: 1, color: Colors.grey), 
+                          ),
                           border: UnderlineInputBorder(),
                           labelText: 'Enter Programming Language:',
                         ),
@@ -181,7 +199,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                 ), 
               ],
             ),
-          )),
+          ))),
       actions: [
         TextButton(
           child: const Text('Cancel'),
