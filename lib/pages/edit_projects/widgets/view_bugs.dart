@@ -269,3 +269,46 @@ class DeleteBugPopup extends StatelessWidget {
     );
   }
 }
+
+class bug_preview_name extends StatelessWidget {
+  final String text;
+  const bug_preview_name({
+    super.key, 
+    required this.text
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: Align(alignment: Alignment.topLeft, 
+        child: Text(this.text,
+            style: TextStyle(
+                color: AppStyle.fieldText,
+                fontFamily: 'Times',
+                fontSize: 15,
+                fontWeight: FontWeight.w300,
+                wordSpacing: 3))));
+  }
+}
+
+
+class bug_preview_desc extends StatelessWidget {
+  final String text;
+  const bug_preview_desc({
+    super.key, 
+    required this.text
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Align(alignment: Alignment.topLeft,
+          child: Text(this.text,
+            style: TextStyle(
+                color: AppStyle.descriptionText,
+                fontFamily: 'Times',
+                fontSize: 13))));
+  }
+}

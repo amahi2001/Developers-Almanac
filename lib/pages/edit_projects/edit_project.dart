@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devs_almanac/pages/edit_projects/widgets/edit_bug.dart' as eos;
 import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
 import 'package:devs_almanac/pages/style.dart';
 import 'package:flutter/material.dart';
@@ -59,12 +60,11 @@ class _Edit_project_pageState extends State<Edit_project_page> {
             return IconButton(
                 icon: const Icon(Icons.logout),
                 onPressed: () {
-                        // Scaffold.of(context)
-                        //     .openEndDrawer(); // Open drawer if Profile Icon is clicked
+                  // Scaffold.of(context)
+                  //     .openEndDrawer(); // Open drawer if Profile Icon is clicked
                   showDialog(
                     context: context,
-                    builder: (BuildContext context) =>
-                        const LogoutPopup(),
+                    builder: (BuildContext context) => const LogoutPopup(),
                   );
                 });
           }),
@@ -81,189 +81,211 @@ class _Edit_project_pageState extends State<Edit_project_page> {
               return Text("No Data");
             }
             return Padding(
-              padding: EdgeInsets.only(left: 50, right:50),
-              child: ListView(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        fit: FlexFit.tight,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            const project_preview_name(text: 'Project Title'),
-                            project_preview_desc(text: snapshot.data["project_title"]),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const project_preview_name(text: 'Project Description'),
-                            project_preview_desc(text: snapshot.data["project_description"]),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const project_preview_name(text: 'Project Member(s)'),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.person_add,
-                                    size: 30,
-                                    color: Colors.white,
-                                  ), 
-                                  onPressed: () { 
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) => AddMember(
-                                        notifyParent: refresh,
-                                        query_doc: widget.project_query_doc,
-                                      ),
-                                    );
-                                  },
-                                ),
-
-                              ],
-                            ),
-                            project_preview_desc(text: snapshot.data["members"].toString()),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const project_preview_name(text: 'Created'),
-                            project_preview_desc(text: snapshot.data["creation_date"].toDate().toString()),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  // Horizontal Divider
-                  const Divider(
-                    height: 30,
-                    thickness: 3,
-                    color: Colors.white,
-                  ),
-                  const Divider(
-                    height: 30,
-                    thickness: 0,
-                    color: Color.fromARGB(255, 14, 41, 60),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15),
-                    child: Column(
+                padding: EdgeInsets.only(left: 50, right: 50),
+                child: ListView(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Stacks",
-                              style: TextStyle(
-                                color: AppStyle.sectionColor,
-                                fontFamily: 'Times',
-                                fontSize: 25,
+                        Flexible(
+                          fit: FlexFit.tight,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 30,
                               ),
-                              textAlign: TextAlign.left,
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.add,
-                                size: 30,
-                                color: Colors.white,
-                              ), 
-                              onPressed: () { 
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => Column(
-                                    children: [
-                                      AddStackPopUp(
-                                        project_query_doc: widget.project_query_doc,
-                                        project_id: widget.project_query_doc.id),
-                                    ],
-                                  )
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                  width: 300,
-                                  height: 500,
-                                  child: ViewStacks(
-                                    project_query_doc: widget.project_query_doc,
-                                    id: widget.project_query_doc.id,
-                                    callback: () {},
-                                  )
+                              const project_preview_name(text: 'Project Title'),
+                              project_preview_desc(
+                                  text: snapshot.data["project_title"]),
+                              const SizedBox(
+                                height: 20,
                               ),
-                            ),
-                            Expanded(
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height: 500,
-                                child: Column(
-                                  children: [
-                                    Card(
-                                      elevation: 10,
-                                      color: const Color.fromARGB(255, 22, 66, 97),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(5),
-                                          side: const BorderSide(
-                                              color: Color.fromARGB(255, 146, 153, 192),
-                                              width: 1)),
-                                      margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                      child: SizedBox(
-                                        child: Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Row(
+                              const project_preview_name(
+                                  text: 'Project Description'),
+                              project_preview_desc(
+                                  text: snapshot.data["project_description"]),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const project_preview_name(
+                                      text: 'Project Member(s)'),
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.person_add,
+                                      size: 30,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AddMember(
+                                          notifyParent: refresh,
+                                          query_doc: widget.project_query_doc,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                              project_preview_desc(
+                                  text: snapshot.data["members"].toString()),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              const project_preview_name(text: 'Created'),
+                              project_preview_desc(
+                                  text: snapshot.data["creation_date"]
+                                      .toDate()
+                                      .toString()),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    // Horizontal Divider
+                    const Divider(
+                      height: 30,
+                      thickness: 3,
+                      color: Colors.white,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 15, right: 15),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Stacks",
+                                style: TextStyle(
+                                  color: AppStyle.sectionColor,
+                                  fontFamily: 'Times',
+                                  fontSize: 25,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.add,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) => Column(
                                             children: [
-                                              Column(
-                                                children: [
-                                                  // add conditional:
-                                                  // if no projects, dont display sizedbox, otherwise return sizedBox
-                                                  SizedBox(
-                                                    height: 450,
-                                                    width: MediaQuery.of(context).size.width * 0.3,
-                                                    child: SingleChildScrollView(
-                                                      child: Text(
-                                                        'New Bug View',
-                                                        style: TextStyle(
-                                                          color: AppStyle.sectionColor,
-                                                          fontFamily: 'Times',
-                                                          fontSize: 25,
-                                                        ),
-                                                      )
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
+                                              AddStackPopUp(
+                                                  project_query_doc:
+                                                      widget.project_query_doc,
+                                                  project_id: widget
+                                                      .project_query_doc.id),
                                             ],
+                                          ));
+                                },
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: SizedBox(
+                                    width: 300,
+                                    height: 500,
+                                    child: ViewStacks(
+                                      project_query_doc:
+                                          widget.project_query_doc,
+                                      id: widget.project_query_doc.id,
+                                      callback: () {},
+                                    )),
+                              ),
+                              Expanded(
+                                  child: Padding(
+                                padding: const EdgeInsets.only(top: 90),
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  height: 500,
+                                  child: Column(
+                                    children: [
+                                      Card(
+                                        elevation: 10,
+                                        color: const Color.fromARGB(
+                                            255, 22, 66, 97),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            side: const BorderSide(
+                                                color: Color.fromARGB(
+                                                    255, 146, 153, 192),
+                                                width: 1)),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            5, 5, 5, 5),
+                                        child: SizedBox(
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Row(
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    // add conditional:
+                                                    // if no projects, dont display sizedbox, otherwise return sizedBox
+                                                    SizedBox(
+                                                      height: 400,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.3,
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Column(
+                                                            children: [
+                                                              bug_preview_name(
+                                                                  text:
+                                                                      'Bug Name'),
+                                                              bug_preview_desc(
+                                                                  text:
+                                                                      'Placeholder'),
+                                                              bug_preview_name(
+                                                                  text:
+                                                                      'Bug Description'),
+                                                              bug_preview_desc(
+                                                                  text:
+                                                                      'Placeholder'),
+                                                            ]),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              )),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              )
-            );
-            
+                  ],
+                ));
           })),
     );
   }
@@ -317,153 +339,141 @@ class _ViewStacksState extends State<ViewStacks> {
             ),
             width: 500,
             height: 450,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'Stack Count: ${snapshot.data!.size}',
-                      textAlign: TextAlign.center,   
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        wordSpacing: 3,
-                      ),
+            child: Column(children: [
+              Row(
+                children: [
+                  Text(
+                    'Stack Count: ${snapshot.data!.size}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      wordSpacing: 3,
                     ),
-                  ],
-                ),
-                const Divider(
-                  height: 30,
-                  thickness: 0,
-                  color: Color.fromARGB(255, 14, 41, 60),
-                ),
-                Flexible(
-                    flex: 100,
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.size,
-                        itemBuilder: (context, index) {
-                          QueryDocumentSnapshot<Object?> stack =
-                              snapshot.data!.docs[index];
+                  ),
+                ],
+              ),
+              const Divider(
+                height: 30,
+                thickness: 10,
+                color: Color.fromARGB(255, 14, 41, 60),
+              ),
+              Flexible(
+                  flex: 100,
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.size,
+                      itemBuilder: (context, index) {
+                        QueryDocumentSnapshot<Object?> stack =
+                            snapshot.data!.docs[index];
 
-                          if (!snapshot.hasData) {
-                            print('test phrase');
-                            return const Text("No Data");
-                          }
+                        if (!snapshot.hasData) {
+                          print('test phrase');
+                          return const Text("No Data");
+                        }
 
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          }
-                          return InkWell(
-                              onTap: (() {
-                                setState(() {
-                                  for (var x in StackType) {
-                                    if (stack['stack_type'] == x) {
-                                      _selectedStackType = x;
-                                    }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        }
+                        return InkWell(
+                            onTap: (() {
+                              setState(() {
+                                for (var x in StackType) {
+                                  if (stack['stack_type'] == x) {
+                                    _selectedStackType = x;
                                   }
-                                  if (_selectedIndex == index) {
-                                    _selectedIndex = -1;
-                                  } else {
-                                    _selectedIndex = index;
-                                    _projectInfoController.text =
-                                        stack['stack_title'];
-                                  }
-                                  selectedID = stack.id;
-                                  widget.callback();
-                                });
-
-                                //show Bugs in Stack
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        ViewBugOverlay(
-                                          stackID: stack.id,
-                                          stackCollection: stackCollection,
-                                          stackTitle: stack['stack_title'],
-                                          stackType: stack['stack_type'],
-                                        ));
-                              }),
-                              child: Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                      side: const BorderSide(
-                                          color:
-                                              Color.fromARGB(255, 146, 153, 192),
-                                          width: 1)),
-                                  color: index == _selectedIndex
-                                      ? const Color.fromARGB(255, 14, 41, 60)
-                                      : const Color.fromARGB(255, 22, 66, 97),
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(5),
-                                      child: Row(children: [
-                                        Expanded(
-                                          child: Text(
-                                            '${stack['stack_type']}: ${stack['stack_title']}',
-                                            style: TextStyle(
-                                                color: index == _selectedIndex
-                                                    ? red
-                                                    : white,
-                                                fontSize: 15),
-                                          ),
+                                }
+                                if (_selectedIndex == index) {
+                                  _selectedIndex = -1;
+                                } else {
+                                  _selectedIndex = index;
+                                  _projectInfoController.text =
+                                      stack['stack_title'];
+                                }
+                                selectedID = stack.id;
+                                widget.callback();
+                              });
+                            }),
+                            child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    side: const BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 146, 153, 192),
+                                        width: 1)),
+                                color: index == _selectedIndex
+                                    ? const Color.fromARGB(255, 14, 41, 60)
+                                    : const Color.fromARGB(255, 22, 66, 97),
+                                child: Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Row(children: [
+                                      Expanded(
+                                        child: Text(
+                                          '${stack['stack_type']}: ${stack['stack_title']}',
+                                          style: TextStyle(
+                                              color: index == _selectedIndex
+                                                  ? red
+                                                  : white,
+                                              fontSize: 15),
                                         ),
-                                        Expanded(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              AddBugButton(
-                                                isSelected:
-                                                    index == _selectedIndex,
-                                                project_query_doc:
-                                                    widget.project_query_doc,
-                                                stack_id: stack.id,
-                                              ),
-                                              IconButton(
-                                                icon: const Icon(Icons.edit),
-                                                onPressed: () {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          ModifyStack(
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            AddBugButton(
+                                              isSelected:
+                                                  index == _selectedIndex,
+                                              project_query_doc:
+                                                  widget.project_query_doc,
+                                              stack_id: stack.id,
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(Icons.edit),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        ModifyStack(
+                                                          query_doc: widget
+                                                              .project_query_doc,
+                                                          id: stack.id,
+                                                          stack_type: stack[
+                                                              'stack_type'],
+                                                          technology: stack[
+                                                              'stack_title'],
+                                                        ));
+                                              },
+                                              color: index == _selectedIndex
+                                                  ? red
+                                                  : const Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(Icons.delete),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        DeleteStackPopup(
                                                             query_doc: widget
                                                                 .project_query_doc,
-                                                            id: stack.id,
-                                                            stack_type: stack[
-                                                                'stack_type'],
-                                                            technology: stack[
-                                                                'stack_title'],
-                                                          ));
-                                                },
-                                                color: index == _selectedIndex
-                                                    ? red
-                                                    : const Color.fromARGB(
-                                                        255, 255, 255, 255),
-                                              ),
-                                              IconButton(
-                                                icon: const Icon(Icons.delete),
-                                                onPressed: () {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          DeleteStackPopup(
-                                                              query_doc: widget
-                                                                  .project_query_doc,
-                                                              id: stack.id));
-                                                },
-                                                color: index == _selectedIndex
-                                                    ? red
-                                                    : white,
-                                              ),
-                                            ],
-                                          ),
+                                                            id: stack.id));
+                                              },
+                                              color: index == _selectedIndex
+                                                  ? red
+                                                  : white,
+                                            ),
+                                          ],
                                         ),
-                                      ]))));
-                        }))
+                                      ),
+                                    ]))));
+                      }))
             ]));
       },
     );
@@ -473,10 +483,7 @@ class _ViewStacksState extends State<ViewStacks> {
 // Custom widget to show project info
 class project_preview_desc extends StatelessWidget {
   final String text;
-  const project_preview_desc({
-    super.key, 
-    required this.text
-  });
+  const project_preview_desc({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -493,10 +500,7 @@ class project_preview_desc extends StatelessWidget {
 
 class project_preview_name extends StatelessWidget {
   final String text;
-  const project_preview_name({
-    super.key, 
-    required this.text
-  });
+  const project_preview_name({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
