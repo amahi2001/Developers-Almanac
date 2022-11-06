@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devs_almanac/pages/edit_projects/widgets/edit_bug.dart';
+import 'package:devs_almanac/pages/edit_projects/widgets/edit_bug.dart' as eos;
 import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
 import 'package:devs_almanac/pages/style.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +12,11 @@ import 'widgets/edit_stacks.dart';
 const Color white = Color.fromARGB(255, 255, 255, 255);
 const Color red = Color.fromARGB(255, 255, 0, 0);
 const Color theme_color = Color.fromARGB(255, 22, 66, 97);
+
+var bugName = "Placeholder";
+var bugType = "Placeholder";
+var stackID = "";
+late CollectionReference collection;
 
 List<String> StackType = ["Frontend", "Backend", "Database", "Other"];
 String _selectedStackType = StackType.first;
@@ -208,7 +213,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                       project_query_doc:
                                           widget.project_query_doc,
                                       id: widget.project_query_doc.id,
-                                      callback: () {},
+                                      callback: refresh,
                                     )),
                               ),
                               Expanded(
@@ -242,7 +247,8 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                                   children: [
                                                     // add conditional:
                                                     // if no projects, dont display sizedbox, otherwise return sizedBox
-                                                    SizedBox(
+                                                    Center(
+                                                        child: SizedBox(
                                                       height: 400,
                                                       width:
                                                           MediaQuery.of(context)
@@ -251,12 +257,22 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                                               0.3,
                                                       child:
                                                           SingleChildScrollView(
-                                                        child:
-                                                            Column(children: [
-                                                          
-                                                        ]),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 0.5,
+                                                                  left: 15),
+                                                          child: Column(
+                                                              children: [
+                                                                bug_preview_name(
+                                                                    text:
+                                                                        '${bugType} : ${bugName}')
+                                                              ]),
+                                                        ),
                                                       ),
-                                                    ),
+                                                      ViewBugOverlay(stackID: selectedID, stackCollection: collection);
+                                                    ))
                                                   ],
                                                 )
                                               ],
@@ -366,6 +382,7 @@ class _ViewStacksState extends State<ViewStacks> {
                             ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         }
+
                         return InkWell(
                             onTap: (() {
                               setState(() {
@@ -381,8 +398,14 @@ class _ViewStacksState extends State<ViewStacks> {
                                   _projectInfoController.text =
                                       stack['stack_title'];
                                 }
+
+                                bugName = stack['stack_title'];
+                                bugType = stack['stack_type'];
                                 selectedID = stack.id;
+                                collection = stackCollection;
                                 widget.callback();
+
+
                               });
                             }),
                             child: Card(

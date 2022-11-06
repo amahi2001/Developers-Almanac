@@ -8,15 +8,12 @@ import '../edit_project.dart';
 class ViewBugOverlay extends StatefulWidget {
   final String stackID;
   final CollectionReference stackCollection;
-  final String stackTitle;
-  final String stackType;
 
   const ViewBugOverlay({
     super.key,
     required this.stackID,
     required this.stackCollection,
-    required this.stackTitle,
-    required this.stackType,
+
   });
 
   @override
@@ -68,33 +65,6 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                   }
 
                   return ListView(children: [
-                    SizedBox(
-                      height: 60,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          '${widget.stackType}: ${widget.stackTitle}',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: AppStyle.sectionColor,
-                            fontSize: 25,
-                            wordSpacing: 3,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 12.0),
-                      child: Text(
-                        'Bug Count: ${snapshot.data!.size}',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          wordSpacing: 3,
-                        ),
-                      ),
-                    ),
                     ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -273,6 +243,29 @@ class DeleteBugPopup extends StatelessWidget {
 class bug_preview_name extends StatelessWidget {
   final String text;
   const bug_preview_name({
+    super.key, 
+    required this.text
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: Align(alignment: Alignment.topLeft, 
+        child: Text(this.text,
+            style: TextStyle(
+                color: AppStyle.fieldText,
+                fontFamily: 'Times',
+                fontSize: 15,
+                fontWeight: FontWeight.w300,
+                wordSpacing: 3))));
+  }
+}
+
+
+class bug_preview_desc extends StatelessWidget {
+  final String text;
+  const bug_preview_desc({
     super.key, 
     required this.text
   });
