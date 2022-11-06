@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devs_almanac/pages/edit_projects/widgets/edit_bug.dart' as eos;
+import 'package:devs_almanac/pages/edit_projects/widgets/edit_bug.dart';
 import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
 import 'package:devs_almanac/pages/style.dart';
 import 'package:flutter/material.dart';
@@ -251,21 +251,10 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                                               0.3,
                                                       child:
                                                           SingleChildScrollView(
-                                                        child: Column(
-                                                            children: [
-                                                              bug_preview_name(
-                                                                  text:
-                                                                      'Bug Name'),
-                                                              bug_preview_desc(
-                                                                  text:
-                                                                      'Placeholder'),
-                                                              bug_preview_name(
-                                                                  text:
-                                                                      'Bug Description'),
-                                                              bug_preview_desc(
-                                                                  text:
-                                                                      'Placeholder'),
-                                                            ]),
+                                                        child:
+                                                            Column(children: [
+                                                          
+                                                        ]),
                                                       ),
                                                     ),
                                                   ],
