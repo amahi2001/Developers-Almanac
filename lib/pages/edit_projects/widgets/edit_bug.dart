@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/pages/style.dart';
 import 'package:flutter/material.dart';
 
+//syntax highlight
+import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:flutter_highlight/themes/github.dart';
 
 class Edit_bug_page extends StatefulWidget {
   final DocumentReference<Object?> bug_query_doc;
@@ -16,8 +19,6 @@ class Edit_bug_page extends StatefulWidget {
 class _Edit_bug_pageState extends State<Edit_bug_page> {
   @override
   void initState() {
-    print(widget.bug_ID);
-    print(widget.bug_query_doc);
     super.initState();
   }
 
@@ -53,6 +54,8 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
             if (!snapshot.hasData) {
               return const Text("No Data");
             }
+
+            String code = snapshot.data["solution"];
             return Padding(
               padding: const EdgeInsets.only(left: 50, right: 50),
               child: ListView(
@@ -151,7 +154,16 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  bug_preview_desc(text: snapshot.data["solution"])
+                                  HighlightView(
+                                    code,
+                                    language: 'python',
+                                    theme: githubTheme,
+                                    textStyle: const TextStyle(
+                                      fontFamily:
+                                          'Ubuntu',
+                                      fontSize: 16,
+                                    ),
+                                  )
                                 ],
                               ),
                             )
@@ -165,6 +177,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
         ));
   }
 }
+
 // Custom widget to show project info
 class bug_preview_desc extends StatelessWidget {
   final String text;

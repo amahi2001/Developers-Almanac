@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
 class AddMember extends StatefulWidget {
@@ -28,7 +28,7 @@ class _AddMemberState extends State<AddMember> {
         }
       });
     });
-    return result;
+    return result..sort();
   }
 
   @override
@@ -37,32 +37,26 @@ class _AddMemberState extends State<AddMember> {
         future: getUsersList(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            var user_items = snapshot.data!;
+            var userItems = snapshot.data!;
             return AlertDialog(
               title: const Text('Add Member'),
               content: Form(
-                child: Column(
-                  children: [
-                    //Text('Add Member'),
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        value: _selected_email ?? user_items.first,
-                        items:
-                            user_items.map<DropdownMenuItem<String>>((value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            _selected_email = value;
-                            print(_selected_email);
-                          });
-                        },
-                      ),
+                child: DropdownSearch(
+                  popupProps: const PopupProps.menu(
+                    showSearchBox: true,
+                    // showSelectedItems: true,
+                  ),
+                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: "Add user",
+                      hintText: "select an existing user",
                     ),
-                  ],
+                  ),
+                  selectedItem: _selected_email ?? userItems.first,
+                  items: userItems,
+                  onChanged: (value) {
+                    setState(() => _selected_email = value);
+                  },
                 ),
               ),
               actions: [
@@ -79,8 +73,7 @@ class _AddMemberState extends State<AddMember> {
                         widget.notifyParent();
                       }).catchError(
                           (error) => print('Failed to add member: $error'));
-                    }
-                    else{
+                    } else {
                       print('No member selected or selected member is null');
                     }
                     Navigator.pop(context);

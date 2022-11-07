@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
 import '../../../main.dart';
+import '../../../langs.dart';
 
 class AddBugButton extends StatefulWidget {
   final bool isSelected;
@@ -50,10 +52,12 @@ class AddBugPopUp extends StatefulWidget {
 class _AddBugPopUpState extends State<AddBugPopUp> {
   final _addBugKey = GlobalKey<FormState>();
   final TextEditingController _bugNameController = TextEditingController();
-  final TextEditingController _bugDescriptionController = TextEditingController();
-  final TextEditingController _bugErrorOutputController = TextEditingController();
+  final TextEditingController _bugDescriptionController =
+      TextEditingController();
+  final TextEditingController _bugErrorOutputController =
+      TextEditingController();
   final TextEditingController _bugSolutionsController = TextEditingController();
-  final TextEditingController _bugLanguageController = TextEditingController();
+  String _bugLanguageController = langs.first;
 
   bool _bugSolved = false;
   double formHeight = 500;
@@ -65,7 +69,6 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      // title: Text('Add Bug ${widget.stack_id}'),
       title: const Padding(
           padding: EdgeInsets.all(3.0),
           child: Align(
@@ -74,10 +77,10 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                   style: TextStyle(fontWeight: FontWeight.bold)))),
       content: Form(
           key: _addBugKey,
-          child: SingleChildScrollView(child: Container(
-            width: 800,
+          child: SizedBox(
+            width: 300,
             height: formHeight,
-            child: Column(
+            child: ListView(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(.0),
@@ -113,30 +116,27 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),
-                  child:  TextFormField(
+                  child: TextFormField(
                     minLines: 10,
                     maxLines: 15,
                     controller: _bugErrorOutputController,
                     decoration: const InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                        width: 1, color: Colors.grey), 
+                        borderSide: BorderSide(width: 1, color: Colors.grey),
                       ),
-                      focusedBorder: OutlineInputBorder( //<-- SEE HERE
-                      borderSide: BorderSide(
-                        width: 2, color: Colors.blueAccent), 
+                      focusedBorder: OutlineInputBorder(
+                        //<-- SEE HERE
+                        borderSide:
+                            BorderSide(width: 2, color: Colors.blueAccent),
                       ),
                       labelText: 'Enter Error Output:',
-                  
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter Error Output';
                       }
                       return null;
-                      
                     },
-                    
                   ),
                 ),
                 Padding(
@@ -154,59 +154,48 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                   ),
                 ),
                 Visibility(
-                    visible: _bugSolved,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: TextFormField(
-                        minLines: 10,
-                        maxLines: 15,
-                        controller: _bugSolutionsController,
-                        decoration: const InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                            width: 1, color: Colors.grey), 
-                          ),
-                           focusedBorder: OutlineInputBorder( //<-- SEE HERE
-                          borderSide: BorderSide(
-                            width: 2, color: Colors.blueAccent), 
-                          ),
-                          labelText: 'Enter Solution:',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter Solution';
-                          }
-                          return null;
-                        },
+                  visible: _bugSolved,
+                  child: DropdownSearch<String>(
+                    popupProps: const PopupProps.menu(
+                      showSearchBox: true,
+                      showSelectedItems: true,
+                      // disabledItemFn: (String s) => s.startsWith('I'),
                     ),
+                    items: langs,
+                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                      dropdownSearchDecoration: InputDecoration(
+                        labelText: "Programming Language",
+                        hintText: "country in menu mode",
+                      ),
+                    ),
+                    onChanged: (val) {
+                      setState(() => _bugLanguageController = val!);
+                    },
+                    selectedItem: langs.first,
                   ),
-                ), 
+                ),
                 Visibility(
-                    visible: _bugSolved,
-                    child: Padding(
-                      padding: const EdgeInsets.all(.0),
-                      child: TextFormField(
-                        controller: _bugLanguageController,
-                        decoration: const InputDecoration(
-                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                            width: 1, color: Colors.grey), 
-                          ),
-                          border: UnderlineInputBorder(),
-                          labelText: 'Enter Programming Language:',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter Programming Language';
-                          }
-                          return null;
-                        },
+                  visible: _bugSolved,
+                  child: TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    minLines: 3,
+                    maxLines: null,
+                    controller: _bugSolutionsController,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Enter Solution:',
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter Solution';
+                      }
+                      return null;
+                    },
                   ),
-                ), 
+                ),
               ],
             ),
-          ))),
+          )),
       actions: [
         TextButton(
           child: const Text('Cancel'),
@@ -220,9 +209,8 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
             if (_addBugKey.currentState!.validate()) {
               List<Solution> addArray = [
                 Solution(
-                  solution: _bugSolutionsController.text, 
-                  language: _bugLanguageController.text
-                )
+                    solution: _bugSolutionsController.text,
+                    language: _bugLanguageController)
               ];
               widget.project_query_doc
                   .collection("Stack")
