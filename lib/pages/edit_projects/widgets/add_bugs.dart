@@ -213,7 +213,9 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                 "time": today.toString(),
               };
 
-              print(solutionMap);
+              var addArray;
+              _bugSolutionsController.text == "" ? addArray = [] : addArray = [solutionMap];
+              // print(solutionMap);
 
               widget.project_query_doc
                   .collection("Stack")
@@ -223,7 +225,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                 'bug_name': _bugNameController.text,
                 'bug_description': _bugDescriptionController.text,
                 'error_output': _bugErrorOutputController.text,
-                'solution': FieldValue.arrayUnion([solutionMap]),
+                'solution': FieldValue.arrayUnion(addArray),
                 'is_solved': _bugSolved,
                 'created_at': today,
               }).then((value) {

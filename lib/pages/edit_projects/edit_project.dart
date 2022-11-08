@@ -470,34 +470,27 @@ class _ViewStacksState extends State<ViewStacks> {
                                               onPressed: () {
                                                 showDialog(
                                                     context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        ModifyStack(
-                                                          query_doc: widget
-                                                              .project_query_doc,
-                                                          id: stack.id,
-                                                          stack_type: stack[
-                                                              'stack_type'],
-                                                          technology: stack[
-                                                              'stack_title'],
-                                                        ));
+                                                    builder: (BuildContext context) =>
+                                                      ModifyStack(
+                                                        query_doc: widget.project_query_doc,
+                                                        id: stack.id,
+                                                        stack_type: stack['stack_type'],
+                                                        technology: stack['stack_title'],
+                                                      ));
                                               },
                                               color: index == _selectedIndex
                                                   ? red
-                                                  : const Color.fromARGB(
-                                                      255, 255, 255, 255),
+                                                  : const Color.fromARGB(255, 255, 255, 255),
                                             ),
                                             IconButton(
                                               icon: const Icon(Icons.delete),
                                               onPressed: () {
                                                 showDialog(
                                                     context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        DeleteStackPopup(
-                                                            query_doc: widget
-                                                                .project_query_doc,
-                                                            id: stack.id));
+                                                    builder: (BuildContext context) =>
+                                                      DeleteStackPopup(
+                                                        query_doc: widget.project_query_doc,
+                                                        id: stack.id));
                                               },
                                               color: index == _selectedIndex
                                                   ? red
@@ -522,13 +515,13 @@ class project_preview_desc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
-        child: Text(this.text,
-            style: TextStyle(
-                color: AppStyle.descriptionText,
-                fontFamily: 'Times',
-                fontSize: 20,
-                wordSpacing: 3)));
+      padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
+      child: Text(this.text,
+        style: TextStyle(
+          color: AppStyle.descriptionText,
+          fontFamily: 'Times',
+          fontSize: 20,
+          wordSpacing: 3)));
   }
 }
 
@@ -539,12 +532,12 @@ class project_preview_name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
-        child: Text(this.text,
-            style: TextStyle(
-                color: AppStyle.fieldText,
-                fontFamily: 'Times',
-                fontSize: 22,
-                wordSpacing: 3)));
+      padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+      child: Text(this.text,
+        style: TextStyle(
+          color: AppStyle.fieldText,
+          fontFamily: 'Times',
+          fontSize: 22,
+          wordSpacing: 3)));
   }
 }

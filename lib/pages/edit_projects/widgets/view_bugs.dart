@@ -143,11 +143,11 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Edit_bug_page(
-                                                      bug_ID: bug.id,
-                                                      bug_query_doc: bugDoc,
-                                                    )));
+                                              builder: (context) =>
+                                                Edit_bug_page(
+                                                  bug_ID: bug.id,
+                                                  bug_query_doc: bugDoc,
+                                                )));
                                       },
                                     ),
                                     // Delete project button

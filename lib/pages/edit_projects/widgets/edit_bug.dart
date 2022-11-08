@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 
+import '../edit_project.dart';
+import 'edit_solution.dart';
+import 'view_bugs.dart';
+
 class Edit_bug_page extends StatefulWidget {
   final DocumentReference<Object?> bug_query_doc;
   final String bug_ID;
@@ -55,7 +59,8 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
               return const Text("No Data");
             }
 
-            String code = snapshot.data["solution"];
+            List code = snapshot.data["solution"];
+
             return Padding(
               padding: const EdgeInsets.only(left: 50, right: 50),
               child: ListView(
@@ -147,29 +152,122 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                           size: 30,
                                           color: Colors.white,
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                              AddSolution(
+                                                query_doc: widget.bug_query_doc,
+                                              )
+                                          );
+                                        },
                                       ),
                                     ],
                                   ),
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  HighlightView(
-                                    code,
-                                    language: 'python',
-                                    theme: githubTheme,
-                                    textStyle: const TextStyle(
-                                      fontFamily:
-                                          'Ubuntu',
-                                      fontSize: 16,
-                                    ),
+                                  ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: code.length,
+                                    itemBuilder: (context, index) {
+                                      Map bugInfo = code[index];
+                                      // print(bugInfo);
+                                      return Card(
+                                         elevation: 10,
+                                        color: theme_color,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
+                                            side: const BorderSide(
+                                                color: Color.fromARGB(255, 146, 153, 192),
+                                                width: 1)),
+                                        margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                const Bug_Description_field_text(text: "Language:"),
+                                                Bug_Description_Text(text: bugInfo['language']),
+                                                const Bug_Description_field_text(text: "Created On:"),
+                                                Bug_Description_Text(text: bugInfo['time']),
+                                                const Bug_Description_field_text(text: "Solution:"),
+                                                Padding(
+                                                  padding: EdgeInsets.only(left: 15, right: 15, bottom: 6, top: 6),
+                                                  child: HighlightView(
+                                                    bugInfo['solution'],
+                                                    language: bugInfo['language'],
+                                                    theme: githubTheme,
+                                                    textStyle: const TextStyle(
+                                                      fontFamily: 'Ubuntu',
+                                                      fontSize: 16,
+                                                    ),
+                                                  )
+                                                )
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                                  child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.edit_note_outlined,
+                                                      size: 30,
+                                                      color: Colors.white,
+                                                    ),
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) =>
+                                                        ModifySolution(
+                                                          query_doc: widget.bug_query_doc,
+                                                          bug_index: index,
+                                                          bug_info: bugInfo,
+                                                          solution_list: code,
+                                                        )
+                                                    );
+                                                  }
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                                  child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.delete_sweep_rounded,
+                                                      size: 30,
+                                                      color: Colors.red,
+                                                    ),
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) => DeleteSolutionPopup(
+                                                        query_doc: widget.bug_query_doc, 
+                                                        bug_index: index,
+                                                        solution_list: code,
+                                                      )
+                                                    );
+                                                  }
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        )
+                                      );
+                                    }
                                   )
                                 ],
                               ),
                             )
                           ],
                         ),
-                      ]))
+                      ]
+                    )
+                  )
                 ],
               ),
             );
