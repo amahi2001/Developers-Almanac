@@ -10,9 +10,7 @@ class ViewBugOverlay extends StatefulWidget {
   final CollectionReference stackCollection;
 
   const ViewBugOverlay(
-      {super.key,
-      required this.stackID,
-      required this.stackCollection});
+      {super.key, required this.stackID, required this.stackCollection});
 
   @override
   State<ViewBugOverlay> createState() => _ViewBugOverlayState();
@@ -29,9 +27,9 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
 
   @override
   Widget build(BuildContext context) {
-      bugCollection =
+    bugCollection =
         widget.stackCollection.doc(widget.stackID).collection("Bug");
-      bugStream =
+    bugStream =
         bugCollection.orderBy('created_at', descending: true).snapshots();
 
     return SizedBox(
@@ -55,12 +53,10 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                   return Text(error,
                       style: const TextStyle(color: Colors.white));
                 }
-
-                // if (snapshot.connectionState == ConnectionState.waiting) {
-                //   return const Text("Loading",
-                //       style: TextStyle(color: Colors.white));
-                // }
-
+                if (!snapshot.hasData ||
+                    snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                }
                 return ListView(children: [
                   ListView.builder(
                       shrinkWrap: true,
@@ -98,8 +94,7 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                       Center(
                                         child: Text(bug['bug_name'],
                                             style: TextStyle(
-                                                color:
-                                                    AppStyle.projectTitle,
+                                                color: AppStyle.projectTitle,
                                                 fontSize: 20,
                                                 wordSpacing: 3)),
                                       ),
@@ -124,7 +119,6 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                       Bug_Description_Text(
                                           text:
                                               bug['is_solved'] ? "Yes" : "No"),
-                                      
                                     ],
                                   ),
                                 ),
@@ -143,11 +137,11 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                Edit_bug_page(
-                                                  bug_ID: bug.id,
-                                                  bug_query_doc: bugDoc,
-                                                )));
+                                                builder: (context) =>
+                                                    Edit_bug_page(
+                                                      bug_ID: bug.id,
+                                                      bug_query_doc: bugDoc,
+                                                    )));
                                       },
                                     ),
                                     // Delete project button
