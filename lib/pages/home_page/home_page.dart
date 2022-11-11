@@ -1,13 +1,13 @@
-import 'package:devs_almanac/pages/style.dart';
+import 'package:devs_almanac/constants/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../auth.dart';
-import '../main.dart';
-import 'home_page/widgets/home_page_widgets.dart';
-import 'login_page.dart';
-import 'edit_projects/edit_project.dart';
+import '../../auth/auth.dart';
+import '../../main.dart';
+import 'widgets/home_page_widgets.dart';
+import '../login_page.dart';
+import '../edit_projects/edit_project.dart';
 
 String searchT = "";
 

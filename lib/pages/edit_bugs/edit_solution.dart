@@ -2,10 +2,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import '../edit_project.dart';
+import '../edit_projects/edit_project.dart';
 
-import '../../../main.dart';
-import '../../../langs.dart';
+import '../../main.dart';
+import '../../constants/langs.dart';
 
 final _bugSolution = TextEditingController();
 late String _bugLanguage;
@@ -338,7 +338,7 @@ class _AddSolutionState extends State<AddSolution> {
                 };
 
                 var addArray;
-                _bugSolution.text == "" ? addArray = [] : addArray = [solutionMap];
+                _bugSolution.text.isEmpty ? addArray = [] : addArray = [solutionMap];
                 
                   
                 if (_addSolutionKey.currentState!.validate()) {

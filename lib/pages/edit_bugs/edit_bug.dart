@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devs_almanac/pages/style.dart';
+import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
 
 //syntax highlight
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 
-import '../edit_project.dart';
+import '../edit_projects/edit_project.dart';
 import 'edit_solution.dart';
-import 'view_bugs.dart';
+import '../edit_projects/widgets/view_bugs.dart';
 
 class Edit_bug_page extends StatefulWidget {
   final DocumentReference<Object?> bug_query_doc;

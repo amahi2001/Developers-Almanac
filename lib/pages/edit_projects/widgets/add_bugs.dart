@@ -3,7 +3,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
 import '../../../main.dart';
-import '../../../langs.dart';
+import '../../../constants/langs.dart';
 
 class AddBugButton extends StatefulWidget {
   final bool isSelected;

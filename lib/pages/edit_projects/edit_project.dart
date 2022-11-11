@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devs_almanac/pages/edit_projects/widgets/edit_bug.dart' as eos;
+import 'package:devs_almanac/pages/edit_bugs/edit_bug.dart' as eos;
 import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
-import 'package:devs_almanac/pages/style.dart';
+import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
 import 'widgets/add_bugs.dart';
 import 'widgets/add_collab.dart';
 import 'widgets/add_stack.dart';
-import '/auth.dart';
+import '../../auth/auth.dart';
 import 'widgets/edit_stacks.dart';
 
 const Color white = Color.fromARGB(255, 255, 255, 255);
