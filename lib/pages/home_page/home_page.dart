@@ -317,18 +317,17 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
   @override
   Widget build(Object context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 0.5, left: 15),
-      child: Column(children: [
-        const project_preview_name(text: 'Project Title'),
-        project_preview_desc(text: projectName),
-        const project_preview_name(text: 'Project Description'),
-        project_preview_desc(text: projectDescription),
-        const project_preview_name(text: 'Project Member(s)'),
-        project_preview_desc(text: projectMembers),
-        const project_preview_name(text: 'Created'),
-        project_preview_desc(text: projectCreated),
-      ]),
-    );
+        padding: const EdgeInsets.only(top: 0.5, left: 15),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const project_preview_name(text: 'Project Title'),
+          project_preview_desc(text: projectName),
+          const project_preview_name(text: 'Project Description'),
+          project_preview_desc(text: projectDescription),
+          const project_preview_name(text: 'Project Member(s)'),
+          project_preview_desc(text: projectMembers),
+          const project_preview_name(text: 'Created'),
+          project_preview_desc(text: projectCreated),
+        ]));
   }
 }
 
@@ -365,7 +364,7 @@ class project_preview_desc extends StatelessWidget {
         child: Align(
             alignment: Alignment.topLeft,
             child: Text(this.text,
-                overflow: TextOverflow.ellipsis,
+                softWrap: true,
                 style: TextStyle(
                     color: AppStyle.descriptionText,
                     fontFamily: 'Times',
@@ -484,6 +483,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                           right: 15,
                                           bottom: 3),
                                       child: Text(project['project_title'],
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               color: AppStyle.projectTitle,
                                               fontSize: 20,
@@ -493,6 +493,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                           left: 15, right: 15, bottom: 6),
                                       child: Text(
                                           "Updated on ${project['last_updated'].toDate()}",
+                                          overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 230, 229, 232),

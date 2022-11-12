@@ -56,7 +56,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
 
   @override
   Widget build(BuildContext context) {
-
     print(selectedID);
     return Scaffold(
       appBar: AppBar(
@@ -209,8 +208,10 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                             children: [
                               Expanded(
                                 child: SizedBox(
-                                    width: 300,
-                                    height: 500,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.3,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.75,
                                     child: ViewStacks(
                                       project_query_doc:
                                           widget.project_query_doc,
@@ -224,7 +225,8 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                 child: SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.5,
-                                  height: 500,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.75,
                                   child: Column(
                                     children: [
                                       Card(
@@ -289,9 +291,8 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                                       stackID: selectedID,
                                                       stackCollection: widget
                                                           .project_query_doc
-                                                          .collection("Stack")
-                                                    )
-                                                      //notifyParent: refresh)
+                                                          .collection("Stack"))
+                                                  //notifyParent: refresh)
                                                   : Text("NOTHING HERE"),
                                             ],
                                           )),
@@ -359,8 +360,8 @@ class _ViewStacksState extends State<ViewStacks> {
             decoration: const BoxDecoration(
               color: Color.fromARGB(24, 14, 41, 60),
             ),
-            width: 500,
-            height: 450,
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.height * 0.45,
             child: Column(children: [
               Row(
                 children: [
@@ -446,6 +447,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                       Expanded(
                                         child: Text(
                                           '${stack['stack_type']}: ${stack['stack_title']}',
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               color: index == _selectedIndex
                                                   ? red
@@ -470,27 +472,34 @@ class _ViewStacksState extends State<ViewStacks> {
                                               onPressed: () {
                                                 showDialog(
                                                     context: context,
-                                                    builder: (BuildContext context) =>
-                                                      ModifyStack(
-                                                        query_doc: widget.project_query_doc,
-                                                        id: stack.id,
-                                                        stack_type: stack['stack_type'],
-                                                        technology: stack['stack_title'],
-                                                      ));
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        ModifyStack(
+                                                          query_doc: widget
+                                                              .project_query_doc,
+                                                          id: stack.id,
+                                                          stack_type: stack[
+                                                              'stack_type'],
+                                                          technology: stack[
+                                                              'stack_title'],
+                                                        ));
                                               },
                                               color: index == _selectedIndex
                                                   ? red
-                                                  : const Color.fromARGB(255, 255, 255, 255),
+                                                  : const Color.fromARGB(
+                                                      255, 255, 255, 255),
                                             ),
                                             IconButton(
                                               icon: const Icon(Icons.delete),
                                               onPressed: () {
                                                 showDialog(
                                                     context: context,
-                                                    builder: (BuildContext context) =>
-                                                      DeleteStackPopup(
-                                                        query_doc: widget.project_query_doc,
-                                                        id: stack.id));
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        DeleteStackPopup(
+                                                            query_doc: widget
+                                                                .project_query_doc,
+                                                            id: stack.id));
                                               },
                                               color: index == _selectedIndex
                                                   ? red
@@ -515,13 +524,14 @@ class project_preview_desc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
-      child: Text(this.text,
-        style: TextStyle(
-          color: AppStyle.descriptionText,
-          fontFamily: 'Times',
-          fontSize: 20,
-          wordSpacing: 3)));
+        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
+        child: Text(this.text,
+            softWrap: true,
+            style: TextStyle(
+                color: AppStyle.descriptionText,
+                fontFamily: 'Times',
+                fontSize: 20,
+                wordSpacing: 3)));
   }
 }
 
@@ -532,12 +542,13 @@ class project_preview_name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 15, top: 6, right: 15),
-      child: Text(this.text,
-        style: TextStyle(
-          color: AppStyle.fieldText,
-          fontFamily: 'Times',
-          fontSize: 22,
-          wordSpacing: 3)));
+        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+        child: Text(this.text,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                color: AppStyle.fieldText,
+                fontFamily: 'Times',
+                fontSize: 22,
+                wordSpacing: 3)));
   }
 }
