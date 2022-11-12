@@ -201,6 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Text(
                   "Projects",
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: AppStyle.sectionColor,
                     fontFamily: 'Times',
@@ -343,6 +344,7 @@ class project_preview_name extends StatelessWidget {
         child: Align(
             alignment: Alignment.topLeft,
             child: Text(this.text,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: AppStyle.fieldText,
                     fontFamily: 'Times',
@@ -363,6 +365,7 @@ class project_preview_desc extends StatelessWidget {
         child: Align(
             alignment: Alignment.topLeft,
             child: Text(this.text,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: AppStyle.descriptionText,
                     fontFamily: 'Times',
