@@ -248,15 +248,18 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.only(left: 45, right: 45),
             child: Row(
               children: [
+                // Shows the projects view
                 Expanded(
                   child: SizedBox(
-                      width: 300,
+                      // width: 300,
                       height: 500,
                       child: ProjectsView(notifyParent: refresh)),
                 ),
+                // Shows the project description view
                 Expanded(
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
+                    // Doesn't make a difference:
+                    width: MediaQuery.of(context).size.width * 0.3,
                     height: 500,
                     child: Column(
                       children: [
@@ -270,8 +273,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                   width: 1)),
                           margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                           child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.3,
                             child: Align(
-                              alignment: Alignment.topLeft,
+                              alignment: Alignment.bottomLeft,
                               child: Row(
                                 children: [
                                   Column(
@@ -280,9 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       // if no projects, dont display sizedbox, otherwise return sizedBox
                                       SizedBox(
                                         height: 450,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.3,
+                                        // width: MediaQuery.of(context).size.width * 0.3,
                                         child: SingleChildScrollView(
                                           child: ProjectInfoPreviewView(),
                                         ),
@@ -445,9 +447,9 @@ class _ProjectsViewState extends State<ProjectsView> {
               }
 
               return Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.centerRight,
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.3,
                   child: InkWell(
                     onTap: () => {
                       setState(() {
