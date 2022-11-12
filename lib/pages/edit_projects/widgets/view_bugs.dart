@@ -93,6 +93,7 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                       ),
                                       Center(
                                         child: Text(bug['bug_name'],
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 color: AppStyle.projectTitle,
                                                 fontSize: 20,
@@ -178,6 +179,7 @@ class Bug_Description_field_text extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Text(text,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
               color: AppStyle.fieldText, fontSize: 18, wordSpacing: 3)),
     );
@@ -193,6 +195,7 @@ class Bug_Description_Text extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 15, right: 15, bottom: 6, top: 6),
         child: Text(text,
+            overflow: TextOverflow.ellipsis,
             style:
                 const TextStyle(color: white, fontSize: 15, wordSpacing: 5)));
   }
@@ -239,6 +242,7 @@ class bug_preview_name extends StatelessWidget {
         child: Align(
             alignment: Alignment.topLeft,
             child: Text(this.text,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: AppStyle.fieldText,
                     fontFamily: 'Times',
@@ -259,6 +263,7 @@ class bug_preview_desc extends StatelessWidget {
         child: Align(
             alignment: Alignment.topLeft,
             child: Text(this.text,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: AppStyle.fieldText,
                     fontFamily: 'Times',

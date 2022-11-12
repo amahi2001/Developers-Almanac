@@ -223,8 +223,8 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                   child: Padding(
                                 padding: const EdgeInsets.only(top: 90),
                                 child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5,
+                                  // width:
+                                  //     MediaQuery.of(context).size.width * 0.5,
                                   height:
                                       MediaQuery.of(context).size.height * 0.75,
                                   child: Column(
@@ -360,8 +360,8 @@ class _ViewStacksState extends State<ViewStacks> {
             decoration: const BoxDecoration(
               color: Color.fromARGB(24, 14, 41, 60),
             ),
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.45,
+            // width: MediaQuery.of(context).size.width * 0.5,
+            // height: MediaQuery.of(context).size.height * 0.45,
             child: Column(children: [
               Row(
                 children: [
@@ -456,58 +456,56 @@ class _ViewStacksState extends State<ViewStacks> {
                                         ),
                                       ),
                                       Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            AddBugButton(
-                                              isSelected:
-                                                  index == _selectedIndex,
-                                              project_query_doc:
-                                                  widget.project_query_doc,
-                                              stack_id: stack.id,
-                                            ),
-                                            IconButton(
-                                              icon: const Icon(Icons.edit),
-                                              onPressed: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        ModifyStack(
+                                          child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          AddBugButton(
+                                            isSelected: index == _selectedIndex,
+                                            project_query_doc:
+                                                widget.project_query_doc,
+                                            stack_id: stack.id,
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.edit),
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      ModifyStack(
+                                                        query_doc: widget
+                                                            .project_query_doc,
+                                                        id: stack.id,
+                                                        stack_type:
+                                                            stack['stack_type'],
+                                                        technology: stack[
+                                                            'stack_title'],
+                                                      ));
+                                            },
+                                            color: index == _selectedIndex
+                                                ? red
+                                                : const Color.fromARGB(
+                                                    255, 255, 255, 255),
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.delete),
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      DeleteStackPopup(
                                                           query_doc: widget
                                                               .project_query_doc,
-                                                          id: stack.id,
-                                                          stack_type: stack[
-                                                              'stack_type'],
-                                                          technology: stack[
-                                                              'stack_title'],
-                                                        ));
-                                              },
-                                              color: index == _selectedIndex
-                                                  ? red
-                                                  : const Color.fromARGB(
-                                                      255, 255, 255, 255),
-                                            ),
-                                            IconButton(
-                                              icon: const Icon(Icons.delete),
-                                              onPressed: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        DeleteStackPopup(
-                                                            query_doc: widget
-                                                                .project_query_doc,
-                                                            id: stack.id));
-                                              },
-                                              color: index == _selectedIndex
-                                                  ? red
-                                                  : white,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                                          id: stack.id));
+                                            },
+                                            color: index == _selectedIndex
+                                                ? red
+                                                : white,
+                                          ),
+                                        ],
+                                      )),
                                     ]))));
                       }))
             ]));

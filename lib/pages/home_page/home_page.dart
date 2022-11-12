@@ -284,7 +284,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                       // if no projects, dont display sizedbox, otherwise return sizedBox
                                       SizedBox(
                                         height: 450,
-                                        // width: MediaQuery.of(context).size.width * 0.3,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
                                         child: SingleChildScrollView(
                                           child: ProjectInfoPreviewView(),
                                         ),
@@ -319,17 +321,18 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
   @override
   Widget build(Object context) {
     return Padding(
-        padding: const EdgeInsets.only(top: 0.5, left: 15),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const project_preview_name(text: 'Project Title'),
-          project_preview_desc(text: projectName),
-          const project_preview_name(text: 'Project Description'),
-          project_preview_desc(text: projectDescription),
-          const project_preview_name(text: 'Project Member(s)'),
-          project_preview_desc(text: projectMembers),
-          const project_preview_name(text: 'Created'),
-          project_preview_desc(text: projectCreated),
-        ]));
+      padding: const EdgeInsets.only(top: 0.5, left: 15),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const project_preview_name(text: 'Project Title'),
+        project_preview_desc(text: projectName),
+        const project_preview_name(text: 'Project Description'),
+        project_preview_desc(text: projectDescription),
+        const project_preview_name(text: 'Project Member(s)'),
+        project_preview_desc(text: projectMembers),
+        const project_preview_name(text: 'Created'),
+        project_preview_desc(text: projectCreated),
+      ]),
+    );
   }
 }
 
@@ -362,15 +365,16 @@ class project_preview_desc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: Align(
-            alignment: Alignment.topLeft,
-            child: Text(this.text,
-                softWrap: true,
-                style: TextStyle(
-                    color: AppStyle.descriptionText,
-                    fontFamily: 'Times',
-                    fontSize: 13))));
+      padding: const EdgeInsets.only(top: 10),
+      child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(this.text,
+              softWrap: true,
+              style: TextStyle(
+                  color: AppStyle.descriptionText,
+                  fontFamily: 'Times',
+                  fontSize: 13))),
+    );
   }
 }
 
