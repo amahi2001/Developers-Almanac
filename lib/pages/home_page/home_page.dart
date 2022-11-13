@@ -4,8 +4,6 @@ import 'package:devs_almanac/constants/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_tags/flutter_tags.dart';
-import 'package:material_tag_editor/tag_editor.dart';
 
 
 import '../../auth/auth.dart';
