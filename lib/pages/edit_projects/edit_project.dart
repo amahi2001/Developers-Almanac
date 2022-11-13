@@ -86,11 +86,11 @@ class _Edit_project_pageState extends State<Edit_project_page> {
             if (!snapshot.hasData) {
               return Text("No Data");
             }
-            return Padding(
-                padding: EdgeInsets.only(left: 50, right: 50),
-                child: ListView(
-                  children: [
-                    Row(
+            return ListView(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 50, right: 50),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Flexible(
@@ -157,156 +157,160 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                         )
                       ],
                     ),
-                    // Horizontal Divider
-                    const Divider(
+                  ),
+                  // Horizontal Divider
+                  Padding(
+                    padding: EdgeInsets.only(left: 50, right: 50),
+                    child: const Divider(
                       height: 30,
                       thickness: 3,
                       color: Colors.white,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Stacks",
-                                style: TextStyle(
-                                  color: AppStyle.sectionColor,
-                                  fontFamily: 'Times',
-                                  fontSize: 25,
-                                ),
-                                textAlign: TextAlign.left,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 65, right: 65),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Stacks",
+                              style: TextStyle(
+                                color: AppStyle.sectionColor,
+                                fontFamily: 'Times',
+                                fontSize: 25,
                               ),
-                              const SizedBox(
-                                width: 20,
+                              textAlign: TextAlign.left,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.add,
+                                size: 30,
+                                color: Colors.white,
                               ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.add,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) => Column(
-                                            children: [
-                                              AddStackPopUp(
-                                                  project_query_doc:
-                                                      widget.project_query_doc,
-                                                  project_id: widget
-                                                      .project_query_doc.id),
-                                            ],
-                                          ));
-                                },
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.3,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.75,
-                                    child: ViewStacks(
-                                      project_query_doc:
-                                          widget.project_query_doc,
-                                      id: widget.project_query_doc.id,
-                                      callback: refresh,
-                                    )),
-                              ),
-                              Expanded(
-                                  child: Padding(
-                                padding: const EdgeInsets.only(top: 90),
-                                child: SizedBox(
-                                  // width:
-                                  //     MediaQuery.of(context).size.width * 0.5,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.75,
-                                  child: Column(
-                                    children: [
-                                      Card(
-                                          elevation: 10,
-                                          color: const Color.fromARGB(
-                                              255, 22, 66, 97),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              side: const BorderSide(
-                                                  color: Color.fromARGB(
-                                                      255, 146, 153, 192),
-                                                  width: 1)),
-                                          margin: const EdgeInsets.fromLTRB(
-                                              5, 5, 5, 5),
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                child: Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Row(
-                                                    children: [
-                                                      Column(
-                                                        children: [
-                                                          // add conditional:
-                                                          // if no projects, dont display sizedbox, otherwise return sizedBox
-                                                          Center(
-                                                              child: SizedBox(
-                                                            height: 70,
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.3,
-                                                            child:
-                                                                SingleChildScrollView(
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        top:
-                                                                            0.5,
-                                                                        left:
-                                                                            15),
-                                                                child: Column(
-                                                                    children: [
-                                                                      bug_preview_name(
-                                                                          text:
-                                                                              '${bugType} : ${bugName}')
-                                                                    ]),
-                                                              ),
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) => Column(
+                                          children: [
+                                            AddStackPopUp(
+                                                project_query_doc:
+                                                    widget.project_query_doc,
+                                                project_id: widget
+                                                    .project_query_doc.id),
+                                          ],
+                                        ));
+                              },
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.3,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.75,
+                                  child: ViewStacks(
+                                    project_query_doc:
+                                        widget.project_query_doc,
+                                    id: widget.project_query_doc.id,
+                                    callback: refresh,
+                                  )),
+                            ),
+                            Expanded(
+                                child: Padding(
+                              padding: const EdgeInsets.only(top: 90),
+                              child: SizedBox(
+                                // width:
+                                //     MediaQuery.of(context).size.width * 0.5,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.75,
+                                child: Column(
+                                  children: [
+                                    Card(
+                                        elevation: 10,
+                                        color: const Color.fromARGB(
+                                            255, 22, 66, 97),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            side: const BorderSide(
+                                                color: Color.fromARGB(
+                                                    255, 146, 153, 192),
+                                                width: 1)),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            5, 5, 5, 5),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Row(
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        // add conditional:
+                                                        // if no projects, dont display sizedbox, otherwise return sizedBox
+                                                        Center(
+                                                            child: SizedBox(
+                                                          height: 70,
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.3,
+                                                          child:
+                                                              SingleChildScrollView(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top:
+                                                                          0.5,
+                                                                      left:
+                                                                          15),
+                                                              child: Column(
+                                                                  children: [
+                                                                    bug_preview_name(
+                                                                        text:
+                                                                            '${bugType} : ${bugName}')
+                                                                  ]),
                                                             ),
-                                                          ))
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
+                                                          ),
+                                                        ))
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              selectedID != ""
-                                                  ? ViewBugOverlay(
-                                                      stackID: selectedID,
-                                                      stackCollection: widget
-                                                          .project_query_doc
-                                                          .collection("Stack"))
-                                                  //notifyParent: refresh)
-                                                  : Text("NOTHING HERE"),
-                                            ],
-                                          )),
-                                    ],
-                                  ),
+                                            ),
+                                            selectedID != ""
+                                                ? ViewBugOverlay(
+                                                    stackID: selectedID,
+                                                    stackCollection: widget
+                                                        .project_query_doc
+                                                        .collection("Stack"))
+                                                //notifyParent: refresh)
+                                                : Text("NOTHING HERE"),
+                                          ],
+                                        )),
+                                  ],
                                 ),
-                              )),
-                            ],
-                          ),
-                        ],
-                      ),
+                              ),
+                            )),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ));
+                  ),
+                ],
+              );
           })),
     );
   }
