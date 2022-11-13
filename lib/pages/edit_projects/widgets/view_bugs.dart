@@ -106,6 +106,11 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                       text: bug['created_at']
                                           .toDate()
                                           .toString()),
+                                          const Bug_Description_field_text(
+                                      text: "Created By:"),
+                                      Bug_Description_Text(
+                                      text:
+                                          bug['created_by']),
                                   const Bug_Description_field_text(
                                       text: "Was Solved:"),
                                   Bug_Description_Text(

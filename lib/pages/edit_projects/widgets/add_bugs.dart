@@ -3,6 +3,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
 import '../../../main.dart';
+import "../../../auth/auth.dart";
 import '../../../constants/langs.dart';
 
 class AddBugButton extends StatefulWidget {
@@ -228,6 +229,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                 'solution': FieldValue.arrayUnion(addArray),
                 'is_solved': _bugSolved,
                 'created_at': today,
+                'created_by': user_obj!.email,
               }).then((value) {
                 print("Bug Added");
                 Navigator.pop(context);
