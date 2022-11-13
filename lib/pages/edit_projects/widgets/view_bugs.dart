@@ -35,137 +35,129 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
     return SizedBox(
         width: MediaQuery.of(context).size.width * 0.5,
         height: 400,
-        child: Card(
-            elevation: 10,
-            color: theme_color,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-                side: const BorderSide(
-                    color: Color.fromARGB(255, 146, 153, 192), width: 1)),
-            margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-            child: StreamBuilder<QuerySnapshot>(
-              stream: bugStream,
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  String error = snapshot.error.toString();
-                  print(error);
-                  return Text(error,
-                      style: const TextStyle(color: Colors.white));
-                }
-                if (!snapshot.hasData ||
-                    snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                }
-                return ListView(children: [
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.size,
-                      itemBuilder: (context, index) {
-                        QueryDocumentSnapshot<Object?> bug =
-                            snapshot.data!.docs[index];
-                        DocumentReference bugDoc = bugCollection.doc(bug.id);
+        child: StreamBuilder<QuerySnapshot>(
+          stream: bugStream,
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              String error = snapshot.error.toString();
+              print(error);
+              return Text(error,
+                  style: const TextStyle(color: Colors.white));
+            }
+            if (!snapshot.hasData ||
+                snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            return ListView(children: [
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.size,
+                  itemBuilder: (context, index) {
+                    QueryDocumentSnapshot<Object?> bug =
+                        snapshot.data!.docs[index];
+                    DocumentReference bugDoc = bugCollection.doc(bug.id);
 
-                        return Card(
-                          elevation: 10,
-                          color: theme_color,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              side: const BorderSide(
-                                  color: Color.fromARGB(255, 146, 153, 192),
-                                  width: 1)),
-                          margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Flexible(
-                                  fit: FlexFit.tight,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 15,
-                                            top: 6,
-                                            right: 15,
-                                            bottom: 3),
-                                      ),
-                                      Center(
-                                        child: Text(bug['bug_name'],
-                                            style: TextStyle(
-                                                color: AppStyle.projectTitle,
-                                                fontSize: 20,
-                                                wordSpacing: 3)),
-                                      ),
-                                      const Divider(
-                                        color: Colors.orange,
-                                        thickness: 2,
-                                        // indent: 10,
-                                        // endIndent: 10,
-                                      ),
-                                      const Bug_Description_field_text(
-                                          text: "Description:"),
-                                      Bug_Description_Text(
-                                          text: bug['bug_description']),
-                                      const Bug_Description_field_text(
-                                          text: "Created on:"),
-                                      Bug_Description_Text(
-                                          text: bug['created_at']
-                                              .toDate()
-                                              .toString()),
-                                      const Bug_Description_field_text(
-                                          text: "Was Solved:"),
-                                      Bug_Description_Text(
-                                          text:
-                                              bug['is_solved'] ? "Yes" : "No"),
-                                    ],
+                    return Card(
+                      elevation: 10,
+                      color: theme_color,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          side: const BorderSide(
+                              color: Color.fromARGB(255, 146, 153, 192),
+                              width: 1)),
+                      margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              fit: FlexFit.tight,
+                              child: Column(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 15,
+                                        top: 6,
+                                        right: 15,
+                                        bottom: 3),
                                   ),
+                                  Center(
+                                    child: Text(bug['bug_name'],
+                                        style: TextStyle(
+                                            color: AppStyle.projectTitle,
+                                            fontSize: 20,
+                                            wordSpacing: 3)),
+                                  ),
+                                  const Divider(
+                                    color: Colors.orange,
+                                    thickness: 2,
+                                    // indent: 10,
+                                    // endIndent: 10,
+                                  ),
+                                  const Bug_Description_field_text(
+                                      text: "Description:"),
+                                  Bug_Description_Text(
+                                      text: bug['bug_description']),
+                                  const Bug_Description_field_text(
+                                      text: "Created on:"),
+                                  Bug_Description_Text(
+                                      text: bug['created_at']
+                                          .toDate()
+                                          .toString()),
+                                  const Bug_Description_field_text(
+                                      text: "Was Solved:"),
+                                  Bug_Description_Text(
+                                      text:
+                                          bug['is_solved'] ? "Yes" : "No"),
+                                ],
+                              ),
+                            ),
+                            Column(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.edit_note_outlined,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    //go to view bugs page
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Edit_bug_page(
+                                                  bug_ID: bug.id,
+                                                  bug_query_doc: bugDoc,
+                                                )));
+                                  },
                                 ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(
-                                        Icons.edit_note_outlined,
-                                        size: 30,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: () {
-                                        //go to view bugs page
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Edit_bug_page(
-                                                      bug_ID: bug.id,
-                                                      bug_query_doc: bugDoc,
-                                                    )));
-                                      },
-                                    ),
-                                    // Delete project button
-                                    IconButton(
-                                      icon: const Icon(
-                                        Icons.delete_sweep_rounded,
-                                        size: 30,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                DeleteBugPopup(bugDoc: bugDoc));
-                                      },
-                                    ),
-                                  ],
+                                // Delete project button
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.delete_sweep_rounded,
+                                    size: 30,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            DeleteBugPopup(bugDoc: bugDoc));
+                                  },
                                 ),
-                              ]),
-                        );
-                      })
-                ]);
-              },
-            )));
+                              ],
+                            ),
+                          ]),
+                    );
+                  })
+            ]);
+          },
+        ));
   }
 }
 
@@ -235,7 +227,7 @@ class bug_preview_name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 20),
         child: Align(
             alignment: Alignment.topLeft,
             child: Text(this.text,
@@ -255,7 +247,7 @@ class bug_preview_desc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 20),
         child: Align(
             alignment: Alignment.topLeft,
             child: Text(this.text,
