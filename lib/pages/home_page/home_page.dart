@@ -4,6 +4,9 @@ import 'package:devs_almanac/constants/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_tags/flutter_tags.dart';
+import 'package:material_tag_editor/tag_editor.dart';
+
 
 import '../../auth/auth.dart';
 import './widgets/home_page_widgets.dart' as wids;
@@ -15,16 +18,17 @@ String projectName = "";
 String projectDescription = "";
 String projectMembers = "";
 String projectCreated = "";
-dynamic projectTools;
+List<String> projectTools = [];
 
 Future<List<String>> getLangs(DocumentReference stackDoc) async {
   List<String> result = [];
   await stackDoc.collection("Bug").get().then((value) => {
-        value.docs.forEach((bug_doc) {
-          for (var solution in bug_doc["solution"]) {
-            // if(!stacksAndLangs.contains(solution["language"])){
-            result.add(solution["language"]);
-            // }
+        value.docs.forEach((bugDoc) {
+          for (var solution in bugDoc["solution"]) {
+            if (!result.contains(solution["language"]) &&
+                solution["language"] != "Other") {
+              result.add(solution["language"]);
+            }
           }
         })
       });
@@ -41,12 +45,12 @@ Future<List<String>> getStacksAndLangs(DocumentReference projectDoc) async {
       .then((value) => {
             //adding stacks
             value.docs.forEach(
-              (stack_doc) async {
-                if (!result.contains(stack_doc["stack_title"])) {
-                  result.add(stack_doc["stack_title"]);
+              (stackDoc) async {
+                if (!result.contains(stackDoc["stack_title"])) {
+                  result.add(stackDoc["stack_title"]);
                 }
-                if (!stackIds.contains(stack_doc.id)) {
-                  stackIds.add(stack_doc.id);
+                if (!stackIds.contains(stackDoc.id)) {
+                  stackIds.add(stackDoc.id);
                 }
               },
             ),
@@ -377,7 +381,20 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
         const project_preview_name(text: 'Created'),
         project_preview_desc(text: projectCreated),
         const project_preview_name(text: 'Stack & Languages'),
-        project_preview_desc(text: projectTools.toString()),
+        Visibility(
+          visible: projectTools.isNotEmpty,
+          child: Wrap(
+            children: projectTools.map((tool) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Chip(
+                  label: Text(tool),
+                  backgroundColor: AppStyle.sectionColor,
+                ),
+              );
+            }).toList(),
+          )
+        )
       ]),
     );
   }
@@ -461,8 +478,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: InkWell(
                     onTap: () async => {
-                      projectTools =
-                            await getStacksAndLangs(project.reference),
+                      projectTools = await getStacksAndLangs(project.reference),
                       print(projectTools),
                       setState(() {
                         projectName = project['project_title'];
