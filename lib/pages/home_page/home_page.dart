@@ -9,6 +9,8 @@ import 'widgets/home_page_widgets.dart';
 import '../login_page.dart';
 import '../edit_projects/edit_project.dart';
 
+import 'dart:math' as math;
+
 String searchT = "";
 
 String projectName = "";
@@ -482,8 +484,17 @@ class _ProjectsViewState extends State<ProjectsView> {
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Padding(padding: EdgeInsets.all(5), 
-                                  child: Image.network('https://cdn0.iconfinder.com/data/icons/artcore/512/folder_system.png')),
+                                Padding(padding: EdgeInsets.all(10), 
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
+                                      borderRadius: BorderRadius.all(Radius.circular(5))
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                    child: Center(child: Text(project['project_title'][0], style: TextStyle(fontSize: 25, color: white))))),
+                                  // if user adds image, show that instead 
+                                  //child: Image.network('https://cdn0.iconfinder.com/data/icons/artcore/512/folder_system.png')),
                                 Flexible(
                                   fit: FlexFit.tight,
                                   child: Column(
