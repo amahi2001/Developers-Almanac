@@ -482,6 +482,8 @@ class _ProjectsViewState extends State<ProjectsView> {
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                Padding(padding: EdgeInsets.all(5), 
+                                  child: Image.network('https://cdn0.iconfinder.com/data/icons/artcore/512/folder_system.png')),
                                 Flexible(
                                   fit: FlexFit.tight,
                                   child: Column(
