@@ -102,7 +102,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(.0),
+                  padding: const EdgeInsets.only(bottom: 10.0),
                   child: TextFormField(
                     controller: _bugDescriptionController,
                     decoration: const InputDecoration(
@@ -128,9 +128,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                         borderSide: BorderSide(width: 1, color: Colors.grey),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        //<-- SEE HERE
-                        borderSide:
-                            BorderSide(width: 2, color: Colors.blueAccent),
+                        borderSide: BorderSide(width: 2, color: Colors.blueAccent),
                       ),
                       labelText: 'Enter Error Output:',
                     ),
@@ -150,7 +148,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                     onChanged: (val) {
                       setState(() {
                         _bugSolved = val!;
-                        formHeight = formHeight == 500 ? 900 : 920;
+                        formHeight = formHeight == 500 ? 850 : 850;
                         callback();
                       });
                     },
@@ -158,44 +156,53 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                 ),
                 Visibility(
                   visible: _bugSolved,
-                  child: DropdownSearch<String>(
-                    popupProps: const PopupProps.menu(
-                      showSearchBox: true,
-                      showSelectedItems: true,
-                      // disabledItemFn: (String s) => s.startsWith('I'),
-                    ),
-                    items: langs,
-                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        labelText: "Programming Language",
-                        hintText: "country in menu mode",
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: DropdownSearch<String>(
+                      popupProps: const PopupProps.menu(
+                        showSearchBox: true,
+                        showSelectedItems: true,
                       ),
+                      items: langs,
+                      dropdownDecoratorProps: const DropDownDecoratorProps(
+                        dropdownSearchDecoration: InputDecoration(
+                          labelText: "Programming Language",
+                          hintText: "country in menu mode",
+                        ),
+                      ),
+                      onChanged: (val) {
+                        setState(() => _bugLanguageController = val!);
+                      },
+                      selectedItem: langs.first,
                     ),
-                    onChanged: (val) {
-                      setState(() => _bugLanguageController = val!);
-                    },
-                    selectedItem: langs.first,
                   ),
                 ),
                 Visibility(
                   visible: _bugSolved,
-                  child: TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    minLines: 3,
-                    maxLines: null,
-                    controller: _bugSolutionsController,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Enter Solution:',
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      minLines: 5,
+                      maxLines: 10,
+                      controller: _bugSolutionsController,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: Colors.blueAccent),
+                        ),
+                        labelText: 'Solution:',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Solution';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter Solution';
-                      }
-                      return null;
-                    },
                   ),
-                ),
+                )
               ],
             ),
           )),

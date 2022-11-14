@@ -62,7 +62,7 @@ class _ModifySolutionState extends State<ModifySolution> {
           key: _modifySolutionKey,
           child: Container(
             width: 300,
-            height: 200,
+            height: 225,
             child: Column(
               children: [
                 Padding(
@@ -88,21 +88,25 @@ class _ModifySolutionState extends State<ModifySolution> {
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    minLines: 3,
-                    maxLines: null,
-                    controller: _bugSolution,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Enter Solution:',
+                      minLines: 5,
+                      maxLines: 10,
+                      controller: _bugSolution,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: Colors.blueAccent),
+                        ),
+                        labelText: 'Solution:',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Solution';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a Solution';
-                      }
-                      return null;
-                    },
-                  ),
                 ),
               ],
             ),
@@ -275,7 +279,7 @@ class _AddSolutionState extends State<AddSolution> {
           key: _addSolutionKey,
           child: Container(
             width: 300,
-            height: 200,
+            height: 225,
             child: Column(
               children: [
                 Padding(
@@ -301,17 +305,21 @@ class _AddSolutionState extends State<AddSolution> {
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    minLines: 3,
-                    maxLines: null,
+                    minLines: 5,
+                    maxLines: 10,
                     controller: _bugSolution,
                     decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Enter Solution:',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Colors.grey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 2, color: Colors.blueAccent),
+                      ),
+                      labelText: 'Solution:',
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a Solution';
+                        return 'Please enter Solution';
                       }
                       return null;
                     },
