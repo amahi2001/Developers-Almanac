@@ -14,5 +14,5 @@ class AppStyle {
   static Color sectionColor = const Color.fromARGB(255, 254, 238, 174);
   static Color projectTitle = const Color.fromARGB(255, 255, 196, 144);
   static Color fieldText = const Color.fromARGB(255, 209, 241, 169);
-  static Color descriptionText = Color.fromARGB(255, 220, 220, 222);
+  static Color descriptionText = const Color.fromARGB(255, 220, 220, 222);
 }

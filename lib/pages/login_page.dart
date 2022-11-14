@@ -1,5 +1,6 @@
 //login page
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';

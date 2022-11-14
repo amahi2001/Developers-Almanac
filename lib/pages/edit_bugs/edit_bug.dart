@@ -323,7 +323,7 @@ class bug_preview_desc extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
-        child: Text(this.text,
+        child: Text(text,
             softWrap: true,
             style: TextStyle(
                 color: AppStyle.descriptionText,

@@ -1,7 +1,6 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devs_almanac/pages/edit_bugs/edit_bug.dart' as eos;
 import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
 import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
@@ -407,6 +406,9 @@ class _ViewStacksState extends State<ViewStacks> {
                         }
 
                         return InkWell(
+                          borderRadius: BorderRadius.circular(5),
+                          splashColor: Color.fromARGB(255, 59, 173, 255),
+                          highlightColor: Color.fromARGB(255, 2, 24, 42),
                             onTap: (() {
                               setState(() {
                                 for (var x in StackType) {
@@ -414,9 +416,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                     _selectedStackType = x;
                                   }
                                 }
-                                if (_selectedIndex == index) {
-                                  _selectedIndex = -1;
-                                } else {
+                                if (_selectedIndex != index) {
                                   _selectedIndex = index;
                                   _projectInfoController.text =
                                       stack['stack_title'];
@@ -432,10 +432,11 @@ class _ViewStacksState extends State<ViewStacks> {
                             child: Card(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
-                                    side: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 146, 153, 192),
-                                        width: 1)),
+                                    side: index == _selectedIndex ? const BorderSide(
+                                      color: Color.fromARGB(255, 221, 226, 255),
+                                      width: 2) : const BorderSide(
+                                      color: Color.fromARGB(255, 146, 153, 192),
+                              width: 1)),
                                 color: index == _selectedIndex
                                     ? const Color.fromARGB(255, 14, 41, 60)
                                     : const Color.fromARGB(255, 22, 66, 97),
@@ -445,11 +446,8 @@ class _ViewStacksState extends State<ViewStacks> {
                                       Expanded(
                                         child: Text(
                                           '${stack['stack_type']}: ${stack['stack_title']}',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              color: index == _selectedIndex
-                                                  ? red
-                                                  : white,
+                                          style: const TextStyle(
+                                              color:white,
                                               fontSize: 15),
                                         ),
                                       ),

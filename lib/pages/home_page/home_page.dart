@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, invalid_return_type_for_catch_error
+// ignore_for_file: avoid_print, invalid_return_type_for_catch_error, camel_case_types
 
 import 'package:devs_almanac/constants/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import '../../auth/auth.dart';
 import './widgets/home_page_widgets.dart' as wids;
 import '../edit_projects/edit_project.dart';
+
+import 'dart:math' as math;
 
 String searchT = "";
 
@@ -67,6 +69,8 @@ Future<List<String>> getStacksAndLangs(DocumentReference projectDoc) async {
 
   return result;
 }
+
+int _selectedIndex = -1;
 
 /// this widget let's us search through projects
 class _searchTextField extends StatefulWidget {
@@ -142,7 +146,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  bool typing = true;
+  bool typing = false;
 
   refresh() {
     setState(() {});
@@ -332,7 +336,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 children: [
                                   Column(
                                     children: [
-                                      // add conditional:
                                       // if no projects, dont display sizedbox, otherwise return sizedBox
                                       SizedBox(
                                         height: 450,
@@ -407,7 +410,6 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
 class ProjectsView extends StatefulWidget {
   final Function() notifyParent;
   ProjectsView({super.key, required this.notifyParent});
-  //ProjectsView({super.key});
 
   @override
   State<ProjectsView> createState() => _ProjectsViewState();
@@ -415,6 +417,7 @@ class ProjectsView extends StatefulWidget {
 
 class _ProjectsViewState extends State<ProjectsView> {
   //Querying FireStore
+
   CollectionReference projects =
       FirebaseFirestore.instance.collection('Projects');
   late Stream<QuerySnapshot> project_stream;
@@ -431,9 +434,9 @@ class _ProjectsViewState extends State<ProjectsView> {
 
     void deleteAll() {
       projects.get().then((querySnapshot) {
-        querySnapshot.docs.forEach((result) {
+        for (var result in querySnapshot.docs) {
           result.reference.delete();
-        });
+        }
       });
     }
 
@@ -476,106 +479,129 @@ class _ProjectsViewState extends State<ProjectsView> {
               }
 
               return Align(
-                alignment: Alignment.centerRight,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  child: InkWell(
-                    onTap: () async => {
-                      projectTools = await getStacksAndLangs(project.reference),
-                      print(projectTools),
-                      setState(() {
-                        projectName = project['project_title'];
-                        projectDescription = project['project_description'];
-                        projectMembers = project['members'].toString();
-                        projectCreated =
-                            project['creation_date'].toDate().toString();
-                        widget.notifyParent();
-                      }),
-                    },
-                    child: Card(
-                      elevation: 10,
-                      color: theme_color,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          side: const BorderSide(
-                              color: Color.fromARGB(255, 146, 153, 192),
-                              width: 1)),
-                      margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Flexible(
-                              fit: FlexFit.tight,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 15,
-                                          top: 6,
-                                          right: 15,
-                                          bottom: 3),
-                                      child: Text(project['project_title'],
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              color: AppStyle.projectTitle,
-                                              fontSize: 20,
-                                              wordSpacing: 3))),
-                                  Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 15, right: 15, bottom: 6),
-                                      child: Text(
-                                          "Updated on ${project['last_updated'].toDate()}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 230, 229, 232),
-                                              fontSize: 12,
-                                              wordSpacing: 5))),
-                                ],
-                              ),
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.edit_note_outlined,
-                                size: 30,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                //
-                                DocumentReference<Object?> project_doc =
-                                    projects.doc(project.id);
-                                //go to edit project page
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Edit_project_page(
-                                              project_query_doc: project_doc,
-                                              project_ID: project.id,
-                                            )));
-                              },
-                            ),
-                            // Delete project button
-                            IconButton(
-                              icon: const Icon(
-                                Icons.delete_sweep_rounded,
-                                size: 30,
-                                color: Colors.red,
-                              ),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      wids.DeleteProjectPopup(
-                                          projectID: project.id),
-                                );
-                              },
-                            ),
-                          ]),
+                  alignment: Alignment.centerLeft,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: 75,
+                    child: InkWell(
+                        focusColor: const Color.fromARGB(255, 2, 24, 42),
+                        borderRadius: BorderRadius.circular(5),
+                        splashColor: const Color.fromARGB(255, 59, 173, 255),
+                        highlightColor: const Color.fromARGB(255, 2, 24, 42),
+                        onTap: () async => {
+                          projectTools = await getStacksAndLangs(project.reference),
+                          setState(() {
+                            _selectedIndex = index;
+                            projectName = project['project_title'];
+                            projectDescription = project['project_description'];
+                            projectMembers = project['members'].toString();
+                            projectCreated =
+                                project['creation_date'].toDate().toString();
+                            widget.notifyParent();
+                          }),
+                        },
+                        child: Card(
+                          elevation: 10,
+                          color: index == _selectedIndex
+                              ? const Color.fromARGB(53, 27, 27, 27)
+                              : theme_color,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              side: index == _selectedIndex
+                                  ? const BorderSide(
+                                      color: Color.fromARGB(255, 227, 242, 162),
+                                      width: 2)
+                                  : const BorderSide(
+                                      color: Color.fromARGB(255, 39, 138, 209),
+                                      width: 1)),
+                          margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(padding: const EdgeInsets.all(10), 
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
+                                      borderRadius: const BorderRadius.all(Radius.circular(5))
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                    child: Center(child: Text(project['project_title'][0], style: const TextStyle(fontSize: 25, color: white))))),
+                                  // if user adds image, show that instead 
+                                  //child: Image.network('https://cdn0.iconfinder.com/data/icons/artcore/512/folder_system.png')),
+                                Flexible(
+                                  fit: FlexFit.tight,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 15,
+                                              top: 6,
+                                              right: 15,
+                                              bottom: 3),
+                                          child: Text(project['project_title'],
+                                              style: TextStyle(
+                                                  color: AppStyle.projectTitle,
+                                                  fontSize: 20,
+                                                  wordSpacing: 3))),
+                                      Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 15, right: 15, bottom: 6),
+                                          child: Text(
+                                              "Updated on ${project['last_updated'].toDate()}",
+                                              style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 230, 229, 232),
+                                                  fontSize: 12,
+                                                  wordSpacing: 5))),
+                                    ],
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.edit_note_outlined,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    //
+                                    DocumentReference<Object?> project_doc =
+                                        projects.doc(project.id);
+                                    //go to edit project page
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Edit_project_page(
+                                                  project_query_doc:
+                                                      project_doc,
+                                                  project_ID: project.id,
+                                                )));
+                                  },
+                                ),
+                                // Delete project button
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.delete_sweep_rounded,
+                                    size: 30,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          wids.DeleteProjectPopup(
+                                              projectID: project.id),
+                                    );
+                                  },
+                                ),
+                              ]),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              );
+                  );
             });
       },
     );

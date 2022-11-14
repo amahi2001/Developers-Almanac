@@ -1,8 +1,9 @@
 
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import '../edit_projects/edit_project.dart';
 
 import '../../main.dart';
 import '../../constants/langs.dart';

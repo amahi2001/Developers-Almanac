@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../edit_project.dart';
@@ -126,7 +128,7 @@ class _ModifyStackState extends State<ModifyStack> {
 
 /// This widget lets the user modify a project given a project ID
 class ModifyStackPopup extends StatefulWidget {
-  final stack_id;
+  final String stack_id;
   final DocumentReference<Object?> query_doc;
 
   const ModifyStackPopup(

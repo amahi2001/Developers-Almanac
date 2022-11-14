@@ -1,7 +1,10 @@
+// ignore_for_file: avoid_print, invalid_return_type_for_catch_error
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/auth/auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants/style.dart';
 import '../../../main.dart';
 import '../../edit_projects/edit_project.dart' as global;
 
@@ -97,8 +100,6 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
       actions: [
         TextButton(
           onPressed: () {
-            String creation_date = DateTime.now().toString();
-
             if (_formKey.currentState!.validate()) {
               CollectionReference projects =
                   FirebaseFirestore.instance.collection('Projects');
@@ -251,44 +252,40 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
   }
 }
 
+class project_preview_name extends StatelessWidget {
+  final String text;
+  const project_preview_name({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(text,
+                style: TextStyle(
+                    color: AppStyle.fieldText,
+                    fontFamily: 'Times',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w300,
+                    wordSpacing: 3))));
+  }
+}
+
 class project_preview_desc extends StatelessWidget {
   final String text;
-  const project_preview_desc({
-    super.key, 
-    required this.text
-  });
+  const project_preview_desc({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(top: 10),
-        child: Align(alignment: Alignment.topLeft,
-          child: Text(this.text,
-            style: const TextStyle(
-                color: Color.fromARGB(255, 220, 220, 222),
-                fontFamily: 'Times',
-                fontSize: 13))));
-  }
-}
-
-class project_preview_name extends StatelessWidget {
-  final String text;
-  const project_preview_name({
-    super.key, 
-    required this.text
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.only(top: 20),
-        child: Align(alignment: Alignment.topLeft, 
-        child: Text(this.text,
-            style: const TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: 'Times',
-                fontSize: 15,
-                fontWeight: FontWeight.w300,
-                wordSpacing: 3))));
+        child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(this.text,
+                style: TextStyle(
+                    color: AppStyle.descriptionText,
+                    fontFamily: 'Times',
+                    fontSize: 13))));
   }
 }
