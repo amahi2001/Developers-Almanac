@@ -1,12 +1,13 @@
+// ignore_for_file: avoid_print, invalid_return_type_for_catch_error
+
 import 'package:devs_almanac/constants/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+
 import '../../auth/auth.dart';
-import '../../main.dart';
-import 'widgets/home_page_widgets.dart';
-import '../login_page.dart';
+import './widgets/home_page_widgets.dart' as wids;
 import '../edit_projects/edit_project.dart';
 
 String searchT = "";
@@ -15,6 +16,57 @@ String projectName = "";
 String projectDescription = "";
 String projectMembers = "";
 String projectCreated = "";
+List<String> projectTools = [];
+
+Future<List<String>> getLangs(DocumentReference stackDoc) async {
+  List<String> result = [];
+  await stackDoc.collection("Bug").get().then((value) => {
+        value.docs.forEach((bugDoc) {
+          for (var solution in bugDoc["solution"]) {
+            if (!result.contains(solution["language"]) &&
+                solution["language"] != "Other") {
+              result.add(solution["language"]);
+            }
+          }
+        })
+      });
+  return result;
+}
+
+Future<List<String>> getStacksAndLangs(DocumentReference projectDoc) async {
+  List<String> result = [];
+  List<String> stackIds = [];
+
+  await projectDoc
+      .collection("Stack")
+      .get()
+      .then((value) => {
+            //adding stacks
+            value.docs.forEach(
+              (stackDoc) async {
+                if (!result.contains(stackDoc["stack_title"])) {
+                  result.add(stackDoc["stack_title"]);
+                }
+                if (!stackIds.contains(stackDoc.id)) {
+                  stackIds.add(stackDoc.id);
+                }
+              },
+            ),
+          })
+      .catchError((error) => print("Failed to get stacks and langs: $error"));
+
+  for (var id in stackIds) {
+    DocumentReference stackDoc = projectDoc.collection("Stack").doc(id);
+    List<String> langs = await getLangs(stackDoc);
+    for (var lang in langs) {
+      if (!result.contains(lang) && lang != "Other") {
+        result.add(lang);
+      }
+    }
+  }
+
+  return result;
+}
 
 /// this widget let's us search through projects
 class _searchTextField extends StatefulWidget {
@@ -223,7 +275,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) =>
-                          const AddProjectPopup(),
+                          const wids.AddProjectPopup(),
                     );
                   },
                 )
@@ -232,7 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           // Horizontal Divider
           Padding(
-            padding: EdgeInsets.only(left: 45, right: 45),
+            padding: const EdgeInsets.only(left: 45, right: 45),
             child: Divider(
               height: 30,
               thickness: 3,
@@ -331,49 +383,22 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
         project_preview_desc(text: projectMembers),
         const project_preview_name(text: 'Created'),
         project_preview_desc(text: projectCreated),
+        const project_preview_name(text: 'Stack & Languages'),
+        Visibility(
+          visible: projectTools.isNotEmpty,
+          child: Wrap(
+            children: projectTools.map((tool) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Chip(
+                  label: Text(tool),
+                  backgroundColor: AppStyle.sectionColor,
+                ),
+              );
+            }).toList(),
+          )
+        )
       ]),
-    );
-  }
-}
-
-// COPIED FROM HOME_PAGE_WIDGETS (CODE WAS NOT WORKING WITHOUT IT), PLEASE FIX IF IT BOTHERS YOU. THANK YOU - JOYCE
-class project_preview_name extends StatelessWidget {
-  final String text;
-  const project_preview_name({super.key, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.only(top: 20),
-        child: Align(
-            alignment: Alignment.topLeft,
-            child: Text(this.text,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: AppStyle.fieldText,
-                    fontFamily: 'Times',
-                    fontSize: 15,
-                    fontWeight: FontWeight.w300,
-                    wordSpacing: 3))));
-  }
-}
-
-class project_preview_desc extends StatelessWidget {
-  final String text;
-  const project_preview_desc({super.key, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Align(
-          alignment: Alignment.topLeft,
-          child: Text(this.text,
-              softWrap: true,
-              style: TextStyle(
-                  color: AppStyle.descriptionText,
-                  fontFamily: 'Times',
-                  fontSize: 13))),
     );
   }
 }
@@ -455,7 +480,9 @@ class _ProjectsViewState extends State<ProjectsView> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: InkWell(
-                    onTap: () => {
+                    onTap: () async => {
+                      projectTools = await getStacksAndLangs(project.reference),
+                      print(projectTools),
                       setState(() {
                         projectName = project['project_title'];
                         projectDescription = project['project_description'];
@@ -539,7 +566,8 @@ class _ProjectsViewState extends State<ProjectsView> {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      DeleteProjectPopup(projectID: project.id),
+                                      wids.DeleteProjectPopup(
+                                          projectID: project.id),
                                 );
                               },
                             ),

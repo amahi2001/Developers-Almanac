@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/pages/edit_bugs/edit_bug.dart' as eos;
 import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
@@ -396,7 +398,6 @@ class _ViewStacksState extends State<ViewStacks> {
                             snapshot.data!.docs[index];
 
                         if (!snapshot.hasData) {
-                          print('test phrase');
                           return const Text("No Data");
                         }
 
@@ -426,13 +427,6 @@ class _ViewStacksState extends State<ViewStacks> {
                                 selectedID = stack.id;
                                 collection = stackCollection;
                                 widget.callback();
-
-                                // showDialog(
-                                //     context: context,
-                                //     builder: (BuildContext context) =>
-                                //         ViewBugOverlay(
-                                //             stackID: selectedID,
-                                //             stackCollection: collection));
                               });
                             }),
                             child: Card(

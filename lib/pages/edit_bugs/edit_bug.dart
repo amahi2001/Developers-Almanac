@@ -98,6 +98,11 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                 text: snapshot.data["created_at"]
                                     .toDate()
                                     .toString()),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const bug_preview_name(text: 'Created By'),
+                            bug_preview_desc(text: snapshot.data["created_by"]),
                             const Divider(
                               height: 30,
                               thickness: 0,
