@@ -64,7 +64,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
             return ListView(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 50, right: 50),
+                  padding: const EdgeInsets.only(left: 50, right: 50),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -115,17 +115,17 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                   ),
                 ),
                 // Horizontal Divider
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(left: 50, right: 50),
-                  child: const Divider(
+                  child: Divider(
                     height: 30,
                     thickness: 3,
                     color: Colors.white,
                   ),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(left: 50, right: 50),
-                  child: const Divider(
+                  child: Divider(
                     height: 30,
                     thickness: 0,
                     color: Color.fromARGB(255, 14, 41, 60),
@@ -166,11 +166,12 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                       ),
                                       onPressed: () {
                                         showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                            AddSolution(
-                                              query_doc: widget.bug_query_doc,
-                                            ));
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                AddSolution(
+                                                  query_doc:
+                                                      widget.bug_query_doc,
+                                                ));
                                       },
                                     ),
                                   ],
@@ -189,107 +190,129 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                           elevation: 10,
                                           color: theme_color,
                                           shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
                                               side: const BorderSide(
-                                                color: Color.fromARGB(255, 146, 153, 192),
-                                                width: 1
-                                              )
-                                          ),
-                                          margin: const EdgeInsets.fromLTRB( 5, 5, 5, 10),
+                                                  color: Color.fromARGB(
+                                                      255, 146, 153, 192),
+                                                  width: 1)),
+                                          margin: const EdgeInsets.fromLTRB(
+                                              5, 5, 5, 10),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Row(
-                                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    const Bug_Description_field_text(text: "Language:"),
-                                                    Bug_Description_Text(text: bugInfo['language']),
-                                                    const Bug_Description_field_text(text: "Created On:"),
-                                                    Bug_Description_Text(text: bugInfo['time']),
-                                                    const Bug_Description_field_text(text: "Solution:"),
-                                                    Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 15,
-                                                                right: 15,
-                                                                bottom: 6,
-                                                                top: 6),
-                                                        child: HighlightView(
-                                                          bugInfo['solution'],
-                                                          language: bugInfo['language'],
-                                                          theme: githubTheme,
-                                                          textStyle:
-                                                            const TextStyle(
-                                                              fontFamily: 'Ubuntu',
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const Bug_Description_field_text(
+                                                          text: "Language:"),
+                                                      Bug_Description_Text(
+                                                          text: bugInfo[
+                                                              'language']),
+                                                      const Bug_Description_field_text(
+                                                          text: "Created On:"),
+                                                      Bug_Description_Text(
+                                                          text:
+                                                              bugInfo['time']),
+                                                      const Bug_Description_field_text(
+                                                          text: "Solution:"),
+                                                      Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 15,
+                                                                  right: 15,
+                                                                  bottom: 6,
+                                                                  top: 6),
+                                                          child: HighlightView(
+                                                            bugInfo['solution'],
+                                                            language: bugInfo[
+                                                                'language'],
+                                                            theme: githubTheme,
+                                                            textStyle:
+                                                                const TextStyle(
+                                                              fontFamily:
+                                                                  'Ubuntu',
                                                               fontSize: 16,
-                                                          ),
-                                                        )
-                                                    )
-                                                  ],
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                                      child: IconButton(
-                                                          icon: const Icon(
-                                                            Icons.edit_note_outlined,
-                                                            size: 30,
-                                                            color: Colors.white,
-                                                          ),
-                                                          onPressed: () {
-                                                            showDialog(
-                                                                context:context,
-                                                                builder: (BuildContext context) =>
-                                                                    ModifySolution(
-                                                                      query_doc: widget.bug_query_doc,
-                                                                      bug_index: index,
-                                                                      bug_info: bugInfo,
-                                                                      solution_list: code,
-                                                                    ));
-                                                          }),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsets.fromLTRB(
-                                                              5, 5, 5, 5),
-                                                      child: IconButton(
-                                                          icon: const Icon(
-                                                            Icons
-                                                                .delete_sweep_rounded,
-                                                            size: 30,
-                                                            color: Colors.red,
-                                                          ),
-                                                          onPressed: () {
-                                                            showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder: (BuildContext
-                                                                        context) =>
-                                                                    DeleteSolutionPopup(
-                                                                      query_doc:
-                                                                          widget
-                                                                              .bug_query_doc,
-                                                                      bug_index:
-                                                                          index,
-                                                                      solution_list:
-                                                                          code,
-                                                                    ));
-                                                          }),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            )
-                                          )
-                                        );
+                                                            ),
+                                                          ))
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                5, 5, 5, 5),
+                                                        child: IconButton(
+                                                            icon: const Icon(
+                                                              Icons
+                                                                  .edit_note_outlined,
+                                                              size: 30,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            onPressed: () {
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder: (BuildContext
+                                                                          context) =>
+                                                                      ModifySolution(
+                                                                        query_doc:
+                                                                            widget.bug_query_doc,
+                                                                        bug_index:
+                                                                            index,
+                                                                        bug_info:
+                                                                            bugInfo,
+                                                                        solution_list:
+                                                                            code,
+                                                                      ));
+                                                            }),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                5, 5, 5, 5),
+                                                        child: IconButton(
+                                                            icon: const Icon(
+                                                              Icons
+                                                                  .delete_sweep_rounded,
+                                                              size: 30,
+                                                              color: Colors.red,
+                                                            ),
+                                                            onPressed: () {
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder: (BuildContext
+                                                                          context) =>
+                                                                      DeleteSolutionPopup(
+                                                                        query_doc:
+                                                                            widget.bug_query_doc,
+                                                                        bug_index:
+                                                                            index,
+                                                                        solution_list:
+                                                                            code,
+                                                                      ));
+                                                            }),
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              )));
                                     })
                               ],
                             ),
