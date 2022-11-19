@@ -4,6 +4,8 @@ import 'package:devs_almanac/constants/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+//Import the font package
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../auth/auth.dart';
 import './widgets/home_page_widgets.dart' as wids;
@@ -178,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
       key: _scaffoldKey,
       appBar: AppBar(
         // leading: Image.asset("images/logo.png"),
-        title: const Text("Developer's Almanac"),
+        title: Text("Developer's Almanac", style: GoogleFonts.syneMono()),
         actions: !typing
             ? <Widget>[
                 // Search Icon
@@ -256,12 +258,12 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Welcome back, ",
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  textDirection: TextDirection.ltr,
+                  style: GoogleFonts.poppins(
                       color: Colors.white,
-                      fontFamily: 'Times',
                       fontSize: 45,
                       fontWeight: FontWeight.w300),
                   textAlign: TextAlign.left,
@@ -269,9 +271,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text(
                   "$username",
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  textDirection: TextDirection.ltr,
+                  style: GoogleFonts.poppins(
                       color: Colors.white,
-                      fontFamily: 'Times',
                       fontSize: 45,
                       fontStyle: FontStyle.italic),
                   textAlign: TextAlign.left,
