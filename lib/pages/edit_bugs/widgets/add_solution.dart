@@ -11,10 +11,13 @@ String _bugLanguage = langs.first;
 
 class AddSolution extends StatefulWidget {
   final DocumentReference<Object?> query_doc;
+  //notify parent to update
+  final Function() notifyParent;
 
   const AddSolution({
     super.key,
     required this.query_doc,
+    required this.notifyParent,
   });
 
   @override
@@ -143,7 +146,11 @@ class _AddSolutionState extends State<AddSolution> {
                       .update({
                         "solution": FieldValue.arrayUnion(addArray),
                       })
-                      .then((value) => print("Solution Added"))
+                      .then((value) => {
+                        widget.notifyParent(),
+                        Navigator.pop(context),
+                        print("Solution Added"),
+                      })
                       .catchError(
                           (error) => print("Failed to add solution: $error"));
                 }

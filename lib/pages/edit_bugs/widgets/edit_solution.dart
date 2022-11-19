@@ -1,4 +1,3 @@
-
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,14 +17,15 @@ class ModifySolution extends StatefulWidget {
   final bug_index;
   final bug_info;
   final solution_list;
+  final Function() notifyParent;
 
-  const ModifySolution({
-      super.key,
+  const ModifySolution(
+      {super.key,
       required this.query_doc,
       required this.bug_index,
       required this.bug_info,
-      required this.solution_list
-    });
+      required this.solution_list,
+      required this.notifyParent});
 
   @override
   State<ModifySolution> createState() => _ModifySolutionState();
@@ -40,6 +40,10 @@ class _ModifySolutionState extends State<ModifySolution> {
     _bugSolutionName.text = widget.bug_info['solution_name'];
   }
 
+  void notifyParent() {
+    widget.notifyParent();
+  }
+
   final _modifySolutionKey = GlobalKey<FormState>();
 
   @override
@@ -49,12 +53,8 @@ class _ModifySolutionState extends State<ModifySolution> {
           padding: EdgeInsets.all(3.0),
           child: Align(
               alignment: Alignment.bottomLeft,
-              child: Text(
-                "Modify Solution",
-                style: TextStyle(fontWeight: FontWeight.bold)
-              )
-            )
-      ),
+              child: Text("Modify Solution",
+                  style: TextStyle(fontWeight: FontWeight.bold)))),
       content: Form(
           key: _modifySolutionKey,
           child: SizedBox(
@@ -102,25 +102,26 @@ class _ModifySolutionState extends State<ModifySolution> {
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: TextFormField(
-                      minLines: 5,
-                      maxLines: 10,
-                      controller: _bugSolution,
-                      decoration: const InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 1, color: Colors.grey),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.blueAccent),
-                        ),
-                        labelText: 'Solution:',
+                    minLines: 5,
+                    maxLines: 10,
+                    controller: _bugSolution,
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Colors.grey),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Solution';
-                        }
-                        return null;
-                      },
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2, color: Colors.blueAccent),
+                      ),
+                      labelText: 'Solution:',
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter Solution';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
               ],
             ),
@@ -140,11 +141,11 @@ class _ModifySolutionState extends State<ModifySolution> {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => ModifySolutionPopup(
-                        query_doc: widget.query_doc, 
-                        bug_index: widget.bug_index,
-                        solution_list: widget.solution_list,
-                    )
-                );
+                          notifyParent: notifyParent,
+                          query_doc: widget.query_doc,
+                          bug_index: widget.bug_index,
+                          solution_list: widget.solution_list,
+                        ));
               },
               child: const Text('Save'),
             ),
@@ -160,12 +161,14 @@ class ModifySolutionPopup extends StatefulWidget {
   final bug_index;
   final solution_list;
   final DocumentReference<Object?> query_doc;
+  final Function() notifyParent;
 
   const ModifySolutionPopup({
-    super.key, 
-    required this.query_doc, 
+    super.key,
+    required this.query_doc,
     required this.bug_index,
     required this.solution_list,
+    required this.notifyParent,
   });
 
   @override
@@ -188,10 +191,17 @@ class _ModifySolutionPopupState extends State<ModifySolutionPopup> {
               'time': today.toString(),
             };
 
-            widget.query_doc.update({
-              'solution': widget.solution_list,
-            }).then((value) => print("Solution Updated"))
-                .catchError((error) => print("Failed to update solution: $error"));
+            widget.query_doc
+                .update({
+                  'solution': widget.solution_list,
+                })
+                .then((value) => {
+                      widget.notifyParent(),
+                      Navigator.pop(context),
+                      print("Solution Updated"),
+                    })
+                .catchError(
+                    (error) => print("Failed to update solution: $error"));
             Navigator.pop(context);
           },
           child: const Text('Modify'),
@@ -207,17 +217,18 @@ class _ModifySolutionPopupState extends State<ModifySolutionPopup> {
   }
 }
 
-
 class DeleteSolutionPopup extends StatefulWidget {
   final DocumentReference<Object?> query_doc;
   final solution_list;
   final bug_index;
+  final Function() notifyParent;
 
   const DeleteSolutionPopup({
-    super.key, 
+    super.key,
     required this.query_doc,
     required this.solution_list,
     required this.bug_index,
+    required this.notifyParent,
   });
 
   @override
@@ -234,10 +245,18 @@ class _DeleteSolutionPopupState extends State<DeleteSolutionPopup> {
         TextButton(
           onPressed: () {
             print(widget.solution_list[widget.bug_index]);
-            widget.query_doc.update({
-              'solution': FieldValue.arrayRemove([widget.solution_list[widget.bug_index]]),
-            });
-            Navigator.pop(context);
+            widget.query_doc
+                .update({
+                  'solution': FieldValue.arrayRemove(
+                      [widget.solution_list[widget.bug_index]]),
+                })
+                .then((value) => {
+                      widget.notifyParent(),
+                      Navigator.pop(context),
+                      print("Solution Deleted")
+                    })
+                .catchError(
+                    (error) => print("Failed to delete solution: $error"));
           },
           child: const Text('Delete'),
         ),
