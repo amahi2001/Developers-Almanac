@@ -462,7 +462,13 @@ class _ProjectsViewState extends State<ProjectsView> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading", style: TextStyle(color: Colors.white));
+          return const CircularProgressIndicator();
+        }
+
+        bool snapshotIsEmpty = (!snapshot.hasData || snapshot.data!.docs.isEmpty);
+
+        if(snapshotIsEmpty) {
+          return const Text("No Projects to show", style: TextStyle(color: Colors.white, fontSize: 30));
         }
 
         return ListView.builder(

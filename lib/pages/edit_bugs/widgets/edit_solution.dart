@@ -5,11 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
-import '../../main.dart';
-import '../../constants/langs.dart';
+import '../../../main.dart';
+import '../../../constants/langs.dart';
 
 final _bugSolution = TextEditingController();
-late String _bugLanguage;
+String _bugLanguage = langs.first;
+final _bugSolutionName = TextEditingController();
 
 class ModifySolution extends StatefulWidget {
   final DocumentReference<Object?> query_doc;
@@ -36,14 +37,10 @@ class _ModifySolutionState extends State<ModifySolution> {
     super.initState();
     _bugLanguage = widget.bug_info['language'];
     _bugSolution.text = widget.bug_info['solution'];
+    _bugSolutionName.text = widget.bug_info['solution_name'];
   }
 
   final _modifySolutionKey = GlobalKey<FormState>();
-
-
-  callback() {
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +57,10 @@ class _ModifySolutionState extends State<ModifySolution> {
       ),
       content: Form(
           key: _modifySolutionKey,
-          child: Container(
+          child: SizedBox(
             width: 300,
             height: 225,
-            child: Column(
+            child: ListView(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(10),
@@ -83,6 +80,23 @@ class _ModifySolutionState extends State<ModifySolution> {
                       setState(() => _bugLanguage = val!);
                     },
                     selectedItem: _bugLanguage,
+                  ),
+                ),
+                //solution name
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: TextFormField(
+                    controller: _bugSolutionName,
+                    decoration: const InputDecoration(
+                      labelText: "Solution Name",
+                      hintText: "Enter Solution Name",
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                   ),
                 ),
                 Padding(
@@ -170,12 +184,14 @@ class _ModifySolutionPopupState extends State<ModifySolutionPopup> {
             widget.solution_list[widget.bug_index] = {
               'language': _bugLanguage,
               'solution': _bugSolution.text,
+              'solution_name': _bugSolutionName.text,
               'time': today.toString(),
             };
 
             widget.query_doc.update({
               'solution': widget.solution_list,
-            });
+            }).then((value) => print("Solution Updated"))
+                .catchError((error) => print("Failed to update solution: $error"));
             Navigator.pop(context);
           },
           child: const Text('Modify'),
@@ -230,135 +246,6 @@ class _DeleteSolutionPopupState extends State<DeleteSolutionPopup> {
             Navigator.pop(context);
           },
           child: const Text('Cancel'),
-        ),
-      ],
-    );
-  }
-}
-
-
-class AddSolution extends StatefulWidget {
-  final DocumentReference<Object?> query_doc;
-
-  const AddSolution({
-      super.key,
-      required this.query_doc,
-    });
-
-  @override
-  State<AddSolution> createState() => _AddSolutionState();
-}
-
-class _AddSolutionState extends State<AddSolution> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  final _addSolutionKey = GlobalKey<FormState>();
-
-
-  callback() {
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Padding(
-          padding: EdgeInsets.all(3.0),
-          child: Align(
-              alignment: Alignment.bottomLeft,
-              child: Text(
-                "Add Solution",
-                style: TextStyle(fontWeight: FontWeight.bold)
-              )
-            )
-      ),
-      content: Form(
-          key: _addSolutionKey,
-          child: Container(
-            width: 300,
-            height: 225,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: DropdownSearch<String>(
-                    popupProps: const PopupProps.menu(
-                      showSearchBox: true,
-                      showSelectedItems: true,
-                    ),
-                    items: langs,
-                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        labelText: "Programming Language",
-                        hintText: "country in menu mode",
-                      ),
-                    ),
-                    onChanged: (val) {
-                      setState(() => _bugLanguage = val!);
-                    },
-                    selectedItem: langs.first,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: TextFormField(
-                    minLines: 5,
-                    maxLines: 10,
-                    controller: _bugSolution,
-                    decoration: const InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1, color: Colors.grey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: Colors.blueAccent),
-                      ),
-                      labelText: 'Solution:',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter Solution';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ],
-            ),
-          )),
-      actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                final Map<String, String> solutionMap = {
-                  "solution": _bugSolution.text,
-                  "language": _bugLanguage,
-                  "time": today.toString(),
-                };
-
-                var addArray;
-                _bugSolution.text.isEmpty ? addArray = [] : addArray = [solutionMap];
-                
-                  
-                if (_addSolutionKey.currentState!.validate()) {
-                  widget.query_doc.update({
-                    "solution" : FieldValue.arrayUnion(addArray),
-                  });
-                }
-              },
-              child: const Text('Add Solution'),
-            ),
-          ],
         ),
       ],
     );

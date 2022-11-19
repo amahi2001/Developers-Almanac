@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
 
-import '../../edit_bugs/edit_bug.dart';
+import '../../edit_bugs/edit_bug_page.dart';
 import '../edit_project.dart';
 
 class ViewBugOverlay extends StatefulWidget {

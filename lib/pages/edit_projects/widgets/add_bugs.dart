@@ -60,6 +60,8 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
   final TextEditingController _bugErrorOutputController =
       TextEditingController();
   final TextEditingController _bugSolutionsController = TextEditingController();
+  final _solutionNameController = TextEditingController();
+
   String _bugLanguageController = langs.first;
 
   bool _bugSolved = false;
@@ -128,7 +130,8 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                         borderSide: BorderSide(width: 1, color: Colors.grey),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: Colors.blueAccent),
+                        borderSide:
+                            BorderSide(width: 2, color: Colors.blueAccent),
                       ),
                       labelText: 'Enter Error Output:',
                     ),
@@ -180,6 +183,25 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                 Visibility(
                   visible: _bugSolved,
                   child: Padding(
+                    padding: const EdgeInsets.all(.0),
+                    child: TextFormField(
+                      controller: _solutionNameController,
+                      decoration: const InputDecoration(
+                        border: UnderlineInputBorder(),
+                        labelText: 'Enter Solution Name:',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Solution Name';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: _bugSolved,
+                  child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: TextFormField(
                       minLines: 5,
@@ -190,7 +212,8 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                           borderSide: BorderSide(width: 1, color: Colors.grey),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.blueAccent),
+                          borderSide:
+                              BorderSide(width: 2, color: Colors.blueAccent),
                         ),
                         labelText: 'Solution:',
                       ),
@@ -219,12 +242,15 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
             if (_addBugKey.currentState!.validate()) {
               final Map<String, String> solutionMap = {
                 "solution": _bugSolutionsController.text,
+                "solution_name": _solutionNameController.text,
                 "language": _bugLanguageController,
                 "time": today.toString(),
               };
 
-              var addArray;
-              _bugSolutionsController.text == "" ? addArray = [] : addArray = [solutionMap];
+              List addArray;
+              _bugSolutionsController.text.isEmpty
+                  ? addArray = []
+                  : addArray = [solutionMap];
               // print(solutionMap);
 
               widget.project_query_doc
