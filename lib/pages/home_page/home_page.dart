@@ -262,7 +262,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   "Welcome back, ",
                   overflow: TextOverflow.ellipsis,
                   textDirection: TextDirection.ltr,
-                  style: GoogleFonts.abrilFatface(
+                  style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontSize: 47,
                       fontWeight: FontWeight.w300),
@@ -272,7 +272,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   "$username",
                   overflow: TextOverflow.ellipsis,
                   textDirection: TextDirection.ltr,
-                  style: GoogleFonts.cormorantGaramond(
+                  style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontSize: 45,
                       fontWeight: FontWeight.w300,

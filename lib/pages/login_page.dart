@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Text(
             "DEVELOPER'S ALMANAC",
-            style: GoogleFonts.pressStart2p(color: Colors.white, fontSize: 40),
+            style: GoogleFonts.robotoSlab(color: Colors.white, fontSize: 60),
           ),
           const SizedBox(
             height: 50,
