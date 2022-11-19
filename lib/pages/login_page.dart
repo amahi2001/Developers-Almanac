@@ -4,7 +4,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-
+//Import the font package
+import 'package:google_fonts/google_fonts.dart';
 import '../auth/auth.dart';
 import 'home_page/home_page.dart';
 
@@ -46,12 +47,11 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Image.asset("images/logo.png"),
           const SizedBox(
-            height: 20,
+            height: 25,
           ),
-          const Text(
+          Text(
             "DEVELOPER'S ALMANAC",
-            style: TextStyle(
-                color: Colors.white, fontFamily: 'Times', fontSize: 50),
+            style: GoogleFonts.pressStart2p(color: Colors.white, fontSize: 40),
           ),
           const SizedBox(
             height: 50,

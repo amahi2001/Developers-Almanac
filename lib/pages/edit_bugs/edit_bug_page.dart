@@ -10,6 +10,8 @@ import '../edit_projects/edit_project.dart';
 import 'widgets/add_solution.dart';
 import 'widgets/edit_solution.dart';
 import '../edit_projects/widgets/view_bugs.dart';
+//Import the font package
+import 'package:google_fonts/google_fonts.dart';
 
 class Edit_bug_page extends StatefulWidget {
   final DocumentReference<Object?> bug_query_doc;
@@ -40,7 +42,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Developer's Almanac"),
+          title: Text("Developer's Almanac", style: GoogleFonts.syneMono()),
           actions: <Widget>[
             // Clear Icon
             Builder(builder: (context) {
@@ -93,7 +95,8 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                               height: 20,
                             ),
                             const bug_preview_name(text: 'Error Output'),
-                            bug_preview_desc(text: snapshot.data["error_output"]),
+                            bug_preview_desc(
+                                text: snapshot.data["error_output"]),
                             const SizedBox(
                               height: 20,
                             ),
@@ -146,7 +149,8 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Bug Solution(s)",
@@ -193,18 +197,20 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                         elevation: 10,
                                         color: theme_color,
                                         shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                             side: const BorderSide(
                                                 color: Color.fromARGB(
                                                     255, 146, 153, 192),
                                                 width: 1)),
-                                        margin:
-                                            const EdgeInsets.fromLTRB(5, 5, 5, 10),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            5, 5, 5, 10),
                                         child: Padding(
                                             padding: const EdgeInsets.all(10.0),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Column(
                                                   crossAxisAlignment:
@@ -213,7 +219,8 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                     const Bug_Description_field_text(
                                                         text: "Language:"),
                                                     Bug_Description_Text(
-                                                        text: bugInfo['language']),
+                                                        text: bugInfo[
+                                                            'language']),
                                                     const Bug_Description_field_text(
                                                         text: "Created On:"),
                                                     Bug_Description_Text(
@@ -227,19 +234,21 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                         text: "Solution:"),
                                                     Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
+                                                            const EdgeInsets
+                                                                    .only(
                                                                 left: 15,
                                                                 right: 15,
                                                                 bottom: 6,
                                                                 top: 6),
                                                         child: HighlightView(
                                                           bugInfo['solution'],
-                                                          language:
-                                                              bugInfo['language'],
+                                                          language: bugInfo[
+                                                              'language'],
                                                           theme: githubTheme,
                                                           textStyle:
                                                               const TextStyle(
-                                                            fontFamily: 'Ubuntu',
+                                                            fontFamily:
+                                                                'Ubuntu',
                                                             fontSize: 16,
                                                           ),
                                                         ))
@@ -247,7 +256,8 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                 ),
                                                 Column(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.spaceAround,
+                                                      MainAxisAlignment
+                                                          .spaceAround,
                                                   children: [
                                                     iconPadding(
                                                       child: IconButton(
@@ -259,14 +269,16 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                           ),
                                                           onPressed: () {
                                                             showDialog(
-                                                                context: context,
+                                                                context:
+                                                                    context,
                                                                 builder: (BuildContext
                                                                         context) =>
                                                                     ModifySolution(
                                                                       notifyParent:
                                                                           refresh,
-                                                                      query_doc: widget
-                                                                          .bug_query_doc,
+                                                                      query_doc:
+                                                                          widget
+                                                                              .bug_query_doc,
                                                                       bug_index:
                                                                           index,
                                                                       bug_info:
@@ -287,14 +299,16 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                           ),
                                                           onPressed: () {
                                                             showDialog(
-                                                                context: context,
+                                                                context:
+                                                                    context,
                                                                 builder: (BuildContext
                                                                         context) =>
                                                                     DeleteSolutionPopup(
                                                                       notifyParent:
                                                                           refresh,
-                                                                      query_doc: widget
-                                                                          .bug_query_doc,
+                                                                      query_doc:
+                                                                          widget
+                                                                              .bug_query_doc,
                                                                       bug_index:
                                                                           index,
                                                                       solution_list:
