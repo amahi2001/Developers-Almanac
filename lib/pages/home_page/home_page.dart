@@ -175,6 +175,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var username = user_obj?.displayName;
+    var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       // Code AppBar
       key: _scaffoldKey,
@@ -253,34 +255,50 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 30,
           ),
           // Welcome message
-          Padding(
-            padding: const EdgeInsets.only(left: 50, right: 50),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "Welcome back, ",
-                  overflow: TextOverflow.ellipsis,
+          Flexible(
+            fit: FlexFit.tight,
+            child: Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50),
+                child: Text(
+                  "Welcome back, $username",
+                  //overflow: TextOverflow.ellipsis,
+                  softWrap: true,
                   textDirection: TextDirection.ltr,
                   style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontSize: 47,
                       fontWeight: FontWeight.w300),
                   textAlign: TextAlign.left,
+                )
+                //     Row(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   children: [
+                //     Text(
+                //       "Welcome back, ",
+                //       //overflow: TextOverflow.ellipsis,
+                //       softWrap: true,
+                //       textDirection: TextDirection.ltr,
+                //       style: GoogleFonts.poppins(
+                //           color: Colors.white,
+                //           fontSize: 47,
+                //           fontWeight: FontWeight.w300),
+                //       textAlign: TextAlign.left,
+                //     ),
+                //     Text(
+                //       "$username",
+                //       //overflow: TextOverflow.ellipsis,
+                //       softWrap: true,
+                //       textDirection: TextDirection.ltr,
+                //       style: GoogleFonts.poppins(
+                //           color: Colors.white,
+                //           fontSize: 45,
+                //           fontWeight: FontWeight.w300,
+                //           fontStyle: FontStyle.italic),
+                //       textAlign: TextAlign.left,
+                //     ),
+                //   ],
+                // ),
                 ),
-                Text(
-                  "$username",
-                  overflow: TextOverflow.ellipsis,
-                  textDirection: TextDirection.ltr,
-                  style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 45,
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic),
-                  textAlign: TextAlign.left,
-                ),
-              ],
-            ),
           ),
           const SizedBox(
             height: 30,
@@ -575,6 +593,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                     width: 50,
                                     child: Center(
                                         child: Text(project['project_title'][0],
+                                            overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
                                                 fontSize: 25, color: white))))),
                             // if user adds image, show that instead
@@ -591,6 +610,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                           right: 15,
                                           bottom: 3),
                                       child: Text(project['project_title'],
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               color: AppStyle.projectTitle,
                                               fontSize: 20,
@@ -600,6 +620,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                           left: 15, right: 15, bottom: 6),
                                       child: Text(
                                           "Updated on ${project['last_updated'].toDate()}",
+                                          overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 230, 229, 232),
