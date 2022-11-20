@@ -67,8 +67,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
             return IconButton(
                 icon: const Icon(Icons.logout),
                 onPressed: () {
-                  // Scaffold.of(context)
-                  //     .openEndDrawer(); // Open drawer if Profile Icon is clicked
                   showDialog(
                     context: context,
                     builder: (BuildContext context) => const LogoutPopup(),
@@ -432,25 +430,27 @@ class _ViewStacksState extends State<ViewStacks> {
                             child: Card(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
-                                    side: index == _selectedIndex ? const BorderSide(
-                                      color: Color.fromARGB(255, 221, 226, 255),
-                                      width: 2) : const BorderSide(
-                                      color: Color.fromARGB(255, 146, 153, 192),
-                              width: 1)),
+                                    side: index == _selectedIndex
+                                  ? const BorderSide(
+                                      color: Color.fromARGB(255, 227, 242, 162),
+                                      width: 2)
+                                  : const BorderSide(
+                                      color: Color.fromARGB(255, 39, 138, 209),
+                                      width: 1)),
                                 color: index == _selectedIndex
-                                    ? const Color.fromARGB(255, 14, 41, 60)
-                                    : const Color.fromARGB(255, 22, 66, 97),
+                                  ? const Color.fromARGB(53, 27, 27, 27)
+                                  : theme_color,
                                 child: Padding(
                                     padding: const EdgeInsets.all(5),
                                     child: Row(children: [
                                       Expanded(
-                                        child: Text(
+                                        child: Padding(padding: EdgeInsets.all(10), child:Text(
                                           '${stack['stack_type']}: ${stack['stack_title']}',
                                           style: const TextStyle(
                                               color:white,
                                               fontSize: 15),
                                         ),
-                                      ),
+                                      )),
                                       Expanded(
                                           child: Row(
                                         mainAxisAlignment:
@@ -479,9 +479,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                                             'stack_title'],
                                                       ));
                                             },
-                                            color: index == _selectedIndex
-                                                ? red
-                                                : const Color.fromARGB(
+                                            color: const Color.fromARGB(
                                                     255, 255, 255, 255),
                                           ),
                                           IconButton(
@@ -496,9 +494,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                                               .project_query_doc,
                                                           id: stack.id));
                                             },
-                                            color: index == _selectedIndex
-                                                ? red
-                                                : white,
+                                            color: white,
                                           ),
                                         ],
                                       )),
