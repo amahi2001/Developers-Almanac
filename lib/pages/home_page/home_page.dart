@@ -177,7 +177,8 @@ class _MyHomePageState extends State<MyHomePage> {
       // Code AppBar
       key: _scaffoldKey,
       appBar: AppBar(
-        // leading: Image.asset("images/logo.png"),
+        leading: Image.asset("images/logo.png"),
+        centerTitle: true,
         title: const Text("Developer's Almanac"),
         actions: !typing
             ? <Widget>[
