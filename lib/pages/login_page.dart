@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
             Text(
               "DEVELOPER'S ALMANAC",
               softWrap: true,
-              style: GoogleFonts.robotoSlab(color: Colors.white, fontSize: 60),
+              style: GoogleFonts.robotoSlab(color: Colors.white, fontSize: 50),
               textAlign: TextAlign.center,
             ),
             SizedBox(
