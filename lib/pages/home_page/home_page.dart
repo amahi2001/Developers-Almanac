@@ -196,8 +196,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   return IconButton(
                       icon: const Icon(Icons.logout),
                       onPressed: () {
-                        Scaffold.of(context)
-                            .openEndDrawer(); // Open drawer if Profile Icon is clicked
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              const LogoutPopup(),
+                        );
                       });
                 }),
               ]
@@ -216,8 +219,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   return IconButton(
                       icon: const Icon(Icons.logout),
                       onPressed: () {
-                        // Scaffold.of(context)
-                        //     .openEndDrawer(); // Open drawer if Profile Icon is clicked
                         showDialog(
                           context: context,
                           builder: (BuildContext context) =>
