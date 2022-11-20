@@ -40,39 +40,46 @@ class _LoginPageState extends State<LoginPage> {
       //   title: Center(child: const Text('Login or Sign Up')),
       // ),
       body: Center(
-          child: Column(
-        children: [
-          const SizedBox(
-            height: 100,
-          ),
-          Image.asset("images/logo.png"),
-          const SizedBox(
-            height: 25,
-          ),
-          Text(
-            "DEVELOPER'S ALMANAC",
-            style: GoogleFonts.robotoSlab(color: Colors.white, fontSize: 60),
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          SignInButton(
-            Buttons.Google,
-            onPressed: () async {
-              await signInWithGoogle().then((value) {
-                print("${value.user!.email} has logged in");
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const MyHomePage(title: 'Developer\'s Almanac')),
+          child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: Column(
+          children: [
+            // const SizedBox(
+            //   height: 100,
+            // ),
+            Image.asset("images/logo.png"),
+            SizedBox(
+              //height: 25,
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+            Text(
+              "DEVELOPER'S ALMANAC",
+              softWrap: true,
+              style: GoogleFonts.robotoSlab(color: Colors.white, fontSize: 60),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              //height: 50,
+              height: MediaQuery.of(context).size.height * 0.1,
+            ),
+            SignInButton(
+              Buttons.Google,
+              onPressed: () async {
+                await signInWithGoogle().then((value) {
+                  print("${value.user!.email} has logged in");
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const MyHomePage(title: 'Developer\'s Almanac')),
+                  );
+                }).catchError(
+                  (e) => print(e),
                 );
-              }).catchError(
-                (e) => print(e),
-              );
-            },
-          )
-        ],
+              },
+            )
+          ],
+        ),
       )),
     );
   }
