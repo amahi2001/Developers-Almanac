@@ -294,7 +294,26 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                                       .project_query_doc
                                                       .collection("Stack"))
                                               //notifyParent: refresh)
-                                              : Text("NOTHING HERE"),
+                                              : Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15, bottom: 20),
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "Click Stack Cards to view Stack Information",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontSize: 20,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w200),
+                                                    ),
+                                                  ),
+                                                ),
                                         ],
                                       )),
                                 ],
@@ -369,9 +388,9 @@ class _ViewStacksState extends State<ViewStacks> {
                   Text(
                     'Stack Count: ${snapshot.data!.size}',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: GoogleFonts.poppins(
                       color: Colors.white,
-                      fontSize: 15,
+                      fontSize: 20,
                       wordSpacing: 3,
                     ),
                   ),
@@ -517,7 +536,7 @@ class project_preview_desc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
+        padding: const EdgeInsets.only(left: 30, top: 10, right: 30),
         child: Text(this.text,
             softWrap: true,
             style: TextStyle(
@@ -535,7 +554,7 @@ class project_preview_name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+        padding: EdgeInsets.only(left: 30, top: 10, right: 30),
         child: Text(this.text,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(

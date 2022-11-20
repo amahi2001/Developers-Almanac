@@ -110,13 +110,13 @@ class __searchTextFieldState extends State<_searchTextField> {
           autofocus: true, //Display the keyboard when TextField is displayed
           cursorColor: Colors.white,
           textAlign: TextAlign.left,
-          style: const TextStyle(
+          style: GoogleFonts.poppins(
             color: Colors.white,
             fontSize: 20,
           ),
           textInputAction: TextInputAction
               .search, //Specify the action button on the keyboard
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             //Style of TextField
             enabledBorder: UnderlineInputBorder(
                 //Default TextField border
@@ -126,7 +126,7 @@ class __searchTextFieldState extends State<_searchTextField> {
                 borderSide: BorderSide(color: Colors.white)),
             hintText:
                 'Search keywords', //Text that is displayed when nothing is entered.
-            hintStyle: TextStyle(
+            hintStyle: GoogleFonts.poppins(
               //Style of hintText
               color: Colors.white60,
               fontSize: 20,
@@ -249,7 +249,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       )),
       body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
+        // used to be:
+        // physics: const NeverScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         children: [
           const SizedBox(
             height: 30,
@@ -269,36 +271,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontSize: 47,
                       fontWeight: FontWeight.w300),
                   textAlign: TextAlign.left,
-                )
-                //     Row(
-                //   mainAxisAlignment: MainAxisAlignment.start,
-                //   children: [
-                //     Text(
-                //       "Welcome back, ",
-                //       //overflow: TextOverflow.ellipsis,
-                //       softWrap: true,
-                //       textDirection: TextDirection.ltr,
-                //       style: GoogleFonts.poppins(
-                //           color: Colors.white,
-                //           fontSize: 47,
-                //           fontWeight: FontWeight.w300),
-                //       textAlign: TextAlign.left,
-                //     ),
-                //     Text(
-                //       "$username",
-                //       //overflow: TextOverflow.ellipsis,
-                //       softWrap: true,
-                //       textDirection: TextDirection.ltr,
-                //       style: GoogleFonts.poppins(
-                //           color: Colors.white,
-                //           fontSize: 45,
-                //           fontWeight: FontWeight.w300,
-                //           fontStyle: FontStyle.italic),
-                //       textAlign: TextAlign.left,
-                //     ),
-                //   ],
-                // ),
-                ),
+                )),
           ),
           const SizedBox(
             height: 30,
@@ -311,9 +284,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text(
                   "Projects",
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: AppStyle.sectionColor,
-                    fontFamily: 'Times',
                     fontSize: 30,
                   ),
                   textAlign: TextAlign.left,
@@ -359,6 +331,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 // Shows the projects view
                 Expanded(
+                  // Shows list of projects
                   child: SizedBox(
                       // width: 300,
                       height: 500,
@@ -368,7 +341,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: SizedBox(
                     // Doesn't make a difference:
-                    width: MediaQuery.of(context).size.width * 0.3,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     height: 500,
                     child: Column(
                       children: [
@@ -382,9 +355,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                   width: 1)),
                           margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                           child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.3,
+                            width: MediaQuery.of(context).size.width * 0.5,
                             child: Align(
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.centerLeft,
                               child: Row(
                                 children: [
                                   Column(
@@ -394,7 +367,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         height: 450,
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.3,
+                                                0.45,
                                         child: SingleChildScrollView(
                                           child: ProjectInfoPreviewView(),
                                         ),
@@ -429,10 +402,26 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
   @override
   Widget build(Object context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 0.5, left: 15),
+      padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const project_preview_name(text: 'Project Title'),
-        project_preview_desc(text: projectName),
+        // const project_preview_name(text: 'Project Title'),
+        // project_preview_desc(text: projectName),
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            projectName,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.poppins(
+                color: AppStyle.projectTitle, fontSize: 35, wordSpacing: 3),
+          ),
+        ),
+        const Divider(
+          color: Colors.orangeAccent,
+          thickness: 3,
+        ),
+        const SizedBox(
+          height: 25,
+        ),
         const project_preview_name(text: 'Project Description'),
         project_preview_desc(text: projectDescription),
         const project_preview_name(text: 'Project Member(s)'),
@@ -445,7 +434,7 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
             child: Wrap(
               children: projectTools.map((tool) {
                 return Padding(
-                  padding: const EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.only(left: 30, top: 20),
                   child: Chip(
                     label: Text(tool),
                     backgroundColor: AppStyle.sectionColor,
@@ -510,7 +499,7 @@ class _ProjectsViewState extends State<ProjectsView> {
         if (snapshot.hasError) {
           String error = snapshot.error.toString();
           print(error);
-          return Text(error, style: const TextStyle(color: Colors.white));
+          return Text(error, style: GoogleFonts.poppins(color: Colors.white));
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -521,8 +510,8 @@ class _ProjectsViewState extends State<ProjectsView> {
             (!snapshot.hasData || snapshot.data!.docs.isEmpty);
 
         if (snapshotIsEmpty) {
-          return const Text("No Projects to show",
-              style: TextStyle(color: Colors.white, fontSize: 30));
+          return Text("No Projects to show",
+              style: GoogleFonts.poppins(color: Colors.white, fontSize: 30));
         }
 
         return ListView.builder(
@@ -539,7 +528,7 @@ class _ProjectsViewState extends State<ProjectsView> {
               }
 
               return Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.centerRight,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   height: 75,
@@ -594,7 +583,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                     child: Center(
                                         child: Text(project['project_title'][0],
                                             overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
+                                            style: GoogleFonts.poppins(
                                                 fontSize: 25, color: white))))),
                             // if user adds image, show that instead
                             //child: Image.network('https://cdn0.iconfinder.com/data/icons/artcore/512/folder_system.png')),
@@ -605,23 +594,20 @@ class _ProjectsViewState extends State<ProjectsView> {
                                 children: [
                                   Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 15,
-                                          top: 6,
-                                          right: 15,
-                                          bottom: 3),
+                                          left: 15, top: 9, right: 15),
                                       child: Text(project['project_title'],
                                           overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                               color: AppStyle.projectTitle,
                                               fontSize: 20,
                                               wordSpacing: 3))),
                                   Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 15, right: 15, bottom: 6),
+                                          left: 15, right: 15),
                                       child: Text(
                                           "Updated on ${project['last_updated'].toDate()}",
                                           overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
+                                          style: GoogleFonts.poppins(
                                               color: Color.fromARGB(
                                                   255, 230, 229, 232),
                                               fontSize: 12,
