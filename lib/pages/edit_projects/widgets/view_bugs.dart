@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../edit_bugs/edit_bug_page.dart';
@@ -93,21 +94,13 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                     // indent: 10,
                                     // endIndent: 10,
                                   ),
-                                  const Bug_Description_field_text(
-                                      text: "Description:"),
-                                  Bug_Description_Text(
-                                      text: bug['bug_description']),
-                                  const Bug_Description_field_text(
-                                      text: "Created on:"),
-                                  Bug_Description_Text(
-                                      text: bug['created_at']
-                                          .toDate()
-                                          .toString()),
-                                  const Bug_Description_field_text(
-                                      text: "Created By:"),
+                                  const Bug_Description_field_text(text: "Description:"),
+                                  Bug_Description_Text(text: bug['bug_description']),
+                                  const Bug_Description_field_text(text: "Created on:"),
+                                  Bug_Description_Text(text: DateFormat.yMMMd().add_jm().format(bug['created_at'].toDate())),
+                                  const Bug_Description_field_text(text: "Created By:"),
                                   Bug_Description_Text(text: bug['created_by']),
-                                  const Bug_Description_field_text(
-                                      text: "Was Solved:"),
+                                  const Bug_Description_field_text(text: "Was Solved:"),
                                   Bug_Description_Text(
                                       text: bug['is_solved'] ? "Yes" : "No"),
                                 ],

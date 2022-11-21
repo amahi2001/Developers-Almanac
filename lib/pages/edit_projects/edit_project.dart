@@ -9,6 +9,8 @@ import 'widgets/add_collab.dart';
 import 'widgets/add_stack.dart';
 import '../../auth/auth.dart';
 import 'widgets/edit_stacks.dart';
+import 'package:intl/intl.dart';
+
 //Import the font package
 import 'package:google_fonts/google_fonts.dart';
 
@@ -118,25 +120,76 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const project_preview_name(
-                                    text: 'Project Member(s)'),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.person_add,
-                                    size: 30,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AddMember(
-                                        notifyParent: refresh,
-                                        query_doc: widget.project_query_doc,
+                                const project_preview_name(text: 'Project Member(s)'),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AddMember(
+                                            notifyParent: refresh,
+                                            query_doc: widget.project_query_doc,
+                                          ),
+                                        );
+                                      }, 
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(AppStyle.fieldText),
                                       ),
-                                    );
-                                  },
-                                ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(
+                                            Icons.person_add,
+                                            size: 20,
+                                            color: AppStyle.backgroundColor,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 5),
+                                            child: Text(
+                                              "Add Member",
+                                              style: TextStyle(
+                                                color: AppStyle.backgroundColor
+                                              )
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        
+                                      }, 
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(AppStyle.fieldText),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(
+                                            Icons.person_remove,
+                                            size: 20,
+                                            color: AppStyle.backgroundColor,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 5),
+                                            child: Text(
+                                              "Remove Member",
+                                              style: TextStyle(
+                                                color: AppStyle.backgroundColor
+                                              )
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ),
+                                  ],
+                                )
                               ],
                             ),
                             project_preview_desc(
@@ -145,10 +198,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                               height: 20,
                             ),
                             const project_preview_name(text: 'Created'),
-                            project_preview_desc(
-                                text: snapshot.data["creation_date"]
-                                    .toDate()
-                                    .toString()),
+                            project_preview_desc(text: DateFormat.yMMMd().add_jm().format(snapshot.data["creation_date"].toDate())),
                             const SizedBox(
                               height: 20,
                             ),
@@ -168,7 +218,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 65, right: 65),
+                  padding: EdgeInsets.only(left: 65, right: 65, top:20),
                   child: Column(
                     children: [
                       Row(
@@ -186,26 +236,42 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                           const SizedBox(
                             width: 20,
                           ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.add,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              showDialog(
+                          ElevatedButton(
+                              onPressed: () {
+                                showDialog(
                                   context: context,
                                   builder: (BuildContext context) => Column(
-                                        children: [
-                                          AddStackPopUp(
-                                              project_query_doc:
-                                                  widget.project_query_doc,
-                                              project_id:
-                                                  widget.project_query_doc.id),
-                                        ],
-                                      ));
-                            },
-                          ),
+                                    children: [
+                                      AddStackPopUp(
+                                          project_query_doc: widget.project_query_doc,
+                                          project_id: widget.project_query_doc.id),
+                                    ],
+                                  )
+                                );
+                              }, 
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(AppStyle.sectionColor),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    size: 20,
+                                    color: AppStyle.backgroundColor,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5),
+                                    child: Text(
+                                      "Add Stack",
+                                      style: TextStyle(
+                                        color: AppStyle.backgroundColor
+                                      )
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ),
                         ],
                       ),
                       Row(
@@ -238,8 +304,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                           borderRadius:
                                               BorderRadius.circular(5),
                                           side: const BorderSide(
-                                              color: Color.fromARGB(
-                                                  255, 146, 153, 192),
+                                              color: Color.fromARGB(255, 146, 153, 192),
                                               width: 1)),
                                       margin:
                                           const EdgeInsets.fromLTRB(5, 5, 5, 5),

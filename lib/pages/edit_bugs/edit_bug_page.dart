@@ -10,6 +10,7 @@ import '../edit_projects/edit_project.dart';
 import 'widgets/add_solution.dart';
 import 'widgets/edit_solution.dart';
 import '../edit_projects/widgets/view_bugs.dart';
+import 'package:intl/intl.dart';
 //Import the font package
 import 'package:google_fonts/google_fonts.dart';
 
@@ -89,22 +90,17 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                               height: 20,
                             ),
                             const bug_preview_name(text: 'Bug Description'),
-                            bug_preview_desc(
-                                text: snapshot.data['bug_description']),
+                            bug_preview_desc(text: snapshot.data['bug_description']),
                             const SizedBox(
                               height: 20,
                             ),
                             const bug_preview_name(text: 'Error Output'),
-                            bug_preview_desc(
-                                text: snapshot.data["error_output"]),
+                            bug_preview_desc(text: snapshot.data["error_output"]),
                             const SizedBox(
                               height: 20,
                             ),
                             const bug_preview_name(text: 'Bug Created'),
-                            bug_preview_desc(
-                                text: snapshot.data["created_at"]
-                                    .toDate()
-                                    .toString()),
+                            bug_preview_desc(text: DateFormat.yMMMd().add_jm().format(snapshot.data["created_at"].toDate())),
                             const SizedBox(
                               height: 20,
                             ),
@@ -164,21 +160,39 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                   const SizedBox(
                                     width: 20,
                                   ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.add,
-                                      size: 30,
-                                      color: Colors.white,
-                                    ),
+                                  ElevatedButton(
                                     onPressed: () {
                                       showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              AddSolution(
-                                                query_doc: widget.bug_query_doc,
-                                                notifyParent: refresh,
-                                              ));
-                                    },
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                          AddSolution(
+                                            query_doc: widget.bug_query_doc,
+                                            notifyParent: refresh,
+                                          )
+                                      );
+                                    }, 
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(AppStyle.sectionColor),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          size: 20,
+                                          color: AppStyle.backgroundColor,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: Text(
+                                            "Add Solution",
+                                            style: TextStyle(
+                                              color: AppStyle.backgroundColor
+                                            )
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   ),
                                 ],
                               ),
@@ -228,9 +242,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                               'language']),
                                                       const Bug_Description_field_text(
                                                           text: "Created On:"),
-                                                      Bug_Description_Text(
-                                                          text:
-                                                              bugInfo['time']),
+                                                      bug_preview_desc(text: DateFormat.yMMMd().add_jm().format(DateTime.parse(bugInfo['time']))),
                                                       const Bug_Description_field_text(
                                                           text:
                                                               "Solution Name"),
