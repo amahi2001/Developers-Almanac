@@ -312,20 +312,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   )
                 ),
-                // IconButton(
-                //   icon: const Icon(
-                //     Icons.add,
-                //     size: 30,
-                //     color: Colors.white,
-                //   ),
-                //   onPressed: () {
-                //     showDialog(
-                //       context: context,
-                //       builder: (BuildContext context) =>
-                //           const wids.AddProjectPopup(),
-                //     );
-                //   },
-                // )
               ],
             ),
           ),
@@ -365,11 +351,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         Card(
                           elevation: 10,
-                          color: const Color.fromARGB(255, 22, 66, 97),
+                          color: AppStyle.cardColor,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
-                              side: const BorderSide(
-                                  color: Color.fromARGB(255, 146, 153, 192),
+                              side: BorderSide(
+                                  color: AppStyle.borderColor,
                                   width: 1)),
                           margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                           child: SizedBox(
@@ -570,7 +556,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                       elevation: 10,
                       color: index == _selectedIndex
                           ? const Color.fromARGB(53, 27, 27, 27)
-                          : theme_color,
+                          : AppStyle.cardColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                           side: index == _selectedIndex
@@ -601,7 +587,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                         child: Text(project['project_title'][0],
                                             overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.poppins(
-                                                fontSize: 25, color: white))))),
+                                                fontSize: 25, color: AppStyle.white))))),
                             // if user adds image, show that instead
                             //child: Image.network('https://cdn0.iconfinder.com/data/icons/artcore/512/folder_system.png')),
                             Flexible(

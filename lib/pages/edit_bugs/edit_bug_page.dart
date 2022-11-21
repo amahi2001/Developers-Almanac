@@ -215,13 +215,12 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                           0.5,
                                       child: Card(
                                           elevation: 10,
-                                          color: theme_color,
+                                          color: AppStyle.cardColor,
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(5),
-                                              side: const BorderSide(
-                                                  color: Color.fromARGB(
-                                                      255, 146, 153, 192),
+                                              side: BorderSide(
+                                                  color: AppStyle.borderColor,
                                                   width: 1)),
                                           margin: const EdgeInsets.fromLTRB(
                                               5, 5, 5, 10),
@@ -294,11 +293,9 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                       iconPadding(
                                                         child: IconButton(
                                                             icon: const Icon(
-                                                              Icons
-                                                                  .edit_note_outlined,
+                                                              Icons.edit_note_outlined,
                                                               size: 30,
-                                                              color:
-                                                                  Colors.white,
+                                                              color:Colors.white,
                                                             ),
                                                             onPressed: () {
                                                               showDialog(
@@ -324,8 +321,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                         //delete solution
                                                         child: IconButton(
                                                             icon: const Icon(
-                                                              Icons
-                                                                  .delete_sweep_rounded,
+                                                              Icons.delete_sweep_rounded,
                                                               size: 30,
                                                               color: Colors.red,
                                                             ),

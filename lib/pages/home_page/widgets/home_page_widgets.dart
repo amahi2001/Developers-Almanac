@@ -207,11 +207,11 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
         height: MediaQuery.of(context).size.height * 0.8,
         child: Card(
           elevation: 10,
-          color: global.theme_color,
+          color: AppStyle.cardColor,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
-              side: const BorderSide(
-                  color: Color.fromARGB(255, 146, 153, 192), width: 1)),
+              side: BorderSide(
+                  color: AppStyle.borderColor, width: 1)),
           margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
