@@ -9,6 +9,8 @@ import 'widgets/add_collab.dart';
 import 'widgets/add_stack.dart';
 import '../../auth/auth.dart';
 import 'widgets/edit_stacks.dart';
+//Import the font package
+import 'package:google_fonts/google_fonts.dart';
 
 const Color white = Color.fromARGB(255, 255, 255, 255);
 const Color red = Color.fromARGB(255, 255, 0, 0);
@@ -60,7 +62,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
     print(selectedID);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Developer's Almanac"),
+        title: Text("Developer's Almanac", style: GoogleFonts.syneMono()),
         actions: <Widget>[
           // Clear Icon
           Builder(builder: (context) {
@@ -86,230 +88,243 @@ class _Edit_project_pageState extends State<Edit_project_page> {
               return Text("No Data");
             }
             return ListView(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 50, right: 50),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          fit: FlexFit.tight,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              const project_preview_name(text: 'Project Title'),
-                              project_preview_desc(
-                                  text: snapshot.data["project_title"]),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const project_preview_name(
-                                  text: 'Project Description'),
-                              project_preview_desc(
-                                  text: snapshot.data["project_description"]),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const project_preview_name(
-                                      text: 'Project Member(s)'),
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.person_add,
-                                      size: 30,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            AddMember(
-                                          notifyParent: refresh,
-                                          query_doc: widget.project_query_doc,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              project_preview_desc(
-                                  text: snapshot.data["members"].toString()),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const project_preview_name(text: 'Created'),
-                              project_preview_desc(
-                                  text: snapshot.data["creation_date"]
-                                      .toDate()
-                                      .toString()),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  // Horizontal Divider
-                  Padding(
-                    padding: EdgeInsets.only(left: 50, right: 50),
-                    child: const Divider(
-                      height: 30,
-                      thickness: 3,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 65, right: 65),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 50, right: 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        fit: FlexFit.tight,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Stacks",
-                              style: TextStyle(
-                                color: AppStyle.sectionColor,
-                                fontFamily: 'Times',
-                                fontSize: 25,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
                             const SizedBox(
-                              width: 20,
+                              height: 30,
                             ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.add,
-                                size: 30,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) => Column(
-                                          children: [
-                                            AddStackPopUp(
-                                                project_query_doc:
-                                                    widget.project_query_doc,
-                                                project_id: widget
-                                                    .project_query_doc.id),
-                                          ],
-                                        ));
-                              },
+                            const project_preview_name(text: 'Project Title'),
+                            project_preview_desc(
+                                text: snapshot.data["project_title"]),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const project_preview_name(
+                                text: 'Project Description'),
+                            project_preview_desc(
+                                text: snapshot.data["project_description"]),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const project_preview_name(
+                                    text: 'Project Member(s)'),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.person_add,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AddMember(
+                                        notifyParent: refresh,
+                                        query_doc: widget.project_query_doc,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            project_preview_desc(
+                                text: snapshot.data["members"].toString()),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const project_preview_name(text: 'Created'),
+                            project_preview_desc(
+                                text: snapshot.data["creation_date"]
+                                    .toDate()
+                                    .toString()),
+                            const SizedBox(
+                              height: 20,
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
-                                  height: MediaQuery.of(context).size.height *
-                                      0.75,
-                                  child: ViewStacks(
-                                    project_query_doc:
-                                        widget.project_query_doc,
-                                    id: widget.project_query_doc.id,
-                                    callback: refresh,
-                                  )),
+                      )
+                    ],
+                  ),
+                ),
+                // Horizontal Divider
+                Padding(
+                  padding: EdgeInsets.only(left: 50, right: 50),
+                  child: const Divider(
+                    height: 30,
+                    thickness: 3,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 65, right: 65),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Stacks",
+                            style: TextStyle(
+                              color: AppStyle.sectionColor,
+                              fontFamily: 'Times',
+                              fontSize: 25,
                             ),
-                            Expanded(
-                                child: Padding(
-                              padding: const EdgeInsets.only(top: 90),
-                              child: SizedBox(
-                                // width:
-                                //     MediaQuery.of(context).size.width * 0.5,
+                            textAlign: TextAlign.left,
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.add,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => Column(
+                                        children: [
+                                          AddStackPopUp(
+                                              project_query_doc:
+                                                  widget.project_query_doc,
+                                              project_id:
+                                                  widget.project_query_doc.id),
+                                        ],
+                                      ));
+                            },
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.3,
                                 height:
                                     MediaQuery.of(context).size.height * 0.75,
-                                child: Column(
-                                  children: [
-                                    Card(
-                                        elevation: 10,
-                                        color: const Color.fromARGB(
-                                            255, 22, 66, 97),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            side: const BorderSide(
-                                                color: Color.fromARGB(
-                                                    255, 146, 153, 192),
-                                                width: 1)),
-                                        margin: const EdgeInsets.fromLTRB(
-                                            5, 5, 5, 5),
-                                        child: Column(
-                                          children: [
-                                            SizedBox(
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Row(
-                                                  children: [
-                                                    Column(
-                                                      children: [
-                                                        // add conditional:
-                                                        // if no projects, dont display sizedbox, otherwise return sizedBox
-                                                        Center(
-                                                            child: SizedBox(
-                                                          height: 70,
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width *
-                                                              0.3,
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      top:
-                                                                          0.5,
-                                                                      left:
-                                                                          15),
-                                                              child: Column(
-                                                                  children: [
-                                                                    bug_preview_name(
-                                                                        text:
-                                                                            '${bugType} : ${bugName}')
-                                                                  ]),
-                                                            ),
+                                child: ViewStacks(
+                                  project_query_doc: widget.project_query_doc,
+                                  id: widget.project_query_doc.id,
+                                  callback: refresh,
+                                )),
+                          ),
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.only(top: 90),
+                            child: SizedBox(
+                              // width:
+                              //     MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.75,
+                              child: Column(
+                                children: [
+                                  Card(
+                                      elevation: 10,
+                                      color:
+                                          const Color.fromARGB(255, 22, 66, 97),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          side: const BorderSide(
+                                              color: Color.fromARGB(
+                                                  255, 146, 153, 192),
+                                              width: 1)),
+                                      margin:
+                                          const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            child: Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Row(
+                                                children: [
+                                                  Column(
+                                                    children: [
+                                                      // add conditional:
+                                                      // if no projects, dont display sizedbox, otherwise return sizedBox
+                                                      Center(
+                                                          child: SizedBox(
+                                                        height: 70,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.3,
+                                                        child:
+                                                            SingleChildScrollView(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 0.5,
+                                                                    left: 15),
+                                                            child: Column(
+                                                                children: [
+                                                                  bug_preview_name(
+                                                                      text:
+                                                                          '${bugType} : ${bugName}')
+                                                                ]),
                                                           ),
-                                                        ))
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                                        ),
+                                                      ))
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            selectedID != ""
-                                                ? ViewBugOverlay(
-                                                    stackID: selectedID,
-                                                    stackCollection: widget
-                                                        .project_query_doc
-                                                        .collection("Stack"))
-                                                //notifyParent: refresh)
-                                                : Text("NOTHING HERE"),
-                                          ],
-                                        )),
-                                  ],
-                                ),
+                                          ),
+                                          selectedID != ""
+                                              ? ViewBugOverlay(
+                                                  stackID: selectedID,
+                                                  stackCollection: widget
+                                                      .project_query_doc
+                                                      .collection("Stack"))
+                                              //notifyParent: refresh)
+                                              : Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15, bottom: 20),
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "Click Stack Cards to view Stack Information",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontSize: 20,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w200),
+                                                    ),
+                                                  ),
+                                                ),
+                                        ],
+                                      )),
+                                ],
                               ),
-                            )),
-                          ],
-                        ),
-                      ],
-                    ),
+                            ),
+                          )),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              );
+                ),
+              ],
+            );
           })),
     );
   }
@@ -371,9 +386,9 @@ class _ViewStacksState extends State<ViewStacks> {
                   Text(
                     'Stack Count: ${snapshot.data!.size}',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: GoogleFonts.poppins(
                       color: Colors.white,
-                      fontSize: 15,
+                      fontSize: 20,
                       wordSpacing: 3,
                     ),
                   ),
@@ -404,9 +419,9 @@ class _ViewStacksState extends State<ViewStacks> {
                         }
 
                         return InkWell(
-                          borderRadius: BorderRadius.circular(5),
-                          splashColor: Color.fromARGB(255, 59, 173, 255),
-                          highlightColor: Color.fromARGB(255, 2, 24, 42),
+                            borderRadius: BorderRadius.circular(5),
+                            splashColor: Color.fromARGB(255, 59, 173, 255),
+                            highlightColor: Color.fromARGB(255, 2, 24, 42),
                             onTap: (() {
                               setState(() {
                                 for (var x in StackType) {
@@ -431,12 +446,14 @@ class _ViewStacksState extends State<ViewStacks> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                     side: index == _selectedIndex
-                                  ? const BorderSide(
-                                      color: Color.fromARGB(255, 227, 242, 162),
-                                      width: 2)
-                                  : const BorderSide(
-                                      color: Color.fromARGB(255, 39, 138, 209),
-                                      width: 1)),
+                                        ? const BorderSide(
+                                            color: Color.fromARGB(
+                                                255, 221, 226, 255),
+                                            width: 2)
+                                        : const BorderSide(
+                                            color: Color.fromARGB(
+                                                255, 146, 153, 192),
+                                            width: 1)),
                                 color: index == _selectedIndex
                                   ? const Color.fromARGB(53, 27, 27, 27)
                                   : theme_color,
@@ -447,8 +464,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                         child: Padding(padding: EdgeInsets.all(10), child:Text(
                                           '${stack['stack_type']}: ${stack['stack_title']}',
                                           style: const TextStyle(
-                                              color:white,
-                                              fontSize: 15),
+                                              color: white, fontSize: 15),
                                         ),
                                       )),
                                       Expanded(
@@ -514,7 +530,7 @@ class project_preview_desc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 15, top: 6, right: 15),
+        padding: const EdgeInsets.only(left: 30, top: 10, right: 30),
         child: Text(this.text,
             softWrap: true,
             style: TextStyle(
@@ -532,7 +548,7 @@ class project_preview_name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 15, top: 6, right: 15),
+        padding: EdgeInsets.only(left: 30, top: 10, right: 30),
         child: Text(this.text,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(

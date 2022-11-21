@@ -4,7 +4,8 @@ import 'package:devs_almanac/constants/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+//Import the font package
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../auth/auth.dart';
 import './widgets/home_page_widgets.dart' as wids;
@@ -109,13 +110,13 @@ class __searchTextFieldState extends State<_searchTextField> {
           autofocus: true, //Display the keyboard when TextField is displayed
           cursorColor: Colors.white,
           textAlign: TextAlign.left,
-          style: const TextStyle(
+          style: GoogleFonts.poppins(
             color: Colors.white,
             fontSize: 20,
           ),
           textInputAction: TextInputAction
               .search, //Specify the action button on the keyboard
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             //Style of TextField
             enabledBorder: UnderlineInputBorder(
                 //Default TextField border
@@ -125,7 +126,7 @@ class __searchTextFieldState extends State<_searchTextField> {
                 borderSide: BorderSide(color: Colors.white)),
             hintText:
                 'Search keywords', //Text that is displayed when nothing is entered.
-            hintStyle: TextStyle(
+            hintStyle: GoogleFonts.poppins(
               //Style of hintText
               color: Colors.white60,
               fontSize: 20,
@@ -173,13 +174,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var username = user_obj?.displayName;
+    var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       // Code AppBar
       key: _scaffoldKey,
       appBar: AppBar(
         leading: Image.asset("images/logo.png"),
         centerTitle: true,
-        title: const Text("Developer's Almanac"),
+        title: Text("Developer's Almanac", style: GoogleFonts.syneMono()),
         actions: !typing
             ? <Widget>[
                 // Search Icon
@@ -247,8 +251,30 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       )),
       body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
+        // used to be:
+        // physics: const NeverScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         children: [
+          const SizedBox(
+            height: 30,
+          ),
+          // Welcome message
+          Flexible(
+            fit: FlexFit.tight,
+            child: Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50),
+                child: Text(
+                  "Welcome back, $username",
+                  //overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                  textDirection: TextDirection.ltr,
+                  style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 47,
+                      fontWeight: FontWeight.w300),
+                  textAlign: TextAlign.left,
+                )),
+          ),
           const SizedBox(
             height: 30,
           ),
@@ -260,9 +286,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text(
                   "Projects",
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: AppStyle.sectionColor,
-                    fontFamily: 'Times',
                     fontSize: 30,
                   ),
                   textAlign: TextAlign.left,
@@ -308,6 +333,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 // Shows the projects view
                 Expanded(
+                  // Shows list of projects
                   child: SizedBox(
                       // width: 300,
                       height: 500,
@@ -317,7 +343,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: SizedBox(
                     // Doesn't make a difference:
-                    width: MediaQuery.of(context).size.width * 0.3,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     height: 500,
                     child: Column(
                       children: [
@@ -331,9 +357,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                   width: 1)),
                           margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                           child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.3,
+                            width: MediaQuery.of(context).size.width * 0.5,
                             child: Align(
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.centerLeft,
                               child: Row(
                                 children: [
                                   Column(
@@ -343,7 +369,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         height: 450,
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.3,
+                                                0.45,
                                         child: SingleChildScrollView(
                                           child: ProjectInfoPreviewView(),
                                         ),
@@ -378,10 +404,26 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
   @override
   Widget build(Object context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 0.5, left: 15),
+      padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const project_preview_name(text: 'Project Title'),
-        project_preview_desc(text: projectName),
+        // const project_preview_name(text: 'Project Title'),
+        // project_preview_desc(text: projectName),
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            projectName,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.poppins(
+                color: AppStyle.projectTitle, fontSize: 35, wordSpacing: 3),
+          ),
+        ),
+        const Divider(
+          color: Colors.orangeAccent,
+          thickness: 3,
+        ),
+        const SizedBox(
+          height: 25,
+        ),
         const project_preview_name(text: 'Project Description'),
         project_preview_desc(text: projectDescription),
         const project_preview_name(text: 'Project Member(s)'),
@@ -390,19 +432,18 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
         project_preview_desc(text: projectCreated),
         const project_preview_name(text: 'Stack & Languages'),
         Visibility(
-          visible: projectTools.isNotEmpty,
-          child: Wrap(
-            children: projectTools.map((tool) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Chip(
-                  label: Text(tool),
-                  backgroundColor: AppStyle.sectionColor,
-                ),
-              );
-            }).toList(),
-          )
-        )
+            visible: projectTools.isNotEmpty,
+            child: Wrap(
+              children: projectTools.map((tool) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 30, top: 20),
+                  child: Chip(
+                    label: Text(tool),
+                    backgroundColor: AppStyle.sectionColor,
+                  ),
+                );
+              }).toList(),
+            ))
       ]),
     );
   }
@@ -460,17 +501,19 @@ class _ProjectsViewState extends State<ProjectsView> {
         if (snapshot.hasError) {
           String error = snapshot.error.toString();
           print(error);
-          return Text(error, style: const TextStyle(color: Colors.white));
+          return Text(error, style: GoogleFonts.poppins(color: Colors.white));
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         }
 
-        bool snapshotIsEmpty = (!snapshot.hasData || snapshot.data!.docs.isEmpty);
+        bool snapshotIsEmpty =
+            (!snapshot.hasData || snapshot.data!.docs.isEmpty);
 
-        if(snapshotIsEmpty) {
-          return const Text("No Projects to show", style: TextStyle(color: Colors.white, fontSize: 30));
+        if (snapshotIsEmpty) {
+          return Text("No Projects to show",
+              style: GoogleFonts.poppins(color: Colors.white, fontSize: 30));
         }
 
         return ListView.builder(
@@ -487,129 +530,134 @@ class _ProjectsViewState extends State<ProjectsView> {
               }
 
               return Align(
-                  alignment: Alignment.centerLeft,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: 75,
-                    child: InkWell(
-                        focusColor: const Color.fromARGB(255, 2, 24, 42),
-                        borderRadius: BorderRadius.circular(5),
-                        splashColor: const Color.fromARGB(255, 59, 173, 255),
-                        highlightColor: const Color.fromARGB(255, 2, 24, 42),
-                        onTap: () async => {
-                          projectTools = await getStacksAndLangs(project.reference),
-                          setState(() {
-                            _selectedIndex = index;
-                            projectName = project['project_title'];
-                            projectDescription = project['project_description'];
-                            projectMembers = project['members'].toString();
-                            projectCreated =
-                                project['creation_date'].toDate().toString();
-                            widget.notifyParent();
-                          }),
-                        },
-                        child: Card(
-                          elevation: 10,
-                          color: index == _selectedIndex
-                              ? const Color.fromARGB(53, 27, 27, 27)
-                              : theme_color,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              side: index == _selectedIndex
-                                  ? const BorderSide(
-                                      color: Color.fromARGB(255, 227, 242, 162),
-                                      width: 2)
-                                  : const BorderSide(
-                                      color: Color.fromARGB(255, 39, 138, 209),
-                                      width: 1)),
-                          margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(padding: const EdgeInsets.all(10), 
-                                  child: Container(
+                alignment: Alignment.centerRight,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: 75,
+                  child: InkWell(
+                    focusColor: const Color.fromARGB(255, 2, 24, 42),
+                    borderRadius: BorderRadius.circular(5),
+                    splashColor: const Color.fromARGB(255, 59, 173, 255),
+                    highlightColor: const Color.fromARGB(255, 2, 24, 42),
+                    onTap: () async => {
+                      projectTools = await getStacksAndLangs(project.reference),
+                      setState(() {
+                        _selectedIndex = index;
+                        projectName = project['project_title'];
+                        projectDescription = project['project_description'];
+                        projectMembers = project['members'].toString();
+                        projectCreated =
+                            project['creation_date'].toDate().toString();
+                        widget.notifyParent();
+                      }),
+                    },
+                    child: Card(
+                      elevation: 10,
+                      color: index == _selectedIndex
+                          ? const Color.fromARGB(53, 27, 27, 27)
+                          : theme_color,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          side: index == _selectedIndex
+                              ? const BorderSide(
+                                  color: Color.fromARGB(255, 227, 242, 162),
+                                  width: 2)
+                              : const BorderSide(
+                                  color: Color.fromARGB(255, 39, 138, 209),
+                                  width: 1)),
+                      margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Container(
                                     decoration: BoxDecoration(
-                                      color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                      borderRadius: const BorderRadius.all(Radius.circular(5))
-                                    ),
+                                        color: Color(
+                                                (math.Random().nextDouble() *
+                                                        0xFFFFFF)
+                                                    .toInt())
+                                            .withOpacity(1.0),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(5))),
                                     height: 50,
                                     width: 50,
-                                    child: Center(child: Text(project['project_title'][0], style: const TextStyle(fontSize: 25, color: white))))),
-                                  // if user adds image, show that instead 
-                                  //child: Image.network('https://cdn0.iconfinder.com/data/icons/artcore/512/folder_system.png')),
-                                Flexible(
-                                  fit: FlexFit.tight,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 15,
-                                              top: 6,
-                                              right: 15,
-                                              bottom: 3),
-                                          child: Text(project['project_title'],
-                                              style: TextStyle(
-                                                  color: AppStyle.projectTitle,
-                                                  fontSize: 20,
-                                                  wordSpacing: 3))),
-                                      Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 15, right: 15, bottom: 6),
-                                          child: Text(
-                                              "Updated on ${project['last_updated'].toDate()}",
-                                              style: const TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 230, 229, 232),
-                                                  fontSize: 12,
-                                                  wordSpacing: 5))),
-                                    ],
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.edit_note_outlined,
-                                    size: 30,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    //
-                                    DocumentReference<Object?> project_doc =
-                                        projects.doc(project.id);
-                                    //go to edit project page
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                Edit_project_page(
-                                                  project_query_doc:
-                                                      project_doc,
-                                                  project_ID: project.id,
-                                                )));
-                                  },
-                                ),
-                                // Delete project button
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.delete_sweep_rounded,
-                                    size: 30,
-                                    color: Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          wids.DeleteProjectPopup(
-                                              projectID: project.id),
-                                    );
-                                  },
-                                ),
-                              ]),
-                        ),
-                      ),
+                                    child: Center(
+                                        child: Text(project['project_title'][0],
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 25, color: white))))),
+                            // if user adds image, show that instead
+                            //child: Image.network('https://cdn0.iconfinder.com/data/icons/artcore/512/folder_system.png')),
+                            Flexible(
+                              fit: FlexFit.tight,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 15, top: 9, right: 15),
+                                      child: Text(project['project_title'],
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.poppins(
+                                              color: AppStyle.projectTitle,
+                                              fontSize: 20,
+                                              wordSpacing: 3))),
+                                  Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 15, right: 15),
+                                      child: Text(
+                                          "Updated on ${project['last_updated'].toDate()}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.poppins(
+                                              color: Color.fromARGB(
+                                                  255, 230, 229, 232),
+                                              fontSize: 12,
+                                              wordSpacing: 5))),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.edit_note_outlined,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                //
+                                DocumentReference<Object?> project_doc =
+                                    projects.doc(project.id);
+                                //go to edit project page
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Edit_project_page(
+                                              project_query_doc: project_doc,
+                                              project_ID: project.id,
+                                            )));
+                              },
+                            ),
+                            // Delete project button
+                            IconButton(
+                              icon: const Icon(
+                                Icons.delete_sweep_rounded,
+                                size: 30,
+                                color: Colors.red,
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      wids.DeleteProjectPopup(
+                                          projectID: project.id),
+                                );
+                              },
+                            ),
+                          ]),
                     ),
-                  );
+                  ),
+                ),
+              );
             });
       },
     );

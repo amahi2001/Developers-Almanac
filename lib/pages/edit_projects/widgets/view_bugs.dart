@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../edit_bugs/edit_bug_page.dart';
 import '../edit_project.dart';
@@ -37,13 +38,12 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
         height: 400,
         child: StreamBuilder<QuerySnapshot>(
           stream: bugStream,
-          builder: (BuildContext context,
-              AsyncSnapshot<QuerySnapshot> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               String error = snapshot.error.toString();
               print(error);
-              return Text(error,
-                  style: const TextStyle(color: Colors.white));
+              return Text(error, style: const TextStyle(color: Colors.white));
             }
             if (!snapshot.hasData ||
                 snapshot.connectionState == ConnectionState.waiting) {
@@ -73,19 +73,15 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                             Flexible(
                               fit: FlexFit.tight,
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Padding(
                                     padding: EdgeInsets.only(
-                                        left: 15,
-                                        top: 6,
-                                        right: 15,
-                                        bottom: 3),
+                                        left: 15, top: 6, right: 15, bottom: 3),
                                   ),
                                   Center(
                                     child: Text(bug['bug_name'],
-                                    overflow: TextOverflow.ellipsis,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             color: AppStyle.projectTitle,
                                             fontSize: 20,
@@ -107,22 +103,18 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                       text: bug['created_at']
                                           .toDate()
                                           .toString()),
-                                          const Bug_Description_field_text(
+                                  const Bug_Description_field_text(
                                       text: "Created By:"),
-                                      Bug_Description_Text(
-                                      text:
-                                          bug['created_by']),
+                                  Bug_Description_Text(text: bug['created_by']),
                                   const Bug_Description_field_text(
                                       text: "Was Solved:"),
                                   Bug_Description_Text(
-                                      text:
-                                          bug['is_solved'] ? "Yes" : "No"),
+                                      text: bug['is_solved'] ? "Yes" : "No"),
                                 ],
                               ),
                             ),
                             Column(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
                                   icon: const Icon(
@@ -135,8 +127,7 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                Edit_bug_page(
+                                            builder: (context) => Edit_bug_page(
                                                   bug_ID: bug.id,
                                                   bug_query_doc: bugDoc,
                                                 )));
@@ -177,7 +168,7 @@ class Bug_Description_field_text extends StatelessWidget {
       padding: const EdgeInsets.all(5.0),
       child: Text(text,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
+          style: GoogleFonts.poppins(
               color: AppStyle.fieldText, fontSize: 18, wordSpacing: 3)),
     );
   }
@@ -190,11 +181,11 @@ class Bug_Description_Text extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 6, top: 6),
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 6, top: 6),
         child: Text(text,
             overflow: TextOverflow.ellipsis,
-            style:
-                const TextStyle(color: white, fontSize: 15, wordSpacing: 5)));
+            style: GoogleFonts.poppins(
+                color: white, fontSize: 15, wordSpacing: 5)));
   }
 }
 
@@ -240,10 +231,9 @@ class bug_preview_name extends StatelessWidget {
             alignment: Alignment.topLeft,
             child: Text(this.text,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                     color: AppStyle.fieldText,
-                    fontFamily: 'Times',
-                    fontSize: 15,
+                    fontSize: 20,
                     fontWeight: FontWeight.w300,
                     wordSpacing: 3))));
   }
@@ -261,10 +251,9 @@ class bug_preview_desc extends StatelessWidget {
             alignment: Alignment.topLeft,
             child: Text(this.text,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                     color: AppStyle.fieldText,
-                    fontFamily: 'Times',
-                    fontSize: 15,
+                    fontSize: 20,
                     fontWeight: FontWeight.w300,
                     wordSpacing: 3))));
   }
