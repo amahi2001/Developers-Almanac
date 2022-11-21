@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../edit_bugs/edit_bug_page.dart';
@@ -60,11 +61,11 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
 
                     return Card(
                       elevation: 10,
-                      color: theme_color,
+                      color: AppStyle.cardColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
-                          side: const BorderSide(
-                              color: Color.fromARGB(255, 146, 153, 192),
+                          side: BorderSide(
+                              color: AppStyle.borderColor,
                               width: 1)),
                       margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                       child: Row(
@@ -93,21 +94,13 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                     // indent: 10,
                                     // endIndent: 10,
                                   ),
-                                  const Bug_Description_field_text(
-                                      text: "Description:"),
-                                  Bug_Description_Text(
-                                      text: bug['bug_description']),
-                                  const Bug_Description_field_text(
-                                      text: "Created on:"),
-                                  Bug_Description_Text(
-                                      text: bug['created_at']
-                                          .toDate()
-                                          .toString()),
-                                  const Bug_Description_field_text(
-                                      text: "Created By:"),
+                                  const Bug_Description_field_text(text: "Description:"),
+                                  Bug_Description_Text(text: bug['bug_description']),
+                                  const Bug_Description_field_text(text: "Created on:"),
+                                  Bug_Description_Text(text: DateFormat.yMMMd().add_jm().format(bug['created_at'].toDate())),
+                                  const Bug_Description_field_text(text: "Created By:"),
                                   Bug_Description_Text(text: bug['created_by']),
-                                  const Bug_Description_field_text(
-                                      text: "Was Solved:"),
+                                  const Bug_Description_field_text(text: "Was Solved:"),
                                   Bug_Description_Text(
                                       text: bug['is_solved'] ? "Yes" : "No"),
                                 ],
@@ -185,7 +178,7 @@ class Bug_Description_Text extends StatelessWidget {
         child: Text(text,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.poppins(
-                color: white, fontSize: 15, wordSpacing: 5)));
+                color: AppStyle.white, fontSize: 15, wordSpacing: 5)));
   }
 }
 

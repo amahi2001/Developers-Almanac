@@ -4,6 +4,8 @@ import 'package:devs_almanac/constants/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'dart:ui' as ui;
 //Import the font package
 import 'package:google_fonts/google_fonts.dart';
 
@@ -231,25 +233,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                 }),
               ],
-        backgroundColor: const Color.fromARGB(255, 14, 41, 60),
+        backgroundColor: AppStyle.backgroundColor,
       ),
-      endDrawer: Drawer(
-          child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.logout_rounded),
-            title: const Text('Logout'),
-            onTap: () {
-              //logout popup from auth.dart
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => const LogoutPopup(),
-              );
-            },
-          ),
-        ],
-      )),
       body: ListView(
         // used to be:
         // physics: const NeverScrollableScrollPhysics(),
@@ -267,7 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   "Welcome back, $username",
                   //overflow: TextOverflow.ellipsis,
                   softWrap: true,
-                  textDirection: TextDirection.ltr,
+                  textDirection: ui.TextDirection.ltr,
                   style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontSize: 47,
@@ -296,20 +281,37 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 50,
                   thickness: 5,
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.add,
-                    size: 30,
-                    color: Colors.white,
-                  ),
+                ElevatedButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) =>
                           const wids.AddProjectPopup(),
                     );
-                  },
-                )
+                  }, 
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(AppStyle.sectionColor),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.add,
+                        size: 20,
+                        color: AppStyle.backgroundColor,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Text(
+                          "Add Project",
+                          style: TextStyle(
+                            color: AppStyle.backgroundColor
+                          )
+                        ),
+                      ),
+                    ],
+                  )
+                ),
               ],
             ),
           ),
@@ -322,10 +324,10 @@ class _MyHomePageState extends State<MyHomePage> {
               color: AppStyle.sectionColor,
             ),
           ),
-          const Divider(
+          Divider(
             height: 30,
             thickness: 0,
-            color: Color.fromARGB(255, 14, 41, 60),
+            color: AppStyle.backgroundColor,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 45, right: 45),
@@ -349,11 +351,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         Card(
                           elevation: 10,
-                          color: const Color.fromARGB(255, 22, 66, 97),
+                          color: AppStyle.cardColor,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
-                              side: const BorderSide(
-                                  color: Color.fromARGB(255, 146, 153, 192),
+                              side: BorderSide(
+                                  color: AppStyle.borderColor,
                                   width: 1)),
                           margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                           child: SizedBox(
@@ -546,8 +548,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                         projectName = project['project_title'];
                         projectDescription = project['project_description'];
                         projectMembers = project['members'].toString();
-                        projectCreated =
-                            project['creation_date'].toDate().toString();
+                        projectCreated = DateFormat.yMMMd().add_jm().format(project['creation_date'].toDate());
                         widget.notifyParent();
                       }),
                     },
@@ -555,7 +556,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                       elevation: 10,
                       color: index == _selectedIndex
                           ? const Color.fromARGB(53, 27, 27, 27)
-                          : theme_color,
+                          : AppStyle.cardColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                           side: index == _selectedIndex
@@ -586,7 +587,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                         child: Text(project['project_title'][0],
                                             overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.poppins(
-                                                fontSize: 25, color: white))))),
+                                                fontSize: 25, color: AppStyle.white))))),
                             // if user adds image, show that instead
                             //child: Image.network('https://cdn0.iconfinder.com/data/icons/artcore/512/folder_system.png')),
                             Flexible(
@@ -607,11 +608,10 @@ class _ProjectsViewState extends State<ProjectsView> {
                                       padding: const EdgeInsets.only(
                                           left: 15, right: 15),
                                       child: Text(
-                                          "Updated on ${project['last_updated'].toDate()}",
+                                          "Updated on ${DateFormat.yMMMd().add_jm().format(project['last_updated'].toDate())}",
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.poppins(
-                                              color: Color.fromARGB(
-                                                  255, 230, 229, 232),
+                                              color: Color.fromARGB(255, 230, 229, 232),
                                               fontSize: 12,
                                               wordSpacing: 5))),
                                 ],

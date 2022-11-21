@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 
+import '../../auth/auth.dart';
 import '../edit_projects/edit_project.dart';
 import 'widgets/add_solution.dart';
 import 'widgets/edit_solution.dart';
 import '../edit_projects/widgets/view_bugs.dart';
+import 'package:intl/intl.dart';
 //Import the font package
 import 'package:google_fonts/google_fonts.dart';
 
@@ -49,12 +51,14 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
               return IconButton(
                   icon: const Icon(Icons.logout),
                   onPressed: () {
-                    Scaffold.of(context)
-                        .openEndDrawer(); // Open drawer if Profile Icon is clicked
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => const LogoutPopup(),
+                    );
                   });
             }),
           ],
-          backgroundColor: const Color.fromARGB(255, 14, 41, 60),
+          backgroundColor: AppStyle.backgroundColor,
         ),
         body: FutureBuilder(
           future: getBugInfo(),
@@ -89,31 +93,26 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                               height: 20,
                             ),
                             const bug_preview_name(text: 'Bug Description'),
-                            bug_preview_desc(
-                                text: snapshot.data['bug_description']),
+                            bug_preview_desc(text: snapshot.data['bug_description']),
                             const SizedBox(
                               height: 20,
                             ),
                             const bug_preview_name(text: 'Error Output'),
-                            bug_preview_desc(
-                                text: snapshot.data["error_output"]),
+                            bug_preview_desc(text: snapshot.data["error_output"]),
                             const SizedBox(
                               height: 20,
                             ),
                             const bug_preview_name(text: 'Bug Created'),
-                            bug_preview_desc(
-                                text: snapshot.data["created_at"]
-                                    .toDate()
-                                    .toString()),
+                            bug_preview_desc(text: DateFormat.yMMMd().add_jm().format(snapshot.data["created_at"].toDate())),
                             const SizedBox(
                               height: 20,
                             ),
                             const bug_preview_name(text: 'Created By'),
                             bug_preview_desc(text: snapshot.data["created_by"]),
-                            const Divider(
+                            Divider(
                               height: 30,
                               thickness: 0,
-                              color: Color.fromARGB(255, 14, 41, 60),
+                              color: AppStyle.backgroundColor,
                             ),
                           ],
                         ),
@@ -130,12 +129,12 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                     color: Colors.white,
                   ),
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left: 50, right: 50),
                   child: Divider(
                     height: 30,
                     thickness: 0,
-                    color: Color.fromARGB(255, 14, 41, 60),
+                    color: AppStyle.backgroundColor,
                   ),
                 ),
                 /*Bug Solutions -------------------------------------------------*/
@@ -164,21 +163,39 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                   const SizedBox(
                                     width: 20,
                                   ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.add,
-                                      size: 30,
-                                      color: Colors.white,
-                                    ),
+                                  ElevatedButton(
                                     onPressed: () {
                                       showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              AddSolution(
-                                                query_doc: widget.bug_query_doc,
-                                                notifyParent: refresh,
-                                              ));
-                                    },
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                          AddSolution(
+                                            query_doc: widget.bug_query_doc,
+                                            notifyParent: refresh,
+                                          )
+                                      );
+                                    }, 
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(AppStyle.sectionColor),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          size: 20,
+                                          color: AppStyle.backgroundColor,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: Text(
+                                            "Add Solution",
+                                            style: TextStyle(
+                                              color: AppStyle.backgroundColor
+                                            )
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   ),
                                 ],
                               ),
@@ -198,13 +215,12 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                           0.5,
                                       child: Card(
                                           elevation: 10,
-                                          color: theme_color,
+                                          color: AppStyle.cardColor,
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(5),
-                                              side: const BorderSide(
-                                                  color: Color.fromARGB(
-                                                      255, 146, 153, 192),
+                                              side: BorderSide(
+                                                  color: AppStyle.borderColor,
                                                   width: 1)),
                                           margin: const EdgeInsets.fromLTRB(
                                               5, 5, 5, 10),
@@ -228,9 +244,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                               'language']),
                                                       const Bug_Description_field_text(
                                                           text: "Created On:"),
-                                                      Bug_Description_Text(
-                                                          text:
-                                                              bugInfo['time']),
+                                                      bug_preview_desc(text: DateFormat.yMMMd().add_jm().format(DateTime.parse(bugInfo['time']))),
                                                       const Bug_Description_field_text(
                                                           text:
                                                               "Solution Name"),
@@ -279,11 +293,9 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                       iconPadding(
                                                         child: IconButton(
                                                             icon: const Icon(
-                                                              Icons
-                                                                  .edit_note_outlined,
+                                                              Icons.edit_note_outlined,
                                                               size: 30,
-                                                              color:
-                                                                  Colors.white,
+                                                              color:Colors.white,
                                                             ),
                                                             onPressed: () {
                                                               showDialog(
@@ -309,8 +321,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                         //delete solution
                                                         child: IconButton(
                                                             icon: const Icon(
-                                                              Icons
-                                                                  .delete_sweep_rounded,
+                                                              Icons.delete_sweep_rounded,
                                                               size: 30,
                                                               color: Colors.red,
                                                             ),

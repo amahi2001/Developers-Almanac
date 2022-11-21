@@ -9,12 +9,10 @@ import 'widgets/add_collab.dart';
 import 'widgets/add_stack.dart';
 import '../../auth/auth.dart';
 import 'widgets/edit_stacks.dart';
+import 'package:intl/intl.dart';
+
 //Import the font package
 import 'package:google_fonts/google_fonts.dart';
-
-const Color white = Color.fromARGB(255, 255, 255, 255);
-const Color red = Color.fromARGB(255, 255, 0, 0);
-const Color theme_color = Color.fromARGB(255, 22, 66, 97);
 
 var bugName = "Placeholder";
 var bugType = "Placeholder";
@@ -76,7 +74,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                 });
           }),
         ],
-        backgroundColor: const Color.fromARGB(255, 14, 41, 60),
+        backgroundColor: AppStyle.backgroundColor,
       ),
       body: FutureBuilder(
           future: getProjectInfo(),
@@ -118,25 +116,76 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const project_preview_name(
-                                    text: 'Project Member(s)'),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.person_add,
-                                    size: 30,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AddMember(
-                                        notifyParent: refresh,
-                                        query_doc: widget.project_query_doc,
+                                const project_preview_name(text: 'Project Member(s)'),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AddMember(
+                                            notifyParent: refresh,
+                                            query_doc: widget.project_query_doc,
+                                          ),
+                                        );
+                                      }, 
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(AppStyle.fieldText),
                                       ),
-                                    );
-                                  },
-                                ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(
+                                            Icons.person_add,
+                                            size: 20,
+                                            color: AppStyle.backgroundColor,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 5),
+                                            child: Text(
+                                              "Add Member",
+                                              style: TextStyle(
+                                                color: AppStyle.backgroundColor
+                                              )
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        
+                                      }, 
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(AppStyle.fieldText),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(
+                                            Icons.person_remove,
+                                            size: 20,
+                                            color: AppStyle.backgroundColor,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 5),
+                                            child: Text(
+                                              "Remove Member",
+                                              style: TextStyle(
+                                                color: AppStyle.backgroundColor
+                                              )
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ),
+                                  ],
+                                )
                               ],
                             ),
                             project_preview_desc(
@@ -145,10 +194,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                               height: 20,
                             ),
                             const project_preview_name(text: 'Created'),
-                            project_preview_desc(
-                                text: snapshot.data["creation_date"]
-                                    .toDate()
-                                    .toString()),
+                            project_preview_desc(text: DateFormat.yMMMd().add_jm().format(snapshot.data["creation_date"].toDate())),
                             const SizedBox(
                               height: 20,
                             ),
@@ -168,7 +214,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 65, right: 65),
+                  padding: EdgeInsets.only(left: 65, right: 65, top:20),
                   child: Column(
                     children: [
                       Row(
@@ -186,26 +232,42 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                           const SizedBox(
                             width: 20,
                           ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.add,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              showDialog(
+                          ElevatedButton(
+                              onPressed: () {
+                                showDialog(
                                   context: context,
                                   builder: (BuildContext context) => Column(
-                                        children: [
-                                          AddStackPopUp(
-                                              project_query_doc:
-                                                  widget.project_query_doc,
-                                              project_id:
-                                                  widget.project_query_doc.id),
-                                        ],
-                                      ));
-                            },
-                          ),
+                                    children: [
+                                      AddStackPopUp(
+                                          project_query_doc: widget.project_query_doc,
+                                          project_id: widget.project_query_doc.id),
+                                    ],
+                                  )
+                                );
+                              }, 
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(AppStyle.sectionColor),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    size: 20,
+                                    color: AppStyle.backgroundColor,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5),
+                                    child: Text(
+                                      "Add Stack",
+                                      style: TextStyle(
+                                        color: AppStyle.backgroundColor
+                                      )
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ),
                         ],
                       ),
                       Row(
@@ -232,14 +294,12 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                 children: [
                                   Card(
                                       elevation: 10,
-                                      color:
-                                          const Color.fromARGB(255, 22, 66, 97),
+                                      color: AppStyle.cardColor,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(5),
-                                          side: const BorderSide(
-                                              color: Color.fromARGB(
-                                                  255, 146, 153, 192),
+                                          side: BorderSide(
+                                              color: AppStyle.borderColor,
                                               width: 1)),
                                       margin:
                                           const EdgeInsets.fromLTRB(5, 5, 5, 5),
@@ -394,10 +454,10 @@ class _ViewStacksState extends State<ViewStacks> {
                   ),
                 ],
               ),
-              const Divider(
+              Divider(
                 height: 30,
                 thickness: 10,
-                color: Color.fromARGB(255, 14, 41, 60),
+                color: AppStyle.backgroundColor,
               ),
               Flexible(
                   flex: 100,
@@ -447,24 +507,22 @@ class _ViewStacksState extends State<ViewStacks> {
                                     borderRadius: BorderRadius.circular(5),
                                     side: index == _selectedIndex
                                         ? const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 221, 226, 255),
+                                            color: Color.fromARGB(255, 221, 226, 255),
                                             width: 2)
-                                        : const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 146, 153, 192),
+                                        : BorderSide(
+                                            color: AppStyle.borderColor,
                                             width: 1)),
                                 color: index == _selectedIndex
                                   ? const Color.fromARGB(53, 27, 27, 27)
-                                  : theme_color,
+                                  : AppStyle.cardColor,
                                 child: Padding(
                                     padding: const EdgeInsets.all(5),
                                     child: Row(children: [
                                       Expanded(
                                         child: Padding(padding: EdgeInsets.all(10), child:Text(
                                           '${stack['stack_type']}: ${stack['stack_title']}',
-                                          style: const TextStyle(
-                                              color: white, fontSize: 15),
+                                          style: TextStyle(
+                                              color: AppStyle.white, fontSize: 15),
                                         ),
                                       )),
                                       Expanded(
@@ -510,7 +568,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                                               .project_query_doc,
                                                           id: stack.id));
                                             },
-                                            color: white,
+                                            color: AppStyle.white,
                                           ),
                                         ],
                                       )),

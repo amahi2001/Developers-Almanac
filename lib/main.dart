@@ -1,3 +1,4 @@
+import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'auth/firebase_options.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
       title: "Developer's Almanac",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          scaffoldBackgroundColor: const Color.fromARGB(255, 14, 41, 60)),
+          scaffoldBackgroundColor: AppStyle.backgroundColor),
       home: const LoginPage(),
     );
   }

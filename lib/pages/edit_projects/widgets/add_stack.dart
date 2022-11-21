@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
 import '../edit_project.dart' as global;
 //adding and viewing stacks
@@ -250,12 +251,10 @@ class _viewStacksInAddState extends State<viewStacksInAdd> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(5),
-                                              side: const BorderSide(
-                                                  color: Color.fromARGB(
-                                                      255, 146, 153, 192),
+                                              side: BorderSide(
+                                                  color: AppStyle.borderColor,
                                                   width: 1)),
-                                          color: const Color.fromARGB(
-                                              255, 22, 66, 97),
+                                          color: AppStyle.cardColor,
                                           child: Column(
                                             children: [
                                               Padding(
@@ -265,11 +264,7 @@ class _viewStacksInAddState extends State<viewStacksInAdd> {
                                                     Text(
                                                       '${project['stack_type']}: ${project['stack_title']}',
                                                       style: const TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              255,
-                                                              255,
-                                                              255),
+                                                          color: Color.fromARGB(255,255,255,255),
                                                           fontSize: 15),
                                                     ),
                                                   ]))
