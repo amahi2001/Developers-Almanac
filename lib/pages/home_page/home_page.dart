@@ -622,11 +622,10 @@ class _ProjectsViewState extends State<ProjectsView> {
                                       padding: const EdgeInsets.only(
                                           left: 15, right: 15),
                                       child: Text(
-                                          "Updated on ${project['last_updated'].toDate()}",
+                                          "Updated on ${DateFormat.yMMMd().add_jm().format(project['last_updated'].toDate())}",
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.poppins(
-                                              color: Color.fromARGB(
-                                                  255, 230, 229, 232),
+                                              color: Color.fromARGB(255, 230, 229, 232),
                                               fontSize: 12,
                                               wordSpacing: 5))),
                                 ],
