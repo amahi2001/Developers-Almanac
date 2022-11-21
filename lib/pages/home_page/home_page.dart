@@ -233,25 +233,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                 }),
               ],
-        backgroundColor: const Color.fromARGB(255, 14, 41, 60),
+        backgroundColor: AppStyle.backgroundColor,
       ),
-      endDrawer: Drawer(
-          child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.logout_rounded),
-            title: const Text('Logout'),
-            onTap: () {
-              //logout popup from auth.dart
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => const LogoutPopup(),
-              );
-            },
-          ),
-        ],
-      )),
       body: ListView(
         // used to be:
         // physics: const NeverScrollableScrollPhysics(),
@@ -355,10 +338,10 @@ class _MyHomePageState extends State<MyHomePage> {
               color: AppStyle.sectionColor,
             ),
           ),
-          const Divider(
+          Divider(
             height: 30,
             thickness: 0,
-            color: Color.fromARGB(255, 14, 41, 60),
+            color: AppStyle.backgroundColor,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 45, right: 45),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 
+import '../../auth/auth.dart';
 import '../edit_projects/edit_project.dart';
 import 'widgets/add_solution.dart';
 import 'widgets/edit_solution.dart';
@@ -50,12 +51,14 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
               return IconButton(
                   icon: const Icon(Icons.logout),
                   onPressed: () {
-                    Scaffold.of(context)
-                        .openEndDrawer(); // Open drawer if Profile Icon is clicked
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => const LogoutPopup(),
+                    );
                   });
             }),
           ],
-          backgroundColor: const Color.fromARGB(255, 14, 41, 60),
+          backgroundColor: AppStyle.backgroundColor,
         ),
         body: FutureBuilder(
           future: getBugInfo(),
@@ -106,10 +109,10 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                             ),
                             const bug_preview_name(text: 'Created By'),
                             bug_preview_desc(text: snapshot.data["created_by"]),
-                            const Divider(
+                            Divider(
                               height: 30,
                               thickness: 0,
-                              color: Color.fromARGB(255, 14, 41, 60),
+                              color: AppStyle.backgroundColor,
                             ),
                           ],
                         ),
@@ -126,12 +129,12 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                     color: Colors.white,
                   ),
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left: 50, right: 50),
                   child: Divider(
                     height: 30,
                     thickness: 0,
-                    color: Color.fromARGB(255, 14, 41, 60),
+                    color: AppStyle.backgroundColor,
                   ),
                 ),
                 /*Bug Solutions -------------------------------------------------*/

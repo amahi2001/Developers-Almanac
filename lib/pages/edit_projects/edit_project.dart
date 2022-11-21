@@ -78,7 +78,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                 });
           }),
         ],
-        backgroundColor: const Color.fromARGB(255, 14, 41, 60),
+        backgroundColor: AppStyle.backgroundColor,
       ),
       body: FutureBuilder(
           future: getProjectInfo(),
@@ -459,10 +459,10 @@ class _ViewStacksState extends State<ViewStacks> {
                   ),
                 ],
               ),
-              const Divider(
+              Divider(
                 height: 30,
                 thickness: 10,
-                color: Color.fromARGB(255, 14, 41, 60),
+                color: AppStyle.backgroundColor,
               ),
               Flexible(
                   flex: 100,
