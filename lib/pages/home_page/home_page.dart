@@ -120,10 +120,10 @@ class __searchTextFieldState extends State<_searchTextField> {
               .search, //Specify the action button on the keyboard
           decoration: InputDecoration(
             //Style of TextField
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: const UnderlineInputBorder(
                 //Default TextField border
                 borderSide: BorderSide(color: Colors.white)),
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: const UnderlineInputBorder(
                 //Borders when a TextField is in focus
                 borderSide: BorderSide(color: Colors.white)),
             hintText:
@@ -244,22 +244,19 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 30,
           ),
           // Welcome message
-          Flexible(
-            fit: FlexFit.tight,
-            child: Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50),
-                child: Text(
-                  "Welcome back, $username",
-                  //overflow: TextOverflow.ellipsis,
-                  softWrap: true,
-                  textDirection: ui.TextDirection.ltr,
-                  style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 47,
-                      fontWeight: FontWeight.w300),
-                  textAlign: TextAlign.left,
-                )),
-          ),
+          Padding(
+              padding: const EdgeInsets.only(left: 50, right: 50),
+              child: Text(
+                "Welcome back, $username",
+                //overflow: TextOverflow.ellipsis,
+                softWrap: true,
+                textDirection: ui.TextDirection.ltr,
+                style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 47,
+                    fontWeight: FontWeight.w300),
+                textAlign: TextAlign.left,
+              )),
           const SizedBox(
             height: 30,
           ),
@@ -268,18 +265,22 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Projects",
-                  overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.poppins(
-                    color: AppStyle.sectionColor,
-                    fontSize: 30,
+                Expanded(
+                  child: Text(
+                    "Projects",
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.poppins(
+                      color: AppStyle.sectionColor,
+                      fontSize: 30,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
-                  textAlign: TextAlign.left,
                 ),
-                const Divider(
-                  height: 50,
-                  thickness: 5,
+                const Expanded(
+                  child: Divider(
+                    height: 50,
+                    thickness: 5,
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -301,7 +302,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: AppStyle.backgroundColor,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 5),
+                        padding: const EdgeInsets.only(left: 5),
                         child: Text(
                           "Add Project",
                           style: TextStyle(
@@ -349,36 +350,27 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 500,
                     child: Column(
                       children: [
-                        Card(
-                          elevation: 10,
-                          color: AppStyle.cardColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              side: BorderSide(
-                                  color: AppStyle.borderColor,
-                                  width: 1)),
-                          margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      // if no projects, dont display sizedbox, otherwise return sizedBox
-                                      SizedBox(
-                                        height: 450,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.45,
-                                        child: SingleChildScrollView(
-                                          child: ProjectInfoPreviewView(),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                        Flexible(
+                          child: Card(
+                            elevation: 10,
+                            color: AppStyle.cardColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                side: BorderSide(
+                                    color: AppStyle.borderColor,
+                                    width: 1)),
+                            margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Wrap(
+                                  children: [
+                                    SingleChildScrollView(
+                                      child: ProjectInfoPreviewView(),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -405,48 +397,52 @@ class ProjectInfoPreviewView extends StatefulWidget {
 class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
   @override
   Widget build(Object context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        // const project_preview_name(text: 'Project Title'),
-        // project_preview_desc(text: projectName),
-        Align(
-          alignment: Alignment.center,
-          child: Text(
-            projectName,
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.poppins(
-                color: AppStyle.projectTitle, fontSize: 35, wordSpacing: 3),
-          ),
+    return Wrap(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 20),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            // const project_preview_name(text: 'Project Title'),
+            // project_preview_desc(text: projectName),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                projectName,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.poppins(
+                    color: AppStyle.projectTitle, fontSize: 35, wordSpacing: 3),
+              ),
+            ),
+            const Divider(
+              color: Colors.orangeAccent,
+              thickness: 3,
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            const project_preview_name(text: 'Project Description'),
+            project_preview_desc(text: projectDescription),
+            const project_preview_name(text: 'Project Member(s)'),
+            project_preview_desc(text: projectMembers),
+            const project_preview_name(text: 'Created'),
+            project_preview_desc(text: projectCreated),
+            const project_preview_name(text: 'Stack & Languages'),
+            Visibility(
+                visible: projectTools.isNotEmpty,
+                child: Wrap(
+                  children: projectTools.map((tool) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 30, top: 20),
+                      child: Chip(
+                        label: Text(tool),
+                        backgroundColor: AppStyle.sectionColor,
+                      ),
+                    );
+                  }).toList(),
+                ))
+          ]),
         ),
-        const Divider(
-          color: Colors.orangeAccent,
-          thickness: 3,
-        ),
-        const SizedBox(
-          height: 25,
-        ),
-        const project_preview_name(text: 'Project Description'),
-        project_preview_desc(text: projectDescription),
-        const project_preview_name(text: 'Project Member(s)'),
-        project_preview_desc(text: projectMembers),
-        const project_preview_name(text: 'Created'),
-        project_preview_desc(text: projectCreated),
-        const project_preview_name(text: 'Stack & Languages'),
-        Visibility(
-            visible: projectTools.isNotEmpty,
-            child: Wrap(
-              children: projectTools.map((tool) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 30, top: 20),
-                  child: Chip(
-                    label: Text(tool),
-                    backgroundColor: AppStyle.sectionColor,
-                  ),
-                );
-              }).toList(),
-            ))
-      ]),
+      ],
     );
   }
 }
@@ -568,26 +564,28 @@ class _ProjectsViewState extends State<ProjectsView> {
                                   width: 1)),
                       margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                       child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                        color: Color(
-                                                (math.Random().nextDouble() *
-                                                        0xFFFFFF)
-                                                    .toInt())
-                                            .withOpacity(1.0),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(5))),
-                                    height: 50,
-                                    width: 50,
-                                    child: Center(
-                                        child: Text(project['project_title'][0],
-                                            overflow: TextOverflow.ellipsis,
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 25, color: AppStyle.white))))),
+                            Flexible(
+                              child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Color(
+                                                  (math.Random().nextDouble() *
+                                                          0xFFFFFF)
+                                                      .toInt())
+                                              .withOpacity(1.0),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(5))),
+                                      height: 50,
+                                      width: 50,
+                                      child: Center(
+                                          child: Text(project['project_title'][0],
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 25, color: AppStyle.white))))),
+                            ),
                             // if user adds image, show that instead
                             //child: Image.network('https://cdn0.iconfinder.com/data/icons/artcore/512/folder_system.png')),
                             Flexible(
@@ -611,7 +609,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                           "Updated on ${DateFormat.yMMMd().add_jm().format(project['last_updated'].toDate())}",
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.poppins(
-                                              color: Color.fromARGB(255, 230, 229, 232),
+                                              color: const Color.fromARGB(255, 230, 229, 232),
                                               fontSize: 12,
                                               wordSpacing: 5))),
                                 ],
