@@ -43,6 +43,7 @@ dependencies:
   flutter_highlight: ^0.7.0
   dropdown_search: ^5.0.3
   google_fonts: ^2.1.0
+  fl_chart: ^0.55.2
 
 dev_dependencies:
   flutter_test:

@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../auth/auth.dart';
 import './widgets/home_page_widgets.dart' as wids;
 import '../edit_projects/edit_project.dart';
+import './widgets/bug_chart.dart';
 
 import 'dart:math' as math;
 
@@ -439,7 +440,9 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
                       ),
                     );
                   }).toList(),
-                ))
+                )),
+            const project_preview_name(text: 'Stack & Languages'),
+            BugChart(),
           ]),
         ),
       ],
