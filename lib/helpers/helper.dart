@@ -6,14 +6,15 @@ Future<List<String>> getLangs(DocumentReference stackDoc) async {
   //gets unique programming languages from stack document
   List<String> result = [];
   await stackDoc.collection("Bug").get().then((value) => {
-        value.docs.forEach((bugDoc) {
-          for (var solution in bugDoc["solution"]) {
+
+      for (var bugDoc in value.docs) {
+        for (var solution in bugDoc["solution"]) {
             if (!result.contains(solution["language"]) &&
                 solution["language"] != "Other") {
-              result.add(solution["language"]);
+              result.add(solution["language"])
             }
           }
-        })
+      }
       });
   return result;
 }
@@ -28,16 +29,12 @@ Future<List<String>> getStacksAndLangs(DocumentReference projectDoc) async {
       .get()
       .then((value) => {
             //adding stacks
-            value.docs.forEach(
-              (stackDoc) async {
-                if (!result.contains(stackDoc["stack_title"])) {
-                  result.add(stackDoc["stack_title"]);
-                }
-                if (!stackIds.contains(stackDoc.id)) {
-                  stackIds.add(stackDoc.id);
-                }
-              },
-            ),
+            for (var stackDoc in value.docs)
+              {
+                if (!result.contains(stackDoc["stack_title"]))
+                  {result.add(stackDoc["stack_title"])},
+                if (!stackIds.contains(stackDoc.id)) {stackIds.add(stackDoc.id)}
+              }
           })
       .catchError((error) => print("Failed to get stacks and langs: $error"));
 
@@ -57,7 +54,10 @@ Future<List<String>> getStacksAndLangs(DocumentReference projectDoc) async {
 Future<int> getBugsInStack(DocumentReference stackDoc) async {
   //gets number of bugs given a stack document
   int stackBugs = 0;
-  await stackDoc.collection("Bug").get().then((value) => stackBugs = value.size);
+  await stackDoc
+      .collection("Bug")
+      .get()
+      .then((value) => stackBugs = value.size);
   return stackBugs;
 }
 
@@ -70,13 +70,13 @@ Future<int> getBugCount(DocumentReference projectDoc) async {
       .get()
       .then((value) => {
             //adding stacks
-            value.docs.forEach(
-              (stackDoc) async {
-                if (!stackIDs.contains(stackDoc.id)) {
-                  stackIDs.add(stackDoc.id);
-                }
-              },
-            ),
+            for (var stackDoc in value.docs)
+              {
+                if (!stackIDs.contains(stackDoc.id))
+                  {
+                    stackIDs.add(stackDoc.id),
+                  }
+              }
           })
       .catchError((error) => print("Failed to get stacks and langs: $error"));
   for (var id in stackIDs) {
