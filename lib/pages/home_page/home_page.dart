@@ -12,7 +12,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../auth/auth.dart';
 import './widgets/home_page_widgets.dart' as wids;
 import '../edit_projects/edit_project.dart';
-import './widgets/bug_chart.dart';
+
+//helpers
+import '../../helpers/helper.dart';
 
 import 'dart:math' as math;
 
@@ -23,57 +25,7 @@ String projectDescription = "";
 String projectMembers = "";
 String projectCreated = "";
 List<String> projectTools = [];
-
-Future<List<String>> getLangs(DocumentReference stackDoc) async {
-  List<String> result = [];
-  await stackDoc.collection("Bug").get().then((value) => {
-        value.docs.forEach((bugDoc) {
-          for (var solution in bugDoc["solution"]) {
-            if (!result.contains(solution["language"]) &&
-                solution["language"] != "Other") {
-              result.add(solution["language"]);
-            }
-          }
-        })
-      });
-  return result;
-}
-
-Future<List<String>> getStacksAndLangs(DocumentReference projectDoc) async {
-  List<String> result = [];
-  List<String> stackIds = [];
-
-  await projectDoc
-      .collection("Stack")
-      .get()
-      .then((value) => {
-            //adding stacks
-            value.docs.forEach(
-              (stackDoc) async {
-                if (!result.contains(stackDoc["stack_title"])) {
-                  result.add(stackDoc["stack_title"]);
-                }
-                if (!stackIds.contains(stackDoc.id)) {
-                  stackIds.add(stackDoc.id);
-                }
-              },
-            ),
-          })
-      .catchError((error) => print("Failed to get stacks and langs: $error"));
-
-  for (var id in stackIds) {
-    DocumentReference stackDoc = projectDoc.collection("Stack").doc(id);
-    List<String> langs = await getLangs(stackDoc);
-    for (var lang in langs) {
-      if (!result.contains(lang) && lang != "Other") {
-        result.add(lang);
-      }
-    }
-  }
-
-  return result;
-}
-
+int projectBugs = 0;
 int _selectedIndex = -1;
 
 /// this widget let's us search through projects
@@ -178,8 +130,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var username = user_obj?.displayName;
-    var screenWidth = MediaQuery.of(context).size.width;
-    var screenHeight = MediaQuery.of(context).size.height;
+    // var screenWidth = MediaQuery.of(context).size.width;
+    // var screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       // Code AppBar
       key: _scaffoldKey,
@@ -284,36 +236,33 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          const wids.AddProjectPopup(),
-                    );
-                  }, 
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(AppStyle.sectionColor),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        Icons.add,
-                        size: 20,
-                        color: AppStyle.backgroundColor,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5),
-                        child: Text(
-                          "Add Project",
-                          style: TextStyle(
-                            color: AppStyle.backgroundColor
-                          )
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            const wids.AddProjectPopup(),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(AppStyle.sectionColor),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          size: 20,
+                          color: AppStyle.backgroundColor,
                         ),
-                      ),
-                    ],
-                  )
-                ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: Text("Add Project",
+                              style:
+                                  TextStyle(color: AppStyle.backgroundColor)),
+                        ),
+                      ],
+                    )),
               ],
             ),
           ),
@@ -358,8 +307,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
                                 side: BorderSide(
-                                    color: AppStyle.borderColor,
-                                    width: 1)),
+                                    color: AppStyle.borderColor, width: 1)),
                             margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.5,
@@ -401,8 +349,10 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
     return Wrap(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 20),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          padding:
+              const EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 20),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // const project_preview_name(text: 'Project Title'),
             // project_preview_desc(text: projectName),
             Align(
@@ -441,8 +391,10 @@ class _ProjectInfoPreviewViewState extends State<ProjectInfoPreviewView> {
                     );
                   }).toList(),
                 )),
-            const project_preview_name(text: 'Stack & Languages'),
-            BugChart(),
+            const project_preview_name(text: '# of bugs'),
+            Visibility(
+                visible: projectBugs > 0,
+                child: project_preview_desc(text: projectBugs.toString())),
           ]),
         ),
       ],
@@ -542,12 +494,15 @@ class _ProjectsViewState extends State<ProjectsView> {
                     highlightColor: const Color.fromARGB(255, 2, 24, 42),
                     onTap: () async => {
                       projectTools = await getStacksAndLangs(project.reference),
+                      projectBugs = await getBugCount(project.reference),
                       setState(() {
                         _selectedIndex = index;
                         projectName = project['project_title'];
                         projectDescription = project['project_description'];
                         projectMembers = project['members'].toString();
-                        projectCreated = DateFormat.yMMMd().add_jm().format(project['creation_date'].toDate());
+                        projectCreated = DateFormat.yMMMd()
+                            .add_jm()
+                            .format(project['creation_date'].toDate());
                         widget.notifyParent();
                       }),
                     },
@@ -575,8 +530,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                   child: Container(
                                       decoration: BoxDecoration(
                                           color: Color(
-                                                  (math.Random().nextDouble() *
-                                                          0xFFFFFF)
+                                                  (math.Random().nextDouble() * 0xFFFFFF)
                                                       .toInt())
                                               .withOpacity(1.0),
                                           borderRadius: const BorderRadius.all(
@@ -587,7 +541,8 @@ class _ProjectsViewState extends State<ProjectsView> {
                                           child: Text(project['project_title'][0],
                                               overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.poppins(
-                                                  fontSize: 25, color: AppStyle.white))))),
+                                                  fontSize: 25,
+                                                  color: AppStyle.white))))),
                             ),
                             // if user adds image, show that instead
                             //child: Image.network('https://cdn0.iconfinder.com/data/icons/artcore/512/folder_system.png')),
@@ -612,7 +567,8 @@ class _ProjectsViewState extends State<ProjectsView> {
                                           "Updated on ${DateFormat.yMMMd().add_jm().format(project['last_updated'].toDate())}",
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.poppins(
-                                              color: const Color.fromARGB(255, 230, 229, 232),
+                                              color: const Color.fromARGB(
+                                                  255, 230, 229, 232),
                                               fontSize: 12,
                                               wordSpacing: 5))),
                                 ],

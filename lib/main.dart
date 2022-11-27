@@ -14,7 +14,7 @@ DateTime today = DateTime(
     DateTime.now().hour,
     DateTime.now().minute,
     DateTime.now().second);
-
+    
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
