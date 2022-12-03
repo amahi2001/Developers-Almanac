@@ -112,9 +112,16 @@ class _RemoveMemberState extends State<RemoveMember> {
     return FutureBuilder(
         future: FirebaseFirestore.instance.collection('Projects').doc(widget.query_doc.id).get(),
         builder: (context, snapshot) {
-          List members = snapshot.data!['members']..sort();
+          if (snapshot.connectionState ==
+              ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+
           if (snapshot.hasData) {
-            var userItems = snapshot.data!;
+            List members = snapshot.data!['members'];
+            members.removeAt(0);
+            members = members..sort();
+            
             return AlertDialog(
               title: const Text('Remove Member'),
               content: Form(
@@ -129,7 +136,7 @@ class _RemoveMemberState extends State<RemoveMember> {
                       hintText: "select an existing user",
                     ),
                   ),
-                  selectedItem: _selected_email ?? members.first,
+                  selectedItem: _selected_email ?? 'Select Member',
                   items: members,
                   onChanged: (value) {
                     setState(() => _selected_email = value);
