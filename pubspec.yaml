@@ -44,6 +44,7 @@ dependencies:
   dropdown_search: ^5.0.3
   google_fonts: ^2.1.0
   fl_chart: ^0.55.2
+  animated_background: ^2.0.0
 
 dev_dependencies:
   flutter_test:
