@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/auth/auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 import '../../../constants/style.dart';
 import '../../../main.dart';
@@ -100,6 +101,7 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
       actions: [
         TextButton(
           onPressed: () {
+            Random random = new Random();
             if (_formKey.currentState!.validate()) {
               CollectionReference projects =
                   FirebaseFirestore.instance.collection('Projects');
@@ -112,7 +114,8 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                       'userID': user_id,
                       'creation_date': today,
                       'last_updated': today,
-                      'members': [user_obj?.email]
+                      'members': [user_obj?.email],
+                      'color_id' : random.nextInt(20),
                     },
                   )
                   .then(((value) =>
