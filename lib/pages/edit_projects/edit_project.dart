@@ -159,7 +159,14 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                     ),
                                     ElevatedButton(
                                       onPressed: () {
-                                        
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              RemoveMember(
+                                            notifyParent: refresh,
+                                            query_doc: widget.project_query_doc,
+                                          ),
+                                        );
                                       }, 
                                       style: ButtonStyle(
                                         backgroundColor: MaterialStateProperty.all(AppStyle.fieldText),
