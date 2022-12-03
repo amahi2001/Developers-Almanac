@@ -110,64 +110,120 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                        width: 450,
+                        width: 400,
                         // height: 500,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Column(
-                            children: [
-                              Text("RECREATE",
-                                  style: GoogleFonts.syneMono(
-                                    color: AppStyle.sectionColor,
-                                    fontSize: 50,
-                                  )),
-                              Text(
-                                "Bugs, \nErrors",
-                                style: GoogleFonts.poppins(
-                                    color: Colors.white, fontSize: 20),
-                              )
-                            ],
-                          ),
-                        )),
+                        child: Container(
+                            padding:
+                                const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.1),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: const Offset(
+                                        0, 3), // changes position of shadow
+                                  )
+                                ]),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Column(
+                                children: [
+                                  Text("RECREATE",
+                                      style: GoogleFonts.syneMono(
+                                        color: AppStyle.sectionColor,
+                                        fontSize: 50,
+                                      )),
+                                  Text(
+                                    "Bugs, \nErrors",
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.white, fontSize: 20),
+                                  )
+                                ],
+                              ),
+                            ))),
+                    const SizedBox(
+                      width: 30,
+                    ),
                     SizedBox(
-                        width: 450,
+                        width: 400,
                         // height: 80,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Column(
-                            children: [
-                              Text("REINFORCE",
-                                  style: GoogleFonts.syneMono(
-                                    color: AppStyle.sectionColor,
-                                    fontSize: 50,
-                                  )),
-                              Text(
-                                "Learning practices [ programming language, framework ]",
-                                style: GoogleFonts.poppins(
-                                    color: Colors.white, fontSize: 20),
-                                textAlign: TextAlign.center,
-                              )
-                            ],
+                        child: Container(
+                          padding:
+                              const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: const Offset(
+                                      0, 3), // changes position of shadow
+                                )
+                              ]),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: [
+                                Text("REINFORCE",
+                                    style: GoogleFonts.syneMono(
+                                      color: AppStyle.sectionColor,
+                                      fontSize: 50,
+                                    )),
+                                Text(
+                                  "Learning practices [ programming language, framework ]",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white, fontSize: 20),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
                           ),
                         )),
+                    const SizedBox(
+                      width: 30,
+                    ),
                     SizedBox(
-                        width: 450,
+                        width: 400,
                         // height: 500,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Column(
-                            children: [
-                              Text("REFINE",
-                                  style: GoogleFonts.syneMono(
-                                    color: AppStyle.sectionColor,
-                                    fontSize: 50,
-                                  )),
-                              Text(
-                                "blah blah blah \n something idk",
-                                style: GoogleFonts.poppins(
-                                    color: Colors.white, fontSize: 20),
-                              )
-                            ],
+                        child: Container(
+                          padding:
+                              const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: const Offset(
+                                      0, 3), // changes position of shadow
+                                )
+                              ]),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: [
+                                Text("REFINE",
+                                    style: GoogleFonts.syneMono(
+                                      color: AppStyle.sectionColor,
+                                      fontSize: 50,
+                                    )),
+                                Text(
+                                  "blah blah blah \n something idk",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white, fontSize: 20),
+                                )
+                              ],
+                            ),
                           ),
                         )),
                   ],
@@ -181,7 +237,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     width: 700,
                     child: Text(
                       "“ A web app that allows developers to log bugs and errors in a framework and/or project specific manner throughout a project’s lifecycle “",
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.montserrat(
                           color: Colors.white, fontSize: 25),
                       textAlign: TextAlign.center,
                     ),
@@ -207,8 +263,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   child: SizedBox(
                       width: 1000,
                       child: Text(
-                        "Traditional methods of logging errors such as commit messages and issue logs on version control services (e.g GitHub, Gitlab, BitBucket, etc) are disorganized \n  - Poor visualization, breakdown, intimidating for beginners and new maintainers",
-                        style: GoogleFonts.poppins(
+                        "Traditional methods of logging errors such as commit messages and issue logs on version control services (e.g GitHub, Gitlab, BitBucket, etc) are disorganized \n  * Poor visualization, breakdown, intimidating for beginners and new maintainers",
+                        style: GoogleFonts.montserrat(
                             color: Colors.white, fontSize: 25),
                         textAlign: TextAlign.center,
                       )),
@@ -252,6 +308,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     const SizedBox(
                       width: 20,
                     ),
+                    // const VerticalDivider(
+                    //   width: 20,
+                    //   thickness: 10,
+                    //   indent: 5,
+                    //   endIndent: 5,
+                    //   color: Colors.orangeAccent,
+                    // ),
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
@@ -337,7 +400,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     width: 1000,
                     child: Text(
                       "To improve the lives of programmers / developers. Through the creation of this application, we hope to see a decrease in the amount of time taken to solve a recurring bug / roadblock or reproduce a roadblock in hopes of increasing productivity (and sanity)",
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.montserrat(
                           color: Colors.white, fontSize: 25),
                       textAlign: TextAlign.center,
                     ),
