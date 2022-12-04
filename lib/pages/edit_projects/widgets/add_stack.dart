@@ -12,10 +12,11 @@ var selectedID = "";
 final _projectInfoController = TextEditingController();
 
 class AddStackPopUp extends StatefulWidget {
+  final Function() notifyParent;
   final project_id;
   final DocumentReference<Object?> project_query_doc;
   const AddStackPopUp(
-      {super.key, required this.project_query_doc, required this.project_id});
+      {super.key, required this.project_query_doc, required this.project_id, required this.notifyParent});
 
   @override
   State<AddStackPopUp> createState() => __AddStackPopUpState();
@@ -158,6 +159,7 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                         foundMatch = false;
                       });
                     }
+                    widget.notifyParent();
                   }),
             ],
           ),
@@ -244,7 +246,8 @@ class _viewStacksInAddState extends State<viewStacksInAdd> {
                               Flexible(
                                   fit: FlexFit.tight,
                                   child: Container(
-                                      color: const Color.fromARGB(172, 255, 255, 255),
+                                      color: const Color.fromARGB(
+                                          172, 255, 255, 255),
                                       width: 500,
                                       height: 60,
                                       child: Card(
@@ -264,7 +267,11 @@ class _viewStacksInAddState extends State<viewStacksInAdd> {
                                                     Text(
                                                       '${project['stack_type']}: ${project['stack_title']}',
                                                       style: const TextStyle(
-                                                          color: Color.fromARGB(255,255,255,255),
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              255,
+                                                              255,
+                                                              255),
                                                           fontSize: 15),
                                                     ),
                                                   ]))

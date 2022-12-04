@@ -129,6 +129,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(_selectedIndex);
+
     var username = user_obj?.displayName;
     // var screenWidth = MediaQuery.of(context).size.width;
     // var screenHeight = MediaQuery.of(context).size.height;
@@ -600,12 +602,18 @@ class _ProjectsViewState extends State<ProjectsView> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                Edit_project_page(
-                                                  project_query_doc:
-                                                      project_doc,
-                                                  project_ID: project.id,
-                                                )));
+                                          builder: (context) =>
+                                            Edit_project_page(
+                                              project_query_doc:
+                                                  project_doc,
+                                              project_ID: project.id,
+                                              notifyParent: widget.notifyParent,
+                                            )
+                                        ),
+                                    );
+                                    setState(() {
+                                      
+                                    });
                                   },
                                 ),
                                 // Delete project button

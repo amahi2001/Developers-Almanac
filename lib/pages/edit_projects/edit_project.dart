@@ -25,6 +25,7 @@ var selectedID = "";
 final _projectInfoController = TextEditingController();
 
 class Edit_project_page extends StatefulWidget {
+  final Function() notifyParent;
   DocumentReference<Object?> project_query_doc;
   String project_ID;
 
@@ -32,6 +33,7 @@ class Edit_project_page extends StatefulWidget {
     super.key,
     required this.project_query_doc,
     required this.project_ID,
+    required this.notifyParent
   });
 
   @override
@@ -116,81 +118,85 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const project_preview_name(text: 'Project Member(s)'),
+                                const project_preview_name(
+                                    text: 'Project Member(s)'),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     ElevatedButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              AddMember(
-                                            notifyParent: refresh,
-                                            query_doc: widget.project_query_doc,
-                                          ),
-                                        );
-                                      }, 
-                                      style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(AppStyle.fieldText),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Icon(
-                                            Icons.person_add,
-                                            size: 20,
-                                            color: AppStyle.backgroundColor,
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 5),
-                                            child: Text(
-                                              "Add Member",
-                                              style: TextStyle(
-                                                color: AppStyle.backgroundColor
-                                              )
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                AddMember(
+                                              notifyParent: refresh,
+                                              query_doc:
+                                                  widget.project_query_doc,
                                             ),
-                                          ),
-                                        ],
-                                      )
-                                    ),
+                                          );
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  AppStyle.fieldText),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Icon(
+                                              Icons.person_add,
+                                              size: 20,
+                                              color: AppStyle.backgroundColor,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 5),
+                                              child: Text("Add Member",
+                                                  style: TextStyle(
+                                                      color: AppStyle
+                                                          .backgroundColor)),
+                                            ),
+                                          ],
+                                        )),
                                     SizedBox(
                                       width: 10.0,
                                     ),
                                     ElevatedButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              RemoveMember(
-                                            notifyParent: refresh,
-                                            query_doc: widget.project_query_doc,
-                                          ),
-                                        );
-                                      }, 
-                                      style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(AppStyle.fieldText),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Icon(
-                                            Icons.person_remove,
-                                            size: 20,
-                                            color: AppStyle.backgroundColor,
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 5),
-                                            child: Text(
-                                              "Remove Member",
-                                              style: TextStyle(
-                                                color: AppStyle.backgroundColor
-                                              )
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                RemoveMember(
+                                              notifyParent: refresh,
+                                              query_doc:
+                                                  widget.project_query_doc,
                                             ),
-                                          ),
-                                        ],
-                                      )
-                                    ),
+                                          );
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  AppStyle.fieldText),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Icon(
+                                              Icons.person_remove,
+                                              size: 20,
+                                              color: AppStyle.backgroundColor,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 5),
+                                              child: Text("Remove Member",
+                                                  style: TextStyle(
+                                                      color: AppStyle
+                                                          .backgroundColor)),
+                                            ),
+                                          ],
+                                        )),
                                   ],
                                 )
                               ],
@@ -201,7 +207,9 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                               height: 20,
                             ),
                             const project_preview_name(text: 'Created'),
-                            project_preview_desc(text: DateFormat.yMMMd().add_jm().format(snapshot.data["creation_date"].toDate())),
+                            project_preview_desc(
+                                text: DateFormat.yMMMd().add_jm().format(
+                                    snapshot.data["creation_date"].toDate())),
                             const SizedBox(
                               height: 20,
                             ),
@@ -221,7 +229,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 65, right: 65, top:20),
+                  padding: EdgeInsets.only(left: 65, right: 65, top: 20),
                   child: Column(
                     children: [
                       Row(
@@ -242,21 +250,26 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                           ElevatedButton(
                               onPressed: () {
                                 showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => Column(
-                                    children: [
-                                      AddStackPopUp(
-                                          project_query_doc: widget.project_query_doc,
-                                          project_id: widget.project_query_doc.id),
-                                    ],
-                                  )
-                                );
-                              }, 
+                                    context: context,
+                                    builder: (BuildContext context) => Column(
+                                          children: [
+                                            AddStackPopUp(
+                                                project_query_doc:
+                                                    widget.project_query_doc,
+                                                project_id:
+                                                    widget.project_query_doc.id,
+                                                notifyParent:
+                                                    widget.notifyParent),
+                                          ],
+                                        ));
+                              },
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(AppStyle.sectionColor),
+                                backgroundColor: MaterialStateProperty.all(
+                                    AppStyle.sectionColor),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Icon(
                                     Icons.add,
@@ -265,16 +278,12 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(left: 5),
-                                    child: Text(
-                                      "Add Stack",
-                                      style: TextStyle(
-                                        color: AppStyle.backgroundColor
-                                      )
-                                    ),
+                                    child: Text("Add Stack",
+                                        style: TextStyle(
+                                            color: AppStyle.backgroundColor)),
                                   ),
                                 ],
-                              )
-                            ),
+                              )),
                         ],
                       ),
                       Row(
@@ -514,22 +523,26 @@ class _ViewStacksState extends State<ViewStacks> {
                                     borderRadius: BorderRadius.circular(5),
                                     side: index == _selectedIndex
                                         ? const BorderSide(
-                                            color: Color.fromARGB(255, 221, 226, 255),
+                                            color: Color.fromARGB(
+                                                255, 221, 226, 255),
                                             width: 2)
                                         : BorderSide(
                                             color: AppStyle.borderColor,
                                             width: 1)),
                                 color: index == _selectedIndex
-                                  ? const Color.fromARGB(53, 27, 27, 27)
-                                  : AppStyle.cardColor,
+                                    ? const Color.fromARGB(53, 27, 27, 27)
+                                    : AppStyle.cardColor,
                                 child: Padding(
                                     padding: const EdgeInsets.all(5),
                                     child: Row(children: [
                                       Expanded(
-                                        child: Padding(padding: EdgeInsets.all(10), child:Text(
+                                          child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: Text(
                                           '${stack['stack_type']}: ${stack['stack_title']}',
                                           style: TextStyle(
-                                              color: AppStyle.white, fontSize: 15),
+                                              color: AppStyle.white,
+                                              fontSize: 15),
                                         ),
                                       )),
                                       Expanded(
@@ -561,7 +574,7 @@ class _ViewStacksState extends State<ViewStacks> {
                                                       ));
                                             },
                                             color: const Color.fromARGB(
-                                                    255, 255, 255, 255),
+                                                255, 255, 255, 255),
                                           ),
                                           IconButton(
                                             icon: const Icon(Icons.delete),
