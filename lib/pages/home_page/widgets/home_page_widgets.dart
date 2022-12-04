@@ -156,7 +156,11 @@ class DeleteProjectPopup extends StatefulWidget {
 class _DeleteProjectPopupState extends State<DeleteProjectPopup> {
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return Center(
+      child: SizedBox(
+      width: MediaQuery.of(context).size.width * 0.5,
+      height: MediaQuery.of(context).size.height,
+      child: AlertDialog(
       title: const Text('Delete Project'),
       content: const Text('Are you sure you want to delete this project?'),
       actions: [
@@ -177,7 +181,7 @@ class _DeleteProjectPopupState extends State<DeleteProjectPopup> {
           child: const Text('Cancel'),
         ),
       ],
-    );
+    )));
   }
 }
 

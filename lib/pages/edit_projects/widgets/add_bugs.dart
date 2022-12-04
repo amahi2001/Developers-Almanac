@@ -91,7 +91,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
       content: Form(
           key: _addBugKey,
           child: SizedBox(
-            width: 300,
+            width: MediaQuery.of(context).size.width * 0.5,
             height: formHeight,
             child: ListView(
               children: [
