@@ -27,6 +27,7 @@ String projectCreated = "";
 List<String> projectTools = [];
 int projectBugs = 0;
 int _selectedIndex = -1;
+late DocumentReference<Object?> _selectedDoc;
 
 /// this widget let's us search through projects
 class _searchTextField extends StatefulWidget {
@@ -129,7 +130,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("refreshed Home page");
     print(_selectedIndex);
+    print(projectTools);
 
     var username = user_obj?.displayName;
     // var screenWidth = MediaQuery.of(context).size.width;
@@ -495,6 +498,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                     splashColor: const Color.fromARGB(255, 59, 173, 255),
                     highlightColor: const Color.fromARGB(255, 2, 24, 42),
                     onTap: () async => {
+                      _selectedDoc = project.reference,
                       projectTools = await getStacksAndLangs(project.reference),
                       projectBugs = await getBugCount(project.reference),
                       setState(() {
@@ -600,19 +604,18 @@ class _ProjectsViewState extends State<ProjectsView> {
                                         projects.doc(project.id);
                                     //go to edit project page
                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
+                                      context,
+                                      MaterialPageRoute(
                                           builder: (context) =>
-                                            Edit_project_page(
-                                              project_query_doc:
-                                                  project_doc,
-                                              project_ID: project.id,
-                                              notifyParent: widget.notifyParent,
-                                            )
-                                        ),
+                                              Edit_project_page(
+                                                project_query_doc: project_doc,
+                                                project_ID: project.id,
+                                                notifyParent:
+                                                    widget.notifyParent,
+                                              )),
                                     );
                                     setState(() {
-                                      
+                                      getStacksAndLangs(_selectedDoc);
                                     });
                                   },
                                 ),
@@ -628,7 +631,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                       context: context,
                                       builder: (BuildContext context) =>
                                           wids.DeleteProjectPopup(
-                                              projectID: project.id),
+                                              projectID: project.id,),
                                     );
                                   },
                                 ),

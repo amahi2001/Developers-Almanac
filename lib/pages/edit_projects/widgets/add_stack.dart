@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
+import '../../home_page/home_page.dart';
 import '../edit_project.dart' as global;
 //adding and viewing stacks
 
@@ -16,7 +17,10 @@ class AddStackPopUp extends StatefulWidget {
   final project_id;
   final DocumentReference<Object?> project_query_doc;
   const AddStackPopUp(
-      {super.key, required this.project_query_doc, required this.project_id, required this.notifyParent});
+      {super.key,
+      required this.project_query_doc,
+      required this.project_id,
+      required this.notifyParent});
 
   @override
   State<AddStackPopUp> createState() => __AddStackPopUpState();
@@ -154,12 +158,13 @@ class __AddStackPopUpState extends State<AddStackPopUp> {
                             'stack_type': _selectedStackType,
                             'stack_title': _projectInfoController.text,
                           });
+                          projectTools.add(_projectInfoController.text);
+                          widget.notifyParent();
                           print("Added to database");
                         }
                         foundMatch = false;
                       });
                     }
-                    widget.notifyParent();
                   }),
             ],
           ),
@@ -287,11 +292,17 @@ class _viewStacksInAddState extends State<viewStacksInAdd> {
 
 /// This widget lets the user delete a stack given a stack ID
 class DeleteStackPopup extends StatefulWidget {
+  final Function() notifyParent;
   final id;
   final DocumentReference<Object?> query_doc;
+  final stackName;
 
   const DeleteStackPopup(
-      {super.key, required this.query_doc, required this.id});
+      {super.key,
+      required this.query_doc,
+      required this.id,
+      required this.notifyParent,
+      required this.stackName});
 
   @override
   State<DeleteStackPopup> createState() => _DeleteStackPopupState();
@@ -308,6 +319,8 @@ class _DeleteStackPopupState extends State<DeleteStackPopup> {
           onPressed: () {
             print(widget.id);
             widget.query_doc.collection('Stack').doc(widget.id).delete();
+            projectTools.remove(widget.stackName);
+            widget.notifyParent();
             Navigator.pop(context);
           },
           child: const Text('Delete'),

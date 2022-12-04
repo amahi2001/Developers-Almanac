@@ -29,12 +29,11 @@ class Edit_project_page extends StatefulWidget {
   DocumentReference<Object?> project_query_doc;
   String project_ID;
 
-  Edit_project_page({
-    super.key,
-    required this.project_query_doc,
-    required this.project_ID,
-    required this.notifyParent
-  });
+  Edit_project_page(
+      {super.key,
+      required this.project_query_doc,
+      required this.project_ID,
+      required this.notifyParent});
 
   @override
   State<Edit_project_page> createState() => _Edit_project_pageState();
@@ -297,6 +296,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                   project_query_doc: widget.project_query_doc,
                                   id: widget.project_query_doc.id,
                                   callback: refresh,
+                                  notifyParent: widget.notifyParent,
                                 )),
                           ),
                           Expanded(
@@ -408,6 +408,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
 
 class ViewStacks extends StatefulWidget {
   final Function() callback;
+  final Function() notifyParent;
   final id;
   final DocumentReference<Object?> project_query_doc;
 
@@ -415,7 +416,8 @@ class ViewStacks extends StatefulWidget {
       {super.key,
       required this.project_query_doc,
       required this.id,
-      required this.callback});
+      required this.callback,
+      required this.notifyParent});
 
   @override
   State<ViewStacks> createState() => _ViewStacksState();
@@ -586,7 +588,9 @@ class _ViewStacksState extends State<ViewStacks> {
                                                       DeleteStackPopup(
                                                           query_doc: widget
                                                               .project_query_doc,
-                                                          id: stack.id));
+                                                          id: stack.id,
+                                                          notifyParent: widget.notifyParent,
+                                                          stackName: stack['stack_title']));
                                             },
                                             color: AppStyle.white,
                                           ),
