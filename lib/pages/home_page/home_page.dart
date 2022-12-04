@@ -49,7 +49,8 @@ class __searchTextFieldState extends State<_searchTextField> {
         searchT = _projectSearchBar.text;
         widget.notifyParent();
       });
-    });
+    }
+    );
   }
 
   @override
@@ -131,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     print("refreshed Home page");
+    print(projectBugs);
     print(_selectedIndex);
     print(projectTools);
 
@@ -615,7 +617,6 @@ class _ProjectsViewState extends State<ProjectsView> {
                                               )),
                                     );
                                     setState(() {
-                                      getStacksAndLangs(_selectedDoc);
                                     });
                                   },
                                 ),
@@ -631,7 +632,8 @@ class _ProjectsViewState extends State<ProjectsView> {
                                       context: context,
                                       builder: (BuildContext context) =>
                                           wids.DeleteProjectPopup(
-                                              projectID: project.id,),
+                                        projectID: project.id,
+                                      ),
                                     );
                                   },
                                 ),

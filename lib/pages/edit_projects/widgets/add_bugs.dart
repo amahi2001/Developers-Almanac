@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devs_almanac/pages/home_page/home_page.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ import "../../../auth/auth.dart";
 import '../../../constants/langs.dart';
 
 class AddBugButton extends StatefulWidget {
+  final Function() notifyParent;
   final bool isSelected;
   final DocumentReference<Object?> project_query_doc;
   final String stack_id;
@@ -17,7 +19,8 @@ class AddBugButton extends StatefulWidget {
       {super.key,
       required this.isSelected,
       required this.project_query_doc,
-      required this.stack_id});
+      required this.stack_id,
+      required this.notifyParent});
 
   @override
   State<AddBugButton> createState() => _AddBugButtonState();
@@ -36,17 +39,22 @@ class _AddBugButtonState extends State<AddBugButton> {
             context: context,
             builder: (BuildContext context) => AddBugPopUp(
                 project_query_doc: widget.project_query_doc,
-                stack_id: widget.stack_id));
+                stack_id: widget.stack_id,
+                notifyParent: widget.notifyParent));
       },
     );
   }
 }
 
 class AddBugPopUp extends StatefulWidget {
+  final Function() notifyParent;
   final DocumentReference<Object?> project_query_doc;
   final String stack_id;
   const AddBugPopUp(
-      {super.key, required this.project_query_doc, required this.stack_id});
+      {super.key,
+      required this.project_query_doc,
+      required this.stack_id,
+      required this.notifyParent});
 
   @override
   State<AddBugPopUp> createState() => _AddBugPopUpState();
@@ -237,41 +245,44 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
           },
         ),
         TextButton(
-          child: const Text('Add Bug'),
-          onPressed: () {
-            if (_addBugKey.currentState!.validate()) {
-              final Map<String, String> solutionMap = {
-                "solution": _bugSolutionsController.text,
-                "solution_name": _solutionNameController.text,
-                "language": _bugLanguageController,
-                "time": today.toString(),
-              };
+            child: const Text('Add Bug'),
+            onPressed: () {
+              if (_addBugKey.currentState!.validate()) {
+                final Map<String, String> solutionMap = {
+                  "solution": _bugSolutionsController.text,
+                  "solution_name": _solutionNameController.text,
+                  "language": _bugLanguageController,
+                  "time": today.toString(),
+                };
 
-              List addArray;
-              _bugSolutionsController.text.isEmpty
-                  ? addArray = []
-                  : addArray = [solutionMap];
-              // print(solutionMap);
+                List addArray;
+                _bugSolutionsController.text.isEmpty
+                    ? addArray = []
+                    : addArray = [solutionMap];
+                // print(solutionMap);
 
-              widget.project_query_doc
-                  .collection("Stack")
-                  .doc(widget.stack_id)
-                  .collection("Bug")
-                  .add({
-                'bug_name': _bugNameController.text,
-                'bug_description': _bugDescriptionController.text,
-                'error_output': _bugErrorOutputController.text,
-                'solution': FieldValue.arrayUnion(addArray),
-                'is_solved': _bugSolved,
-                'created_at': today,
-                'created_by': user_obj!.email,
-              }).then((value) {
-                print("Bug Added");
-                Navigator.pop(context);
-              }).catchError((error) => print("Failed to add bug: $error"));
-            }
-          },
-        ),
+                widget.project_query_doc
+                    .collection("Stack")
+                    .doc(widget.stack_id)
+                    .collection("Bug")
+                    .add({
+                  'bug_name': _bugNameController.text,
+                  'bug_description': _bugDescriptionController.text,
+                  'error_output': _bugErrorOutputController.text,
+                  'solution': FieldValue.arrayUnion(addArray),
+                  'is_solved': _bugSolved,
+                  'created_at': today,
+                  'created_by': user_obj!.email,
+                }).then((value) {
+                  print("Bug Added");
+                  setState(() {
+                    projectBugs += 1;
+                  });
+                  widget.notifyParent();
+                  Navigator.pop(context);
+                }).catchError((error) => print("Failed to add bug: $error"));
+              }
+            }),
       ],
     );
   }

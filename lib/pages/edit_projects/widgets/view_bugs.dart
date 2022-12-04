@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/constants/style.dart';
+import 'package:devs_almanac/helpers/helper.dart';
+import 'package:devs_almanac/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,11 +10,15 @@ import '../../edit_bugs/edit_bug_page.dart';
 import '../edit_project.dart';
 
 class ViewBugOverlay extends StatefulWidget {
+  final Function() notifyParent;
   final String stackID;
   final CollectionReference stackCollection;
 
   const ViewBugOverlay(
-      {super.key, required this.stackID, required this.stackCollection});
+      {super.key,
+      required this.stackID,
+      required this.stackCollection,
+      required this.notifyParent});
 
   @override
   State<ViewBugOverlay> createState() => _ViewBugOverlayState();
@@ -65,8 +71,7 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                           side: BorderSide(
-                              color: AppStyle.borderColor,
-                              width: 1)),
+                              color: AppStyle.borderColor, width: 1)),
                       margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -94,13 +99,21 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                     // indent: 10,
                                     // endIndent: 10,
                                   ),
-                                  const Bug_Description_field_text(text: "Description:"),
-                                  Bug_Description_Text(text: bug['bug_description']),
-                                  const Bug_Description_field_text(text: "Created on:"),
-                                  Bug_Description_Text(text: DateFormat.yMMMd().add_jm().format(bug['created_at'].toDate())),
-                                  const Bug_Description_field_text(text: "Created By:"),
+                                  const Bug_Description_field_text(
+                                      text: "Description:"),
+                                  Bug_Description_Text(
+                                      text: bug['bug_description']),
+                                  const Bug_Description_field_text(
+                                      text: "Created on:"),
+                                  Bug_Description_Text(
+                                      text: DateFormat.yMMMd()
+                                          .add_jm()
+                                          .format(bug['created_at'].toDate())),
+                                  const Bug_Description_field_text(
+                                      text: "Created By:"),
                                   Bug_Description_Text(text: bug['created_by']),
-                                  const Bug_Description_field_text(text: "Was Solved:"),
+                                  const Bug_Description_field_text(
+                                      text: "Was Solved:"),
                                   Bug_Description_Text(
                                       text: bug['is_solved'] ? "Yes" : "No"),
                                 ],
@@ -137,7 +150,10 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) =>
-                                            DeleteBugPopup(bugDoc: bugDoc));
+                                            DeleteBugPopup(
+                                                bugDoc: bugDoc,
+                                                notifyParent:
+                                                    widget.notifyParent));
                                   },
                                 ),
                               ],
@@ -182,10 +198,17 @@ class Bug_Description_Text extends StatelessWidget {
   }
 }
 
-class DeleteBugPopup extends StatelessWidget {
+class DeleteBugPopup extends StatefulWidget {
+  final Function() notifyParent;
   final DocumentReference bugDoc;
-  const DeleteBugPopup({super.key, required this.bugDoc});
+  const DeleteBugPopup(
+      {super.key, required this.bugDoc, required this.notifyParent});
 
+  @override
+  State<DeleteBugPopup> createState() => _DeleteBugPopupState();
+}
+
+class _DeleteBugPopupState extends State<DeleteBugPopup> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -200,9 +223,13 @@ class DeleteBugPopup extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            bugDoc.delete().then((value) {
-              print('deleted bug successfully: ${bugDoc.id}');
+            widget.bugDoc.delete().then((value) {
+              print('deleted bug successfully: ${widget.bugDoc.id}');
             });
+            setState(() {
+              projectBugs -= 1;
+            });
+            widget.notifyParent();
             Navigator.of(context).pop();
           },
           child: const Text('Delete'),

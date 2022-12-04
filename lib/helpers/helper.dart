@@ -51,10 +51,10 @@ Future<List<String>> getStacksAndLangs(DocumentReference projectDoc) async {
   return result;
 }
 
-Future<int> getBugsInStack(DocumentReference stackDoc) async {
+int getBugsInStack(DocumentReference stackDoc){
   //gets number of bugs given a stack document
   int stackBugs = 0;
-  await stackDoc
+  stackDoc
       .collection("Bug")
       .get()
       .then((value) => stackBugs = value.size);

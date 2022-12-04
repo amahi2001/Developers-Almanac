@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
+import '../../../helpers/helper.dart';
 import '../../home_page/home_page.dart';
 import '../edit_project.dart' as global;
 //adding and viewing stacks
@@ -309,6 +310,8 @@ class DeleteStackPopup extends StatefulWidget {
 }
 
 class _DeleteStackPopupState extends State<DeleteStackPopup> {
+  late DocumentReference<Object?> stackDoc;
+  int stackNum = 0;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -320,6 +323,11 @@ class _DeleteStackPopupState extends State<DeleteStackPopup> {
             print(widget.id);
             widget.query_doc.collection('Stack').doc(widget.id).delete();
             projectTools.remove(widget.stackName);
+            stackDoc = widget.query_doc.collection('Stack').doc(widget.id);
+
+            //stackNum = getBugsInStack(stackDoc) as int;
+            //print(stackNum);
+            projectBugs -= stackNum;
             widget.notifyParent();
             Navigator.pop(context);
           },
