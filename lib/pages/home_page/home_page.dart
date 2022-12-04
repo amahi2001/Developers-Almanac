@@ -132,7 +132,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     print("refreshed Home page");
-    print(projectBugs);
     print(_selectedIndex);
     print(projectTools);
 

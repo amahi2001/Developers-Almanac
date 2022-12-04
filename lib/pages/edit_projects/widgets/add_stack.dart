@@ -312,6 +312,7 @@ class DeleteStackPopup extends StatefulWidget {
 class _DeleteStackPopupState extends State<DeleteStackPopup> {
   late DocumentReference<Object?> stackDoc;
   int stackNum = 0;
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -319,14 +320,12 @@ class _DeleteStackPopupState extends State<DeleteStackPopup> {
       content: const Text('Are you sure you want to delete this stack?'),
       actions: [
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             print(widget.id);
             widget.query_doc.collection('Stack').doc(widget.id).delete();
             projectTools.remove(widget.stackName);
             stackDoc = widget.query_doc.collection('Stack').doc(widget.id);
-
-            //stackNum = getBugsInStack(stackDoc) as int;
-            //print(stackNum);
+            stackNum = await getBugsInStack(stackDoc);
             projectBugs -= stackNum;
             widget.notifyParent();
             Navigator.pop(context);
