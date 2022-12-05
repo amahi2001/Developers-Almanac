@@ -133,7 +133,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 50, right: 50),
+                  padding: const EdgeInsets.only(left: 50, right: 50),
                   child: Divider(
                     height: 30,
                     thickness: 0,
@@ -192,7 +192,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                             color: AppStyle.backgroundColor,
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.only(left: 5),
+                                            padding: const EdgeInsets.only(left: 5),
                                             child: Text("Add Solution",
                                                 style: TextStyle(
                                                     color: AppStyle
@@ -279,7 +279,7 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                                         bottom: 6,
                                                                         top: 6),
                                                                 child: Card(
-                                                                  color: Color(0xff002b36),
+                                                                  color: const Color(0xff002b36),
                                                                   shape: RoundedRectangleBorder(
                                                                       borderRadius:
                                                                           BorderRadius.circular(
