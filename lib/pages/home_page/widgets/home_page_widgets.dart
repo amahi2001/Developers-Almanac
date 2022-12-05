@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/auth/auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 import '../../../constants/style.dart';
 import '../../../main.dart';
@@ -30,7 +29,10 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
       title: const Text('Add Project'),
       content: Form(
         key: _formKey,
-        child: Column(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
@@ -45,10 +47,19 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                 return null;
               },
             ),
+            const SizedBox(height: 10),
             TextFormField(
+              maxLines: 5,
               controller: _projectDescriptionController,
               decoration: const InputDecoration(
                 hintText: 'Project Description',
+                enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Colors.grey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2, color: Colors.blueAccent),
+                      ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -57,6 +68,7 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                 return null;
               },
             ),
+            const SizedBox(height: 30),
             Card(
               child: Row(
                 children: [
@@ -97,11 +109,10 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
             )
           ],
         ),
-      ),
+      )),
       actions: [
         TextButton(
           onPressed: () {
-            Random random = new Random();
             if (_formKey.currentState!.validate()) {
               CollectionReference projects =
                   FirebaseFirestore.instance.collection('Projects');
@@ -114,8 +125,7 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
                       'userID': user_id,
                       'creation_date': today,
                       'last_updated': today,
-                      'members': [user_obj?.email],
-                      'color_id' : random.nextInt(20),
+                      'members': [user_obj?.email]
                     },
                   )
                   .then(((value) =>
@@ -156,11 +166,7 @@ class DeleteProjectPopup extends StatefulWidget {
 class _DeleteProjectPopupState extends State<DeleteProjectPopup> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-      width: MediaQuery.of(context).size.width * 0.5,
-      height: MediaQuery.of(context).size.height,
-      child: AlertDialog(
+    return AlertDialog(
       title: const Text('Delete Project'),
       content: const Text('Are you sure you want to delete this project?'),
       actions: [
@@ -181,7 +187,7 @@ class _DeleteProjectPopupState extends State<DeleteProjectPopup> {
           child: const Text('Cancel'),
         ),
       ],
-    )));
+    );
   }
 }
 

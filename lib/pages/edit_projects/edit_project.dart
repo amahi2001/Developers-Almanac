@@ -123,6 +123,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
+
                                     ElevatedButton(
                                         onPressed: () {
                                           showDialog(
