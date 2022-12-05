@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     SizedBox(
                         // width: 400, height: 170,
                         width: MediaQuery.of(context).size.width * 0.25,
-                        height: MediaQuery.of(context).size.height * 0.13,
+                        height: MediaQuery.of(context).size.height * 0.25,
                         child: Container(
                             padding:
                                 const EdgeInsets.only(top: 20.0, bottom: 20.0),
@@ -156,7 +156,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     SizedBox(
                         // width: 400, height: 80,
                         width: MediaQuery.of(context).size.width * 0.25,
-                        height: MediaQuery.of(context).size.height * 0.13,
+                        height: MediaQuery.of(context).size.height * 0.25,
                         child: Container(
                           padding:
                               const EdgeInsets.only(top: 20.0, bottom: 20.0),
@@ -200,7 +200,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     SizedBox(
                         // width: 400, height: 500,
                         width: MediaQuery.of(context).size.width * 0.25,
-                        height: MediaQuery.of(context).size.height * 0.13,
+                        height: MediaQuery.of(context).size.height * 0.25,
                         child: Container(
                           padding:
                               const EdgeInsets.only(top: 20.0, bottom: 20.0),
