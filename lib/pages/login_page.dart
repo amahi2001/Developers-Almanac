@@ -1,6 +1,8 @@
 //login page
 // ignore_for_file: avoid_print
 
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -110,8 +112,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                        width: 400,
-                        // height: 500,
+                        // width: 400, height: 170,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: MediaQuery.of(context).size.height * 0.13,
                         child: Container(
                             padding:
                                 const EdgeInsets.only(top: 20.0, bottom: 20.0),
@@ -133,12 +136,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                               child: Column(
                                 children: [
                                   Text("RECREATE",
+                                      overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.syneMono(
                                         color: AppStyle.sectionColor,
                                         fontSize: 50,
                                       )),
                                   Text(
                                     "Bugs, \nErrors",
+                                    overflow: TextOverflow.ellipsis,
                                     style: GoogleFonts.poppins(
                                         color: Colors.white, fontSize: 20),
                                   )
@@ -149,8 +154,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       width: 30,
                     ),
                     SizedBox(
-                        width: 400,
-                        // height: 80,
+                        // width: 400, height: 80,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: MediaQuery.of(context).size.height * 0.13,
                         child: Container(
                           padding:
                               const EdgeInsets.only(top: 20.0, bottom: 20.0),
@@ -172,12 +178,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             child: Column(
                               children: [
                                 Text("REINFORCE",
+                                    overflow: TextOverflow.ellipsis,
                                     style: GoogleFonts.syneMono(
                                       color: AppStyle.sectionColor,
                                       fontSize: 50,
                                     )),
                                 Text(
-                                  "Learning practices [ programming language, framework ]",
+                                  "Learning practices \n [ programming language, framework ]",
+                                  overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.poppins(
                                       color: Colors.white, fontSize: 20),
                                   textAlign: TextAlign.center,
@@ -190,8 +198,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       width: 30,
                     ),
                     SizedBox(
-                        width: 400,
-                        // height: 500,
+                        // width: 400, height: 500,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: MediaQuery.of(context).size.height * 0.13,
                         child: Container(
                           padding:
                               const EdgeInsets.only(top: 20.0, bottom: 20.0),
@@ -213,12 +222,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             child: Column(
                               children: [
                                 Text("REFINE",
+                                    overflow: TextOverflow.ellipsis,
                                     style: GoogleFonts.syneMono(
                                       color: AppStyle.sectionColor,
                                       fontSize: 50,
                                     )),
                                 Text(
-                                  "blah blah blah \n something idk",
+                                  "Your code \n Your craft",
+                                  overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.poppins(
                                       color: Colors.white, fontSize: 20),
                                 )
@@ -291,14 +302,16 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(
-                      width: 20,
+                      width: 10,
                     ),
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
-                        width: 250,
+                        // width: 250,
+                        width: MediaQuery.of(context).size.width * 0.15,
                         child: Text(
-                          "An Individual trying to learn a new stack/ framework",
+                          "An Individual trying \n to learn a new stack/ \n framework",
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.poppins(
                               color: AppStyle.sectionColor, fontSize: 20),
                           textAlign: TextAlign.center,
@@ -318,9 +331,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
-                        width: 250,
+                        // width: 250,
+                        width: MediaQuery.of(context).size.width * 0.15,
                         child: Text(
-                          "Dev teams who are looking to meticulously log bugs",
+                          "Dev teams who are \n looking to \n meticulously log \n bugs",
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.poppins(
                               color: AppStyle.sectionColor, fontSize: 20),
                           textAlign: TextAlign.center,
@@ -335,9 +350,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
-                        width: 250,
+                        // width: 250,
+                        width: MediaQuery.of(context).size.width * 0.15,
                         child: Text(
-                          "Developers who are trying to minimize debug time",
+                          "Developers who are \n trying to minimize \n debug time",
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.poppins(
                               color: AppStyle.sectionColor, fontSize: 20),
                           textAlign: TextAlign.center,
@@ -350,9 +367,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
-                        width: 250,
+                        // width: 250,
+                        width: MediaQuery.of(context).size.width * 0.15,
                         child: Text(
-                          "Educator’s who implement project-based learning",
+                          "Educator’s who \n implement project- \n based learning",
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.poppins(
                               color: AppStyle.sectionColor, fontSize: 20),
                           textAlign: TextAlign.center,
@@ -365,14 +384,19 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
-                        width: 250,
+                        // width: 250,
+                        width: MediaQuery.of(context).size.width * 0.15,
                         child: Text(
-                          "Anyone else who wants to learn from their mistakes",
+                          "Anyone else who \n wants to learn \n from their \n mistakes",
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.poppins(
                               color: AppStyle.sectionColor, fontSize: 20),
                           textAlign: TextAlign.center,
                         ),
                       ),
+                    ),
+                    const SizedBox(
+                      width: 10,
                     )
                   ],
                 ),

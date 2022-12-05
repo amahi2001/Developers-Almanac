@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'auth/firebase_options.dart';
 
-
 //auth
 import 'pages/login_page.dart';
 
@@ -14,7 +13,7 @@ DateTime today = DateTime(
     DateTime.now().hour,
     DateTime.now().minute,
     DateTime.now().second);
-    
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -30,8 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Developer's Almanac",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          scaffoldBackgroundColor: AppStyle.backgroundColor),
+      theme: ThemeData(scaffoldBackgroundColor: AppStyle.backgroundColor),
       home: const LoginPage(),
     );
   }
