@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 
 //syntax highlight
 import 'package:flutter_highlight/flutter_highlight.dart';
-import 'package:flutter_highlight/themes/github.dart';
+import 'package:flutter_highlight/themes/solarized-dark.dart';
 
 import '../../auth/auth.dart';
-import '../edit_projects/edit_project.dart';
 import 'widgets/add_solution.dart';
 import 'widgets/edit_solution.dart';
 import '../edit_projects/widgets/view_bugs.dart';
@@ -93,17 +92,21 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                               height: 20,
                             ),
                             const bug_preview_name(text: 'Bug Description'),
-                            bug_preview_desc(text: snapshot.data['bug_description']),
+                            bug_preview_desc(
+                                text: snapshot.data['bug_description']),
                             const SizedBox(
                               height: 20,
                             ),
                             const bug_preview_name(text: 'Error Output'),
-                            bug_preview_desc(text: snapshot.data["error_output"]),
+                            bug_preview_desc(
+                                text: snapshot.data["error_output"]),
                             const SizedBox(
                               height: 20,
                             ),
                             const bug_preview_name(text: 'Bug Created'),
-                            bug_preview_desc(text: DateFormat.yMMMd().add_jm().format(snapshot.data["created_at"].toDate())),
+                            bug_preview_desc(
+                                text: DateFormat.yMMMd().add_jm().format(
+                                    snapshot.data["created_at"].toDate())),
                             const SizedBox(
                               height: 20,
                             ),
@@ -164,39 +167,39 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                     width: 20,
                                   ),
                                   ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                          AddSolution(
-                                            query_doc: widget.bug_query_doc,
-                                            notifyParent: refresh,
-                                          )
-                                      );
-                                    }, 
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all(AppStyle.sectionColor),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Icon(
-                                          Icons.add,
-                                          size: 20,
-                                          color: AppStyle.backgroundColor,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 5),
-                                          child: Text(
-                                            "Add Solution",
-                                            style: TextStyle(
-                                              color: AppStyle.backgroundColor
-                                            )
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                AddSolution(
+                                                  query_doc:
+                                                      widget.bug_query_doc,
+                                                  notifyParent: refresh,
+                                                ));
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                AppStyle.sectionColor),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(
+                                            Icons.add,
+                                            size: 20,
+                                            color: AppStyle.backgroundColor,
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 5),
+                                            child: Text("Add Solution",
+                                                style: TextStyle(
+                                                    color: AppStyle
+                                                        .backgroundColor)),
+                                          ),
+                                        ],
+                                      )),
                                 ],
                               ),
                               const SizedBox(
@@ -244,7 +247,13 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                               'language']),
                                                       const Bug_Description_field_text(
                                                           text: "Created On:"),
-                                                      bug_preview_desc(text: DateFormat.yMMMd().add_jm().format(DateTime.parse(bugInfo['time']))),
+                                                      bug_preview_desc(
+                                                          text: DateFormat
+                                                                  .yMMMd()
+                                                              .add_jm()
+                                                              .format(DateTime
+                                                                  .parse(bugInfo[
+                                                                      'time']))),
                                                       const Bug_Description_field_text(
                                                           text:
                                                               "Solution Name"),
@@ -259,29 +268,51 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                                 .size
                                                                 .width *
                                                             0.5,
-                                                        child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 15,
-                                                                    right: 15,
-                                                                    bottom: 6,
-                                                                    top: 6),
-                                                            child:
-                                                                HighlightView(
-                                                              bugInfo[
-                                                                  'solution'],
-                                                              language: bugInfo[
-                                                                  'language'],
-                                                              theme:
-                                                                  githubTheme,
-                                                              textStyle:
-                                                                  const TextStyle(
-                                                                fontFamily:
-                                                                    'Ubuntu',
-                                                                fontSize: 16,
-                                                              ),
-                                                            )),
+                                                        child: Wrap(
+                                                          children: [
+                                                            Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left: 15,
+                                                                        right: 15,
+                                                                        bottom: 6,
+                                                                        top: 6),
+                                                                child: Card(
+                                                                  color: Color(0xff002b36),
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5),
+                                                                      side: BorderSide(
+                                                                          color: AppStyle
+                                                                              .borderColor,
+                                                                          width:
+                                                                              1)),
+                                                                  child: Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .all(
+                                                                          10.0),
+                                                                      
+                                                                    child: HighlightView(
+                                                                        bugInfo[
+                                                                      'solution'],
+                                                                        language: bugInfo[
+                                                                      'language'],
+                                                                        theme: solarizedDarkTheme
+                                                                      ,
+                                                                        textStyle:
+                                                                      const TextStyle(
+                                                                      
+                                                                    fontFamily:
+                                                                        'Ubuntu',
+                                                                    fontSize: 16,
+                                                                        ),
+                                                                      ),
+                                                                  ),
+                                                                )),
+                                                          ],
+                                                        ),
                                                       )
                                                     ],
                                                   ),
@@ -293,9 +324,11 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                       iconPadding(
                                                         child: IconButton(
                                                             icon: const Icon(
-                                                              Icons.edit_note_outlined,
+                                                              Icons
+                                                                  .edit_note_outlined,
                                                               size: 30,
-                                                              color:Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                             ),
                                                             onPressed: () {
                                                               showDialog(
@@ -321,7 +354,8 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                                                         //delete solution
                                                         child: IconButton(
                                                             icon: const Icon(
-                                                              Icons.delete_sweep_rounded,
+                                                              Icons
+                                                                  .delete_sweep_rounded,
                                                               size: 30,
                                                               color: Colors.red,
                                                             ),
