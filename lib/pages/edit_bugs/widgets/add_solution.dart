@@ -44,9 +44,10 @@ class _AddSolutionState extends State<AddSolution> {
       content: Form(
           key: _addSolutionKey,
           child: Container(
-            width: 300,
-            height: 225,
+            width: double.maxFinite,
+            height: double.maxFinite,
             child: ListView(
+              
               children: [
                 Padding(
                   padding: const EdgeInsets.all(10),

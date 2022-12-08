@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devs_almanac/pages/edit_projects/widgets/delete_stack.dart';
 import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
 import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,14 @@ class _Edit_project_pageState extends State<Edit_project_page> {
     print(selectedID);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+            widget.notifyParent();
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+          //replace with our own icon data.
+        ),
         title: Text("Developer's Almanac", style: GoogleFonts.syneMono()),
         actions: <Widget>[
           // Clear Icon
@@ -131,7 +140,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-
                                     ElevatedButton(
                                         onPressed: () {
                                           showDialog(
@@ -390,7 +398,8 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                                   stackCollection: widget
                                                       .project_query_doc
                                                       .collection("Stack"),
-                                                  notifyParent: widget.notifyParent)
+                                                  notifyParent:
+                                                      widget.notifyParent)
                                               //notifyParent: refresh)
                                               : Padding(
                                                   padding:
@@ -623,8 +632,10 @@ class _ViewStacksState extends State<ViewStacks> {
                                                           query_doc: widget
                                                               .project_query_doc,
                                                           id: stack.id,
-                                                          notifyParent: widget.notifyParent,
-                                                          stackName: stack['stack_title']));
+                                                          notifyParent: widget
+                                                              .notifyParent,
+                                                          stackName: stack[
+                                                              'stack_title']));
                                             },
                                             color: AppStyle.white,
                                           ),

@@ -49,8 +49,7 @@ class __searchTextFieldState extends State<_searchTextField> {
         searchT = _projectSearchBar.text;
         widget.notifyParent();
       });
-    }
-    );
+    });
   }
 
   @override
@@ -615,8 +614,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                                     widget.notifyParent,
                                               )),
                                     );
-                                    setState(() {
-                                    });
+                                    setState(() {});
                                   },
                                 ),
                                 // Delete project button
