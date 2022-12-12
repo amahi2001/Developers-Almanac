@@ -9,6 +9,7 @@ import 'widgets/add_bugs.dart';
 import 'widgets/add_collab.dart';
 import 'widgets/add_stack.dart';
 import '../../auth/auth.dart';
+import 'widgets/edit_project_details.dart';
 import 'widgets/edit_stacks.dart';
 import 'package:intl/intl.dart';
 import "../../helpers/helper.dart";
@@ -118,7 +119,48 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                             const SizedBox(
                               height: 30,
                             ),
-                            const project_preview_name(text: 'Project Title'),
+                            Row(
+                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                              children: [
+                                const project_preview_name(text: 'Project Title'),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            EditProjectDetail(
+                                                notifyParent: refresh,
+                                                project_query_doc: widget.project_query_doc, 
+                                                project_title: snapshot.data![0]["project_title"], 
+                                                project_description: snapshot.data![0]["project_description"], 
+                                            )
+                                      );
+                                    },
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(AppStyle.fieldText),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Icon(
+                                          Icons.bug_report,
+                                          size: 20,
+                                          color: AppStyle.backgroundColor,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 5),
+                                          child: Text("Edit Project Information",
+                                              style: TextStyle(
+                                                  color: AppStyle
+                                                      .backgroundColor)),
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              ],
+                            ),
                             project_preview_desc(
                                 text: snapshot.data![0]["project_title"]),
                             const SizedBox(
@@ -134,8 +176,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const project_preview_name(
-                                    text: 'Project Member(s)'),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -214,7 +254,8 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                                           .backgroundColor)),
                                             ),
                                           ],
-                                        )),
+                                        )
+                                      ),
                                   ],
                                 )
                               ],
