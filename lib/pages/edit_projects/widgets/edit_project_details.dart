@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/auth/auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants/style.dart';
+import 'add_collab.dart';
+
 final TextEditingController _projectNameController = TextEditingController();
 final TextEditingController _projectDescriptionController = TextEditingController();
 
@@ -71,21 +74,108 @@ class _EditProjectDetailState extends State<EditProjectDetail> {
                         ),
                         ),
                         Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0),
-                        child: TextFormField(
-                            controller: _projectDescriptionController,
-                            decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: 'Enter Project Description:',
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: TextFormField(
+                              controller: _projectDescriptionController,
+                              decoration: const InputDecoration(
+                              border: UnderlineInputBorder(),
+                              labelText: 'Enter Project Description:',
+                              ),
+                              validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                  return 'Please enter Project Description';
+                              }
+                              return null;
+                              },
+                          ),
+                        ),
+                        Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                AddMember(
+                                              notifyParent: widget.notifyParent,
+                                              query_doc:
+                                                  widget.project_query_doc,
+                                            ),
+                                          );
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  AppStyle.fieldText),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Icon(
+                                              Icons.person_add,
+                                              size: 20,
+                                              color: AppStyle.backgroundColor,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 5),
+                                              child: Text("Add Member",
+                                                  style: TextStyle(
+                                                      color: AppStyle
+                                                          .backgroundColor)),
+                                            ),
+                                          ],
+                                        )),
+                                    const SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                RemoveMember(
+                                              notifyParent: widget.notifyParent,
+                                              query_doc:
+                                                  widget.project_query_doc,
+                                            ),
+                                          );
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  AppStyle.fieldText),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Icon(
+                                              Icons.person_remove,
+                                              size: 20,
+                                              color: AppStyle.backgroundColor,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 5),
+                                              child: Text("Remove Member",
+                                                  style: TextStyle(
+                                                      color: AppStyle
+                                                          .backgroundColor)),
+                                            ),
+                                          ],
+                                        )
+                                      ),
+                                  ],
+                                )
+                              ],
                             ),
-                            validator: (value) {
-                            if (value == null || value.isEmpty) {
-                                return 'Please enter Project Description';
-                            }
-                            return null;
-                            },
-                        ),
-                        ),
                     ],
                     ),
                 )

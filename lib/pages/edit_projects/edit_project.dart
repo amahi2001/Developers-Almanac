@@ -135,6 +135,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                                 project_description: snapshot.data![0]["project_description"], 
                                             )
                                       );
+                                      
                                     },
                                     style: ButtonStyle(
                                         backgroundColor: MaterialStateProperty.all(AppStyle.fieldText),
@@ -172,93 +173,6 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                 text: snapshot.data![0]["project_description"]),
                             const SizedBox(
                               height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                AddMember(
-                                              notifyParent: refresh,
-                                              query_doc:
-                                                  widget.project_query_doc,
-                                            ),
-                                          );
-                                        },
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  AppStyle.fieldText),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Icon(
-                                              Icons.person_add,
-                                              size: 20,
-                                              color: AppStyle.backgroundColor,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 5),
-                                              child: Text("Add Member",
-                                                  style: TextStyle(
-                                                      color: AppStyle
-                                                          .backgroundColor)),
-                                            ),
-                                          ],
-                                        )),
-                                    const SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                RemoveMember(
-                                              notifyParent: refresh,
-                                              query_doc:
-                                                  widget.project_query_doc,
-                                            ),
-                                          );
-                                        },
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  AppStyle.fieldText),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Icon(
-                                              Icons.person_remove,
-                                              size: 20,
-                                              color: AppStyle.backgroundColor,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 5),
-                                              child: Text("Remove Member",
-                                                  style: TextStyle(
-                                                      color: AppStyle
-                                                          .backgroundColor)),
-                                            ),
-                                          ],
-                                        )
-                                      ),
-                                  ],
-                                )
-                              ],
                             ),
                             project_preview_desc(
                                 text: snapshot.data![0]["members"].toString()),
