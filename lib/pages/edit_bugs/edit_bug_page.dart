@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/constants/style.dart';
+import 'package:devs_almanac/pages/edit_bugs/widgets/edit_bug_details.dart';
 import 'package:flutter/material.dart';
 
 //syntax highlight
@@ -86,7 +87,55 @@ class _Edit_bug_pageState extends State<Edit_bug_page> {
                             const SizedBox(
                               height: 30,
                             ),
-                            const bug_preview_name(text: 'Bug Name'),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const bug_preview_name(text: 'Bug Name'),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                EditBugDetail(
+                                                    notifyParent: refresh,
+                                                    bug_query_doc: widget.bug_query_doc, 
+                                                    bug_name: snapshot.data["bug_name"], 
+                                                    bug_description: snapshot.data["bug_description"], 
+                                                    bug_error: snapshot.data["error_output"]
+                                                )
+                                          );
+                                        },
+                                        style: ButtonStyle(
+                                            backgroundColor: MaterialStateProperty.all(AppStyle.fieldText),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Icon(
+                                              Icons.bug_report,
+                                              size: 20,
+                                              color: AppStyle.backgroundColor,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 5),
+                                              child: Text("Edit Bug Information",
+                                                  style: TextStyle(
+                                                      color: AppStyle
+                                                          .backgroundColor)),
+                                            ),
+                                          ],
+                                        )
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                             bug_preview_desc(text: snapshot.data["bug_name"]),
                             const SizedBox(
                               height: 20,
