@@ -144,7 +144,7 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Icon(
-                                          Icons.bug_report,
+                                          Icons.info_outline,
                                           size: 20,
                                           color: AppStyle.backgroundColor,
                                         ),
