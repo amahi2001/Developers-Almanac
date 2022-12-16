@@ -17,8 +17,6 @@ import './widgets/searchText.dart';
 //helpers
 import '../../helpers/helper.dart';
 
-
-
 String projectName = "";
 String projectDescription = "";
 String projectMembers = "";
@@ -27,7 +25,6 @@ List<String> projectTools = [];
 int projectBugs = 0;
 int _selectedIndex = -1;
 late DocumentReference<Object?> _selectedDoc;
-
 
 /// This is the root widget of the home page .
 class MyHomePage extends StatefulWidget {
@@ -171,12 +168,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                // const Expanded(
-                //   child: Divider(
-                //     height: 50,
-                //     thickness: 5,
-                //   ),
-                // ),
                 ElevatedButton(
                     onPressed: () {
                       showDialog(
@@ -258,7 +249,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 child: Wrap(
                                   children: [
                                     SingleChildScrollView(
-                                      child: ProjectInfoPreviewView(),
+                                      child: ProjectInfoPreviewView(
+                                          refreshParent: refresh),
                                     ),
                                   ],
                                 ),
@@ -280,7 +272,8 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class ProjectInfoPreviewView extends StatefulWidget {
-  ProjectInfoPreviewView({super.key});
+  final Function refreshParent;
+  ProjectInfoPreviewView({super.key, required this.refreshParent});
   @override
   State<ProjectInfoPreviewView> createState() => _ProjectInfoPreviewViewState();
 }
@@ -566,6 +559,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                                       context: context,
                                       builder: (BuildContext context) =>
                                           wids.DeleteProjectPopup(
+                                        notifyParent: widget.notifyParent,
                                         projectID: project.id,
                                       ),
                                     );

@@ -8,6 +8,7 @@ import 'dart:math';
 import '../../../constants/style.dart';
 import '../../../main.dart';
 import '../../edit_projects/edit_project.dart' as global;
+import '../home_page.dart';
 
 ///add projects popup
 class AddProjectPopup extends StatefulWidget {
@@ -29,88 +30,88 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
     return AlertDialog(
       title: const Text('Add Project'),
       content: Form(
-        key: _formKey,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.5,
+          key: _formKey,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.5,
             height: MediaQuery.of(context).size.height * 0.5,
             child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              controller: _projectTitleController,
-              decoration: const InputDecoration(
-                hintText: 'Project Title',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a project title';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              maxLines: 5,
-              controller: _projectDescriptionController,
-              decoration: const InputDecoration(
-                hintText: 'Project Description',
-                enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1, color: Colors.grey),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(width: 2, color: Colors.blueAccent),
-                      ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a project description';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 30),
-            Card(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        value: _selectedStackType,
-                        onChanged: (String? value) {
-                          // This is called when the user selects an item.
-                          setState(() {
-                            _selectedStackType = value!;
-                          });
-                        },
-                        items: global.StackType.map((String value) {
-                          return DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: _projectTitleController,
+                  decoration: const InputDecoration(
+                    hintText: 'Project Title',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a project title';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  maxLines: 5,
+                  controller: _projectDescriptionController,
+                  decoration: const InputDecoration(
+                    hintText: 'Project Description',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 1, color: Colors.grey),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(width: 2, color: Colors.blueAccent),
                     ),
                   ),
-                  Expanded(
-                      child: TextFormField(
-                    controller: _stackNameController,
-                    decoration: const InputDecoration(
-                      hintText: 'Primary stack item',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a stack item description';
-                      }
-                      return null;
-                    },
-                  ))
-                ],
-              ),
-            )
-          ],
-        ),
-      )),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a project description';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 30),
+                Card(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            value: _selectedStackType,
+                            onChanged: (String? value) {
+                              // This is called when the user selects an item.
+                              setState(() {
+                                _selectedStackType = value!;
+                              });
+                            },
+                            items: global.StackType.map((String value) {
+                              return DropdownMenuItem(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          child: TextFormField(
+                        controller: _stackNameController,
+                        decoration: const InputDecoration(
+                          hintText: 'Primary stack item',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a stack item description';
+                          }
+                          return null;
+                        },
+                      ))
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )),
       actions: [
         TextButton(
           onPressed: () {
@@ -159,8 +160,10 @@ class _AddProjectPopupState extends State<AddProjectPopup> {
 
 /// This widget lets the user delete a project given a project ID
 class DeleteProjectPopup extends StatefulWidget {
+  final Function notifyParent;
   String projectID;
-  DeleteProjectPopup({super.key, required this.projectID});
+  DeleteProjectPopup(
+      {super.key, required this.projectID, required this.notifyParent});
 
   @override
   State<DeleteProjectPopup> createState() => _DeleteProjectPopupState();
@@ -178,7 +181,19 @@ class _DeleteProjectPopupState extends State<DeleteProjectPopup> {
             FirebaseFirestore.instance
                 .collection('Projects')
                 .doc(widget.projectID)
-                .delete();
+                .delete()
+                .then((value) => {
+                      print("Project deleted"),
+                      widget.notifyParent(),
+                      projectName = "",
+                      projectDescription = "",
+                      projectMembers = "",
+                      projectCreated = "",
+                      projectTools = [],
+                      projectBugs = 0,
+                    })
+                .catchError(
+                    (error) => {print("Failed to delete project: $error")});
             Navigator.pop(context);
           },
           child: const Text('Delete'),
@@ -226,8 +241,7 @@ class _ShowProjectPopupState extends State<ShowProjectPopup> {
           color: AppStyle.cardColor,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
-              side: BorderSide(
-                  color: AppStyle.borderColor, width: 1)),
+              side: BorderSide(color: AppStyle.borderColor, width: 1)),
           margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
