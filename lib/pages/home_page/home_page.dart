@@ -12,13 +12,12 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../auth/auth.dart';
 import './widgets/home_page_widgets.dart' as wids;
 import '../edit_projects/edit_project.dart';
+import './widgets/searchText.dart';
 
 //helpers
 import '../../helpers/helper.dart';
 
-import 'dart:math' as math;
 
-String searchT = "";
 
 String projectName = "";
 String projectDescription = "";
@@ -29,68 +28,6 @@ int projectBugs = 0;
 int _selectedIndex = -1;
 late DocumentReference<Object?> _selectedDoc;
 
-/// this widget let's us search through projects
-class _searchTextField extends StatefulWidget {
-  final Function() notifyParent;
-  const _searchTextField({super.key, required this.notifyParent});
-
-  @override
-  State<_searchTextField> createState() => __searchTextFieldState();
-}
-
-class __searchTextFieldState extends State<_searchTextField> {
-  final TextEditingController _projectSearchBar = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _projectSearchBar.addListener(() {
-      setState(() {
-        searchT = _projectSearchBar.text;
-        widget.notifyParent();
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    searchT = _projectSearchBar.text;
-    return SizedBox(
-        width: MediaQuery.of(context).size.width * 0.3,
-        child: TextField(
-          onChanged: (String value) async {
-            //print(value);
-            ProjectsView(notifyParent: () {});
-          },
-          controller: _projectSearchBar,
-          autofocus: true, //Display the keyboard when TextField is displayed
-          cursorColor: Colors.white,
-          textAlign: TextAlign.left,
-          style: GoogleFonts.poppins(
-            color: Colors.white,
-            fontSize: 20,
-          ),
-          textInputAction: TextInputAction
-              .search, //Specify the action button on the keyboard
-          decoration: InputDecoration(
-            //Style of TextField
-            enabledBorder: const UnderlineInputBorder(
-                //Default TextField border
-                borderSide: BorderSide(color: Colors.white)),
-            focusedBorder: const UnderlineInputBorder(
-                //Borders when a TextField is in focus
-                borderSide: BorderSide(color: Colors.white)),
-            hintText:
-                'Search keywords', //Text that is displayed when nothing is entered.
-            hintStyle: GoogleFonts.poppins(
-              //Style of hintText
-              color: Colors.white60,
-              fontSize: 20,
-            ),
-          ),
-        ));
-  }
-}
 
 /// This is the root widget of the home page .
 class MyHomePage extends StatefulWidget {
@@ -169,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
               ]
             : [
-                _searchTextField(notifyParent: refresh),
+                SearchTextField(notifyParent: refresh),
                 // Clear Icon
                 IconButton(
                   icon: const Icon(Icons.clear),
