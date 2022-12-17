@@ -544,7 +544,15 @@ class _ProjectsViewState extends State<ProjectsView> {
                                                     widget.notifyParent,
                                               )),
                                     );
-                                    setState(() {});
+                                    setState(() {
+                                      _selectedIndex = -1;
+                                      projectName = "Placeholder";
+                                      projectDescription = "Placeholder";
+                                      projectMembers = "Placeholder";
+                                      projectCreated = "Placeholder";
+                                      projectTools = [];
+                                      projectBugs = 0;
+                                    });
                                   },
                                 ),
                                 // Delete project button

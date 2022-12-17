@@ -112,6 +112,7 @@ class _ModifyStackState extends State<ModifyStack> {
             ),
             TextButton(
               onPressed: () {
+                Navigator.pop(context);
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => ModifyStackPopup(
