@@ -6,17 +6,20 @@ import '../../home_page/home_page.dart';
 
 /// This widget lets the user delete a stack given a stack ID
 class DeleteStackPopup extends StatefulWidget {
+  final Function() callback;
   final Function() notifyParent;
   final id;
   final DocumentReference<Object?> query_doc;
   final stackName;
 
-  const DeleteStackPopup(
-      {super.key,
+  const DeleteStackPopup({
+      super.key,
       required this.query_doc,
       required this.id,
       required this.notifyParent,
-      required this.stackName});
+      required this.stackName,
+      required this.callback,
+  });
 
   @override
   State<DeleteStackPopup> createState() => _DeleteStackPopupState();
@@ -41,6 +44,7 @@ class _DeleteStackPopupState extends State<DeleteStackPopup> {
             stackNum = await getBugsInStack(stackDoc);
             projectBugs -= stackNum;
             widget.notifyParent();
+            widget.callback();
             Navigator.pop(context);
           },
           child: const Text('Delete'),

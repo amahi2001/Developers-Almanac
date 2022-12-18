@@ -10,15 +10,18 @@ import '../../edit_bugs/edit_bug_page.dart';
 import '../edit_project.dart';
 
 class ViewBugOverlay extends StatefulWidget {
+  final Function() callback;
   final Function() notifyParent;
   final String stackID;
   final CollectionReference stackCollection;
 
-  const ViewBugOverlay(
-      {super.key,
+  const ViewBugOverlay({
+        super.key,
       required this.stackID,
       required this.stackCollection,
-      required this.notifyParent});
+      required this.notifyParent,
+      required this.callback,
+    });
 
   @override
   State<ViewBugOverlay> createState() => _ViewBugOverlayState();
@@ -152,8 +155,9 @@ class _ViewBugOverlayState extends State<ViewBugOverlay> {
                                         builder: (BuildContext context) =>
                                             DeleteBugPopup(
                                                 bugDoc: bugDoc,
-                                                notifyParent:
-                                                    widget.notifyParent));
+                                                notifyParent:widget.notifyParent,
+                                                callback: widget.callback,
+                                                ));
                                   },
                                 ),
                               ],
@@ -199,10 +203,15 @@ class Bug_Description_Text extends StatelessWidget {
 }
 
 class DeleteBugPopup extends StatefulWidget {
+  final Function() callback;
   final Function() notifyParent;
   final DocumentReference bugDoc;
-  const DeleteBugPopup(
-      {super.key, required this.bugDoc, required this.notifyParent});
+  const DeleteBugPopup({
+        super.key, 
+        required this.bugDoc, 
+        required this.notifyParent,
+        required this.callback,
+  });
 
   @override
   State<DeleteBugPopup> createState() => _DeleteBugPopupState();
@@ -230,6 +239,7 @@ class _DeleteBugPopupState extends State<DeleteBugPopup> {
               projectBugs -= 1;
             });
             widget.notifyParent();
+            widget.callback();
             Navigator.of(context).pop();
           },
           child: const Text('Delete'),
