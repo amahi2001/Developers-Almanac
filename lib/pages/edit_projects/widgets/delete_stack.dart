@@ -2,9 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/pages/edit_projects/edit_project.dart';
-import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../helpers/helper.dart';
 import '../../home_page/home_page.dart';

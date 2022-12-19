@@ -6,7 +6,6 @@ import 'package:devs_almanac/pages/edit_projects/widgets/view_bugs.dart';
 import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
 import 'widgets/add_bugs.dart';
-import 'widgets/add_collab.dart';
 import 'widgets/add_stack.dart';
 import '../../auth/auth.dart';
 import 'widgets/edit_project_details.dart';

@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/constants/style.dart';
 import 'package:flutter/material.dart';
-import '../../../helpers/helper.dart';
 import '../../home_page/home_page.dart';
 import '../edit_project.dart' as global;
 //adding and viewing stacks

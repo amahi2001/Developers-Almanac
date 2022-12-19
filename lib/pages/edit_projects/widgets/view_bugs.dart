@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devs_almanac/constants/style.dart';
-import 'package:devs_almanac/helpers/helper.dart';
 import 'package:devs_almanac/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../edit_bugs/edit_bug_page.dart';
-import '../edit_project.dart';
 
 class ViewBugOverlay extends StatefulWidget {
   final Function() callback;
