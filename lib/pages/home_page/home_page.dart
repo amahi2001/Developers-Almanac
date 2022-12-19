@@ -242,19 +242,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 side: BorderSide(
                                     color: AppStyle.borderColor, width: 1)),
                             margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Wrap(
-                                  children: [
-                                    SingleChildScrollView(
-                                      child: ProjectInfoPreviewView(
-                                          refreshParent: refresh),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            child: SingleChildScrollView(
+                              child: ProjectInfoPreviewView(
+                                  refreshParent: refresh),
                             ),
                           ),
                         ),
