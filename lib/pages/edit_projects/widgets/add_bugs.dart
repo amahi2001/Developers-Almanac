@@ -10,17 +10,20 @@ import "../../../auth/auth.dart";
 import '../../../constants/langs.dart';
 
 class AddBugButton extends StatefulWidget {
+  final Function() callback;
   final Function() notifyParent;
   final bool isSelected;
   final DocumentReference<Object?> project_query_doc;
   final String stack_id;
 
-  const AddBugButton(
-      {super.key,
+  const AddBugButton({
+        super.key,
       required this.isSelected,
       required this.project_query_doc,
       required this.stack_id,
-      required this.notifyParent});
+      required this.notifyParent,
+      required this.callback,
+    });
 
   @override
   State<AddBugButton> createState() => _AddBugButtonState();
@@ -40,13 +43,16 @@ class _AddBugButtonState extends State<AddBugButton> {
             builder: (BuildContext context) => AddBugPopUp(
                 project_query_doc: widget.project_query_doc,
                 stack_id: widget.stack_id,
-                notifyParent: widget.notifyParent));
+                notifyParent: widget.notifyParent,
+                callback: widget.callback,
+              ));
       },
     );
   }
 }
 
 class AddBugPopUp extends StatefulWidget {
+  final Function() callback;
   final Function() notifyParent;
   final DocumentReference<Object?> project_query_doc;
   final String stack_id;
@@ -54,7 +60,9 @@ class AddBugPopUp extends StatefulWidget {
       {super.key,
       required this.project_query_doc,
       required this.stack_id,
-      required this.notifyParent});
+      required this.notifyParent,
+      required this.callback,
+      });
 
   @override
   State<AddBugPopUp> createState() => _AddBugPopUpState();
@@ -159,7 +167,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                     onChanged: (val) {
                       setState(() {
                         _bugSolved = val!;
-                        formHeight = formHeight == 500 ? 850 : 850;
+                        formHeight = formHeight == 500 ? 850 : 500;
                         callback();
                       });
                     },
@@ -279,6 +287,7 @@ class _AddBugPopUpState extends State<AddBugPopUp> {
                     projectBugs += 1;
                   });
                   widget.notifyParent();
+                  widget.callback();
                   Navigator.pop(context);
                 }).catchError((error) => print("Failed to add bug: $error"));
               }

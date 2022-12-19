@@ -358,8 +358,9 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                                   stackCollection: widget
                                                       .project_query_doc
                                                       .collection("Stack"),
-                                                  notifyParent:
-                                                      widget.notifyParent)
+                                                  notifyParent:widget.notifyParent,
+                                                  callback: refresh,
+                                                  )
                                               //notifyParent: refresh)
                                               : Padding(
                                                   padding:
@@ -556,10 +557,10 @@ class _ViewStacksState extends State<ViewStacks> {
                                         children: [
                                           AddBugButton(
                                             isSelected: index == _selectedIndex,
-                                            project_query_doc:
-                                                widget.project_query_doc,
+                                            project_query_doc: widget.project_query_doc,
                                             stack_id: stack.id,
                                             notifyParent: widget.notifyParent,
+                                            callback: widget.callback,
                                           ),
                                           IconButton(
                                             icon: const Icon(Icons.edit),

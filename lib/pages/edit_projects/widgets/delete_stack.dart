@@ -17,13 +17,15 @@ class DeleteStackPopup extends StatefulWidget {
   final DocumentReference<Object?> query_doc;
   final stackName;
 
-  const DeleteStackPopup(
-      {super.key,
+  const DeleteStackPopup({
+      super.key,
       required this.query_doc,
       required this.id,
       required this.callback,
       required this.notifyParent,
-      required this.stackName});
+      required this.stackName,
+      required this.callback,
+  });
 
   @override
   State<DeleteStackPopup> createState() => _DeleteStackPopupState();
