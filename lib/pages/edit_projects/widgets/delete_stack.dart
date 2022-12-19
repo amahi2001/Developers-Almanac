@@ -24,7 +24,6 @@ class DeleteStackPopup extends StatefulWidget {
       required this.callback,
       required this.notifyParent,
       required this.stackName,
-      required this.callback,
   });
 
   @override
