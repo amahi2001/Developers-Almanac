@@ -120,25 +120,30 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                               height: 30,
                             ),
                             Row(
-                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const project_preview_name(text: 'Project Title'),
+                                const project_preview_name(
+                                    text: 'Project Title'),
                                 ElevatedButton(
                                     onPressed: () {
                                       showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            EditProjectDetail(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              EditProjectDetail(
                                                 notifyParent: refresh,
-                                                project_query_doc: widget.project_query_doc, 
-                                                project_title: snapshot.data![0]["project_title"], 
-                                                project_description: snapshot.data![0]["project_description"], 
-                                            )
-                                      );
-                                      
+                                                project_query_doc:
+                                                    widget.project_query_doc,
+                                                project_title: snapshot.data![0]
+                                                    ["project_title"],
+                                                project_description:
+                                                    snapshot.data![0]
+                                                        ["project_description"],
+                                              ));
                                     },
                                     style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(AppStyle.fieldText),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              AppStyle.fieldText),
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -150,16 +155,16 @@ class _Edit_project_pageState extends State<Edit_project_page> {
                                           color: AppStyle.backgroundColor,
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5),
-                                          child: Text("Edit Project Information",
+                                          padding:
+                                              const EdgeInsets.only(left: 5),
+                                          child: Text(
+                                              "Edit Project Information",
                                               style: TextStyle(
                                                   color: AppStyle
                                                       .backgroundColor)),
                                         ),
                                       ],
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                             project_preview_desc(
@@ -587,6 +592,8 @@ class _ViewStacksState extends State<ViewStacks> {
                                                           query_doc: widget
                                                               .project_query_doc,
                                                           id: stack.id,
+                                                          callback:
+                                                              widget.callback,
                                                           notifyParent: widget
                                                               .notifyParent,
                                                           stackName: stack[
